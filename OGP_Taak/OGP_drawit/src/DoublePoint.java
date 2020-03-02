@@ -3,12 +3,19 @@ public class DoublePoint {
 	
 	private double x;
 	private double y;
+	
 	public DoublePoint(double x, double y) {
+		this.x = x;
+		this.y = y;
 		
 	}
 	
-	public double getX() {return this.x;}
-	public double getY() {return this.y;}
+	public double getX() {
+		return this.x;
+		}
+	public double getY() {
+		return this.y;
+		}
 	
 	public DoubleVector minus(DoublePoint other) {
 		return new DoubleVector(this.x - other.x, this.y - other.y);
@@ -25,7 +32,5 @@ public class DoublePoint {
 		int y = (int) this.getY();
 		return new IntPoint(x, y);
 	}
-	
-	
 
 }

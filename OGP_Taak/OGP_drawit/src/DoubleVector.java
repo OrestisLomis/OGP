@@ -1,4 +1,3 @@
-package drawit;
 
 public class DoubleVector {
 	
@@ -19,11 +18,11 @@ public class DoubleVector {
 	}
 	
 	public DoubleVector scale(double d) {
-		return DoubleVector(getX() * d, getY() * d);
+		return new DoubleVector(getX() * d, getY() * d);
 	}
 	
 	public DoubleVector plus(DoubleVector other) {
-		return DoubleVector(this.getX() + other.getX(), this.getY() + other.getY());
+		return new DoubleVector(this.getX() + other.getX(), this.getY() + other.getY());
 	}
 	
 	public double getSize() {
@@ -41,4 +40,5 @@ public class DoubleVector {
 	public double asAngle() {
 		return Math.atan2(getY(), getX());
 	}
+
 }

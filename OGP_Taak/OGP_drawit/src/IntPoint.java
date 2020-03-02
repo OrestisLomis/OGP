@@ -5,23 +5,26 @@ public class IntPoint {
 	private int y;
 
 	public IntPoint(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
 
-	public int getX() {return this.x;}
-	public int getY() {return this.y;}
+	public int getX() {
+		return this.x;
+		}
+	public int getY() {
+		return this.y;
+		}
 	
 	public boolean equals(IntPoint other) {
-		return (this.x == other.x) && (this.y == other.y);		
+		return (this.getX() == other.getX()) && (this.getY() == other.getY());		
 	}
 	
 	public boolean IsOnLineSegment(IntPoint b, IntPoint c) {
-		int ricoab = (b.y - this.y)/(b.x - this.x);
-		int ricobc = (c.y - b.y)/(c.x - b.x);
+		IntVector ab = new IntVector(b.getX() - this.getX(), b.getY() - this.getY());
+		IntVector bc = new IntVector(b.getX() - c.getX(), b.getY() - c.getY());
 		
-		int dotabbc = (b.x - this.x) * (c.x - b.x) + (b.y - this.y) * (c.y - b.y);
-		int dotbcbc = (c.x - b.x) * (c.x - b.x) + (c.y - b.y) * (c.y - b.y);
-		
-		return (ricoab == ricobc) && 0 < dotabbc && dotabbc < dotbcbc;
+		return (ab.isCollinearWith(bc)) && 0 < ab.dotProduct(bc) && ab.dotProduct(bc) < bc.dotProduct(bc);
 	}
 	
 	public IntVector minus(IntPoint other) {
@@ -41,8 +44,7 @@ public class IntPoint {
 		IntVector ab = new IntVector(b.getX() - a.getX(), b.getY() - a.getY());
 		IntVector ac = new IntVector(c.getX() - a.getX(), c.getY() - a.getY());
 		IntVector ad = new IntVector(d.getX() - a.getX(), d.getY() - a.getY());
-		return ab.crossProduct(ac) * ab.crossProduct(ad) < 0;
-		
+		return ab.crossProduct(ac) * ab.crossProduct(ad) < 0;		
 	}
+
 }
-	

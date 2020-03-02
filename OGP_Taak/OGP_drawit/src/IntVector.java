@@ -1,7 +1,6 @@
-package drawit;
 
 public class IntVector {
-	
+
 	private int x;
 	private int y;
 	
@@ -37,7 +36,7 @@ public class IntVector {
 	public DoubleVector asDoublevector() {
 		double a = this.getX();
 		double b = this.getY();
-		return DoubleVector.DoubleVector(a,b);
+		return new DoubleVector(a, b);
 	}
 
 }
