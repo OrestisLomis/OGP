@@ -33,12 +33,16 @@ public class PointArrays {
 			i++;
 		}
 		
-		if (CoincidingVertices)
-			return "A Proper polygon has no coinciding vertices.";
+		String stri = String.valueOf(i-1);
+		String strj = String.valueOf(j-1);
+		String strii = String.valueOf(i);
+		String strjj = String.valueOf(j);	
+		if (CoincidingVertices) 
+			return "Vertex " + stri + " and " + strj + " coincide.";
 		if (VertexOnEdge)
-			return "A Proper polygon does not have a vertex on one of its edges.";
+			return "Vertex " + stri + " is the edge formed by points " + strj + " and " + strjj + ".";
 		if (IntersectingEdges)
-			return "A proper polygon does not have intersecting vertices.";
+			return "The edge formed by points " + stri + " and " + strii + " intersects the edge formed by points " + strj + " and " + strjj + ".";
 		
 		return null;
 	}
