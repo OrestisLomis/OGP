@@ -45,7 +45,8 @@ public class DoublePoint {
 	 * 		| result.getY() == this.getY() - other.getY()
 	 */
 	public DoubleVector minus(DoublePoint other) {
-		return new DoubleVector(this.x - other.x, this.y - other.y);
+		DoubleVector result = new DoubleVector(this.x - other.x, this.y - other.y);
+		return result;
 	}
 	
 	/**

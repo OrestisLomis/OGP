@@ -19,10 +19,11 @@ public class PointArrays {
 		boolean IntersectingEdges = false;
 		
 		int i = 0;
-		int j = 1;
+		int j = 0;
 		while (!(CoincidingVertices) && !(VertexOnEdge) && !(IntersectingEdges) && i < points.length) {
-			while (!CoincidingVertices && !(VertexOnEdge) && !(IntersectingEdges) && j < points.length - i) {
-				if (points[i].equals(points[j]))
+			j = 0;
+			while (!CoincidingVertices && !(VertexOnEdge) && !(IntersectingEdges) && j < points.length) {
+				if (points[i].equals(points[j]) && i != j)
 					CoincidingVertices = true;
 				else if (points[i].IsOnLineSegment(points[j], points[(j+1)%points.length]))
 					VertexOnEdge = true;
@@ -33,10 +34,14 @@ public class PointArrays {
 			i++;
 		}
 		
-		String stri = String.valueOf(i-1);
-		String strj = String.valueOf(j-1);
-		String strii = String.valueOf(i);
-		String strjj = String.valueOf(j);	
+		String stri = String.valueOf(i);
+		String strj = String.valueOf(j);
+		String strii = String.valueOf((i+1)%points.length);
+		if (strii.equals("0"))
+			strii = String.valueOf(points.length);
+		String strjj = String.valueOf((j+1)%points.length);
+		if (strjj.equals("0"))
+			strjj = String.valueOf(points.length);
 		if (CoincidingVertices) 
 			return "Vertex " + stri + " and " + strj + " coincide.";
 		if (VertexOnEdge)
@@ -113,8 +118,7 @@ public class PointArrays {
 			if (removed)
 				WithRemoved[i] = points[i-1];
 			else
-				WithRemoved[i] = points[i];
-			
+				WithRemoved[i] = points[i];		
 		}
 		
 		return WithRemoved;
@@ -137,8 +141,7 @@ public class PointArrays {
 			if (i == index)
 				WithUpdate[i] = point;
 			else
-				WithUpdate[i] = points[i];
-			
+				WithUpdate[i] = points[i];		
 		}
 		
 		return WithUpdate;
