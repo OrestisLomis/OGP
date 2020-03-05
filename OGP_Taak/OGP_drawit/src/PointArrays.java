@@ -116,7 +116,7 @@ public class PointArrays {
 			if (i == index)
 				removed = true;
 			if (removed)
-				WithRemoved[i] = points[i-1];
+				WithRemoved[i] = points[i+1];
 			else
 				WithRemoved[i] = points[i];		
 		}

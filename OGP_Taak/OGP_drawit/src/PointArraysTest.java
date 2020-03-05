@@ -35,6 +35,29 @@ class PointArraysTest {
 		IntPoint[] myIntPoints7 = {myIntPoint, myIntPoint2, myIntPoint3, myIntPoint};
 		assert PointArrays.checkDefinesProperPolygon(myIntPoints7).equals("Vertex 1 and 4 coincide.");
 		
+		IntPoint[] myIntPoints8 = {myIntPoint, myIntPoint2};
+		assert PointArrays.checkDefinesProperPolygon(myIntPoints8).equals("A proper polygon is defined by at least 3 points.");
+		
+		IntPoint[] myCopy = PointArrays.copy(myIntPoints);
+		for (int i = 0; i < myIntPoints.length; i++) {
+			assert myCopy[i] == myIntPoints[i];
+		}
+			
+		IntPoint[] myInsertion = PointArrays.insert(myIntPoints, 3, myIntPoint5);
+		for (int i = 0; i < myInsertion.length; i++) {
+			assert myInsertion[i] == myIntPoints4[i];
+		}
+		
+		IntPoint[] myRemoval = PointArrays.remove(myIntPoints4, 3);
+		for (int i = 0; i < myRemoval.length; i++) {
+			assert myRemoval[i] == myIntPoints[i];
+		}
+		
+		IntPoint[] myUpdate = PointArrays.update(myIntPoints, 3, myIntPoint);
+		for (int i = 0; i < myUpdate.length; i++) {
+			assert myUpdate[i] == myIntPoints7[i];
+		}
+		
 	}
 
 }
