@@ -17,10 +17,21 @@ class DoubleVectorTest {
 		assertEquals(14.72, myDoubleVector.plus(myDoubleVectorScaled).getX(), 0.0005);
 		assertEquals(7.82, myDoubleVector.plus(myDoubleVectorScaled).getY(), 0.0005);
 		
-		assertEquals(Math.sqrt(3.2 * 3.2 + 1.7 * 1.7), myDoubleVector.getSize(), 0.0005);
+		assertEquals(13.13, myDoubleVector.dotProduct(myDoubleVector), 0.0005);
+		
+		assertEquals(Math.sqrt(13.13), myDoubleVector.getSize(), 0.0005);
 		
 		DoubleVector myDoubleVector2 = new DoubleVector(-3.2, -1.7);
-		assertEquals(Math.sqrt(3.2 * 3.2 + 1.7 * 1.7), myDoubleVector2.getSize(), 0.0005);
+		assertEquals(Math.sqrt(13.13), myDoubleVector2.getSize(), 0.0005);
+		
+		assertEquals(0, myDoubleVector.crossProduct(myDoubleVector), 0.0005);
+		
+		DoubleVector myDoubleVector3 = new DoubleVector(2.1, 3.4);
+		assertEquals(7.31, myDoubleVector.crossProduct(myDoubleVector3), 0.0005);
+		
+		assertEquals(Math.atan2(1.7, 3.2), myDoubleVector.asAngle(), 0.0005);
+		assertEquals(Math.atan2(-1.7, -3.2), myDoubleVector2.asAngle(), 0.0005);
+		System.out.println(myDoubleVector2.asAngle());
 		
 		
 	}

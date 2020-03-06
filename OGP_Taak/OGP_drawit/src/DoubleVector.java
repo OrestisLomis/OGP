@@ -26,7 +26,7 @@ public class DoubleVector {
 	}
 	
 	public double getSize() {
-		return Math.sqrt(getX() * getX() + getY() * getY());
+		return Math.sqrt(this.dotProduct(this));
 	}
 	
 	public double dotProduct(DoubleVector other) { 

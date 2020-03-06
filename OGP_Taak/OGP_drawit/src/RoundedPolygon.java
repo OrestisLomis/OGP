@@ -1,5 +1,3 @@
-package drawit;
-
 public class RoundedPolygon {
 	
 	/**
@@ -19,7 +17,7 @@ public class RoundedPolygon {
 	
 	/**
 	 * Returns a new array whose elements are the vertices of this rounded polygon.
-	 * 		| this.getVertices == vertices
+	 * 		| this.getVertices() == vertices
 	 */
 	
 	public IntPoint[] getVertices() {
@@ -28,7 +26,7 @@ public class RoundedPolygon {
 	
 	/** 
 	 * Returns the radius of the corners of this rounded polygon.
-	 * 		| this.getRadius == radius
+	 * 		| this.getRadius() == radius
 	 */
 	
 	public int getRadius() {
@@ -59,7 +57,7 @@ public class RoundedPolygon {
 	 * @throws IllegalArgumentException if the given radius is negative.
 	 * 		| radius < 0
 	 * @post The given radius is now the new radius of the rounded polygon.
-	 * 		| getRadius() == radius
+	 * 		| this.getRadius() == radius
 	 */
 	
 	public void setRadius(int radius) {
@@ -126,7 +124,8 @@ public class RoundedPolygon {
 		if (check == vertices.length)
 			return false;
 				
-		}		
+		}
+		return true;
 		
 	}
 
