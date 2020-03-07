@@ -1,3 +1,5 @@
+package drawit;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
@@ -42,9 +44,7 @@ class IntPointTest {
 		IntPoint myIntPointB = new IntPoint(1, 0);
 		IntPoint myIntPointC = new IntPoint(0, -1);
 		IntPoint myIntPointD = new IntPoint(0, 1);
-		assert IntPoint.lineSegmentsIntersect​(myIntPointA, myIntPointB, myIntPointC, myIntPointD);
-		
-		
+		assert IntPoint.lineSegmentsIntersect​(myIntPointA, myIntPointB, myIntPointC, myIntPointD);	
 		}
 
 }

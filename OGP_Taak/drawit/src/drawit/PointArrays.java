@@ -1,3 +1,5 @@
+package drawit;
+
 /**
  * Declares a number of methods useful for working with arrays of IntPoint
  * objects.
@@ -59,6 +61,7 @@ public class PointArrays {
 
 		return null;
 	}
+	
 
 	/**
 	 * Returns a new array with the same contents as the given array.
@@ -98,8 +101,7 @@ public class PointArrays {
 			else if (i > index)
 				WithInsertion[i] = points[i - 1];
 			else
-				WithInsertion[i] = point;
-				
+				WithInsertion[i] = point;			
 		}
 
 		return WithInsertion;
@@ -153,3 +155,4 @@ public class PointArrays {
 	}
 
 }
+
