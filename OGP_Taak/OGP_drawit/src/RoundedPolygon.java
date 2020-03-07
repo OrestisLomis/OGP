@@ -89,7 +89,16 @@ public class RoundedPolygon {
 		this.setVertices(newVertices);
 	}
 	
-public boolean contains(IntPoint point) {		
+	/**
+	 * Returns true if the given point is contained by the (non-rounded) polygon defined by this rounded polygon's vertices. 
+	 * <p>
+	 * This method does not take into account this rounded polygon's corner radius; it assumes a corner radius of zero.
+	 * <p>
+	 * A point is contained by a polygon if it coincides with one of its vertices, 
+	 * or if it is on one of its edges, or if it is in the polygon's interior. 
+	 */
+	
+	public boolean contains(IntPoint point) {		
 		
 		IntPoint [] vertices = this.getVertices();
 		for  (int i = 0; i < vertices.length; i++) {
@@ -133,6 +142,24 @@ public boolean contains(IntPoint point) {
 	return true;
 	}
 	
+	/**
+	 * Returns a textual representation of a set of drawing commands for drawing this rounded polygon. 
+	 * The returned text consists of a sequence of drawing operators and arguments, separated by spaces. 
+	 * The drawing operators are line and arc. Each argument is a decimal representation of a floating-point number.
+	 * <p>
+	 * <p>
+	 * Operator line takes four arguments: X1 Y1 X2 Y2; it draws a line between (X1, Y1) and (X2, Y2). 
+	 * arc takes five: X Y R S E. It draws a part of a circle. The circle is defined by its center (X, Y) and its radius R. 
+	 * <p>
+	 * <p>
+	 * The part to draw is defined by the start angle A and angle extent E, both in radians. 
+	 * Positive X is angle zero; positive Y is angle Math.PI / 2; negative Y is angle -Math.PI / 2.
+	 * <p> 
+	 * <p>
+	 *  By rounding a corner, the adjacent edges are cut short by some amount. 
+	 *  The corner radius to be used for a particular corner is the largest radius that is not greater than this rounded 
+	 *  polygon's corner radius and that is such that no more than half of each adjacent edge is cut off by it. 
+	 */
 	
 	public String getDrawingCommands() {
 		IntPoint[] vertices = this.getVertices();
