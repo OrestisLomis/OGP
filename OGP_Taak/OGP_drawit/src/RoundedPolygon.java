@@ -8,31 +8,35 @@ public class RoundedPolygon {
 	 * 
 	 * @mutable
 	 */
-	
 	private IntPoint[] vertices;
 	private int radius;
 	
 	public RoundedPolygon() {
-		this.vertices = new IntPoint[0] ;
-		this.radius = 0;
+		IntPoint myIntPoint = new IntPoint(-100, -100);
+		IntPoint myIntPoint2 = new IntPoint(-100, 100);
+		IntPoint myIntPoint3 = new IntPoint(100, 100);
+		IntPoint myIntPoint4 = new IntPoint(100, -100);
+		
+		IntPoint[] myIntPoints = {myIntPoint, myIntPoint2, myIntPoint3, myIntPoint4};
+	
+		this.vertices = myIntPoints;
+		this.radius = 10;
 	}
 	
 	/**
 	 * Returns a new array whose elements are the vertices of this rounded polygon.
-	 * 		| this.getVertices == vertices
+	 * 		| this.getVertices() == vertices
 	 */
-	
 	public IntPoint[] getVertices() {
 		return this.vertices;		
 	}
 	
 	/** 
 	 * Returns the radius of the corners of this rounded polygon.
-	 * 		| this.getRadius == radius
+	 * 		| this.getRadius() == radius
 	 */
-	
 	public int getRadius() {
-		return this.radius;		
+		return this.radius;	
 	}
 	
 	/**
@@ -43,8 +47,7 @@ public class RoundedPolygon {
 	 * 		| PointArrays.checkDefinesProperPolygon(newVertices) != null
 	 * @post The given vertices are now the vertices of the polygon.
 	 * 		| this.getVertices() == newVertices
-	 */
-	
+	 */	
 	public void setVertices(IntPoint[] newVertices) {
 		if (PointArrays.checkDefinesProperPolygon(newVertices) == null)
 			this.vertices = newVertices;
@@ -59,9 +62,8 @@ public class RoundedPolygon {
 	 * @throws IllegalArgumentException if the given radius is negative.
 	 * 		| radius < 0
 	 * @post The given radius is now the new radius of the rounded polygon.
-	 * 		| getRadius() == radius
+	 * 		| this.getRadius() == radius
 	 */
-	
 	public void setRadius(int radius) {
 		if (radius >= 0)
 			this.radius = radius;
@@ -70,23 +72,24 @@ public class RoundedPolygon {
 	}
 	
 	public void insert(int index, IntPoint point) {
-		if (index < this.getVertices().length)
-			PointArrays.insert(this.getVertices(), index, point);		
+		IntPoint[] Vertices = this.getVertices();
+		IntPoint[] newVertices = PointArrays.insert(Vertices, index, point);
+		this.setVertices(newVertices);
 	}
 	
 	public void remove(int index) {
-		if (index < this.getVertices().length)
-			PointArrays.remove(this.getVertices(), index);
+		IntPoint[] Vertices = this.getVertices();
+		IntPoint[] newVertices = PointArrays.remove(Vertices, index);
+		this.setVertices(newVertices);
 	}
 	
 	public void update(int index, IntPoint point) {
-		if (index < this.getVertices().length) {
-			PointArrays.remove(this.getVertices(), index);
-			PointArrays.insert(this.getVertices(), index, point);
-		}
+		IntPoint[] Vertices = this.getVertices();
+		IntPoint[] newVertices = PointArrays.update(Vertices, index, point);
+		this.setVertices(newVertices);
 	}
-
-	public boolean contains(IntPoint point) {		
+	
+public boolean contains(IntPoint point) {		
 		
 		IntPoint [] vertices = this.getVertices();
 		for  (int i = 0; i < vertices.length; i++) {
@@ -133,10 +136,11 @@ public class RoundedPolygon {
 	
 	public String getDrawingCommands() {
 		IntPoint[] vertices = this.getVertices();
-		if (PointArrays.checkDefinesProperPolygon(vertices).equals("A proper polygon is defined by at least 3 points."))
-			return "";
-		String commands = "";
 		int length = vertices.length;
+		String commands = "";
+		if (length <= 2)
+			return commands;
+		
 		for (int i = 1; i < length + 1; i++) {
 			double BX = vertices[i%length].getX();
 			double BY = vertices[i%length].getY();
@@ -144,7 +148,7 @@ public class RoundedPolygon {
 			double AY = vertices[i-1].getY();
 			double CX = vertices[(i+1)%length].getX();
 			double CY = vertices[(i+1)%length].getY();
-			DoubleVector BA = new DoubleVector(BX - AX, BY - AY);
+			DoubleVector BA = new DoubleVector(AX - BX, AY - BY);
 			DoubleVector BC = new DoubleVector(CX - BX, CY - BY);
 			DoublePoint B = new DoublePoint(BX, BY);
 			DoublePoint BAC = new DoublePoint((BX + AX)/2, (BY + AY)/2);
@@ -162,7 +166,7 @@ public class RoundedPolygon {
 			
 			if (BA.crossProduct(BC) == 0) {
 				commands +=  "line" + strBACX + strBACY + strBX + strBY + System.lineSeparator() + 
-							 "line" + strBX + strBY + strBCCX + strBCCY;
+							 "line" + strBX + strBY + strBCCX + strBCCY + System.lineSeparator();
 			}
 			else { 
 				double sizeAB = BA.getSize();
@@ -184,13 +188,13 @@ public class RoundedPolygon {
 				DoublePoint BAcut = B.plus(BAU.scale(actualCutoff));
 				DoublePoint BCcut = B.plus(BCU.scale(actualCutoff));
 				
-				double startAngle = BA.asAngle() - Math.PI/2;
-				double endAngle = (BC.asAngle() - startAngle);
+				double startAngle = BA.asAngle() - Math.PI;
+				double endAngle = (BC.asAngle() - Math.PI - startAngle);
 				if (endAngle < -Math.PI) {
-					endAngle += 2*Math.PI;
-				}
+					endAngle += 2 * Math.PI;
+				} 
 				else if (endAngle > Math.PI) {
-					endAngle -= 2*Math.PI;
+					endAngle -= 2 * Math.PI;
 				}
 				
 				String strBAcutX  = String.valueOf(BAcut.getX());
@@ -203,14 +207,13 @@ public class RoundedPolygon {
 				String strStartAngle  = String.valueOf(startAngle);
 				String strEndAngle  = String.valueOf(endAngle);
 				
-				commands += "line" + strBACX + strBACY + strBAcutX + strBAcutY + System.lineSeparator() + 
-							"arc"  + strCenterX + strCenterY + strRadius + strStartAngle + strEndAngle + System.lineSeparator() + 
-							"line" + strBCcutX + strBCcutY + strBCCX + strBCCY;
+				commands += "line " + strBACX + " " + strBACY + " " + strBAcutX + " " + strBAcutY + System.lineSeparator() + 
+							"arc "  + strCenterX + " " + strCenterY + " " + strRadius + " " + strStartAngle + " " + strEndAngle + System.lineSeparator() + 
+							"line " + strBCcutX + " " + strBCcutY + " " + strBCCX + " " + strBCCY + System.lineSeparator();
 			}	
 		}
-		
-		return commands;
-	}
-			
 
+		return commands;
+	}	
 }
+
