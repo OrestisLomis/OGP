@@ -1,3 +1,5 @@
+package drawit;
+
 public class RoundedPolygon {
 	
 	/**
@@ -17,7 +19,7 @@ public class RoundedPolygon {
 	
 	/**
 	 * Returns a new array whose elements are the vertices of this rounded polygon.
-	 * 		| this.getVertices() == vertices
+	 * 		| this.getVertices == vertices
 	 */
 	
 	public IntPoint[] getVertices() {
@@ -26,7 +28,7 @@ public class RoundedPolygon {
 	
 	/** 
 	 * Returns the radius of the corners of this rounded polygon.
-	 * 		| this.getRadius() == radius
+	 * 		| this.getRadius == radius
 	 */
 	
 	public int getRadius() {
@@ -57,7 +59,7 @@ public class RoundedPolygon {
 	 * @throws IllegalArgumentException if the given radius is negative.
 	 * 		| radius < 0
 	 * @post The given radius is now the new radius of the rounded polygon.
-	 * 		| this.getRadius() == radius
+	 * 		| getRadius() == radius
 	 */
 	
 	public void setRadius(int radius) {
@@ -84,13 +86,9 @@ public class RoundedPolygon {
 		}
 	}
 	
-	public boolean contains(IntPoint point) {
+	public boolean contains(IntPoint point) {		
 		
-		
-		
-		//Niet bekijken, nog niet af xoxo
-		
-		
+		//Code that checks if the point is a vertices or on on of the edges of the polygon 
 		
 		IntPoint [] vertices = this.getVertices();
 		for  (int i = 0; i < vertices.length; i++) {
@@ -103,29 +101,49 @@ public class RoundedPolygon {
 		}
 		
 		int check = 0;
+		int count = 0;
 		
 		for (int i = 0; i < vertices.length; i++) {
+			//find the first vertex that isn't on the exit path
 			IntPoint first = vertices[i];
-			if (point.getY() != first.getY() || point.getX() < first.getX()) {
+			if (point.getY() != first.getY() || point.getX() > first.getX()) {
 				
 				for (int j = i+1; j < vertices.length - 1; j++ ) {
+					//find the second vertex that isn't on the exit path
 					IntPoint second = vertices[j];
-					if (point.getY() != second.getY() || point.getX() < second.getX()) {
+					if (point.getY() != second.getY() || point.getX() > second.getX()) {
 						
-						//Check of er een hoekpunt tussen de twee gevonden punten ligt
-						//Indien niet/wel: staat in documentatie bij de opdracht
+						//if (there are no vertices on the exit path lies between first and second)
+						
+						if (whatever == 0) {
+							
+							IntVector VV = new IntVector(first.getX() - second.getX(), first.getY() - second.getY());
+							IntVector VP = new IntVector(first.getX() - point.getX(), first.getY() - second.getY());
+							IntVector Xpos = new IntVector(1,0);
+							
+							if (((first.getY() - point.getY()) * (second.getY() - point.getY())) < 0 &&
+									VP.crossProduct(VV) * Xpos.crossProduct(VV) < 0)
+								count++;
+						}
+						
+						else {
+							if ((first.getY() - point.getY()) * (second.getY() - point.getY()) < 0) 
+								count++;						
+						}
 					}
-					
 				}
 			}
-			
 			else { check++; }
-				
+			
 		if (check == vertices.length)
 			return false;
+		
+		if (count // 2 == 0)
+			return false;
+		if (count //2 == 1)
+			return true;
 				
-		}
-		return true;
+		}		
 		
 	}
 
