@@ -85,37 +85,28 @@ public class RoundedPolygon {
 			PointArrays.insert(this.getVertices(), index, point);
 		}
 	}
-	
+
 	public boolean contains(IntPoint point) {		
-		
-		//Code that checks if the point is a vertices or on on of the edges of the polygon 
 		
 		IntPoint [] vertices = this.getVertices();
 		for  (int i = 0; i < vertices.length; i++) {
 			if (point.equals(vertices[i]))
 					return true;
-			for (int j = i+1; j < vertices.length - 1; j++ ) {
-				if (point.IsOnLineSegment(vertices[i],vertices[j]))
+			if (point.IsOnLineSegment(vertices[i],vertices[(i+1)%vertices.length]))
 					return true;
 			}
-		}
 		
-		int check = 0;
 		int count = 0;
 		
 		for (int i = 0; i < vertices.length; i++) {
-			//find the first vertex that isn't on the exit path
 			IntPoint first = vertices[i];
 			if (point.getY() != first.getY() || point.getX() > first.getX()) {
 				
 				for (int j = i+1; j < vertices.length - 1; j++ ) {
-					//find the second vertex that isn't on the exit path
-					IntPoint second = vertices[j];
+					IntPoint second = vertices[j%vertices.length];
 					if (point.getY() != second.getY() || point.getX() > second.getX()) {
-						
-						//if (there are no vertices on the exit path lies between first and second)
-						
-						if (whatever == 0) {
+							
+						if (j-i == 1) {
 							
 							IntVector VV = new IntVector(first.getX() - second.getX(), first.getY() - second.getY());
 							IntVector VP = new IntVector(first.getX() - point.getX(), first.getY() - second.getY());
@@ -125,7 +116,6 @@ public class RoundedPolygon {
 									VP.crossProduct(VV) * Xpos.crossProduct(VV) < 0)
 								count++;
 						}
-						
 						else {
 							if ((first.getY() - point.getY()) * (second.getY() - point.getY()) < 0) 
 								count++;						
@@ -133,18 +123,94 @@ public class RoundedPolygon {
 					}
 				}
 			}
-			else { check++; }
-			
-		if (check == vertices.length)
-			return false;
-		
-		if (count // 2 == 0)
-			return false;
-		if (count //2 == 1)
-			return true;
-				
 		}		
 		
+	if (count % 2 == 0)
+		return false;
+	return true;
 	}
+	
+	
+	public String getDrawingCommands() {
+		IntPoint[] vertices = this.getVertices();
+		if (PointArrays.checkDefinesProperPolygon(vertices).equals("A proper polygon is defined by at least 3 points."))
+			return "";
+		String commands = "";
+		int length = vertices.length;
+		for (int i = 1; i < length + 1; i++) {
+			double BX = vertices[i%length].getX();
+			double BY = vertices[i%length].getY();
+			double AX = vertices[i-1].getX();
+			double AY = vertices[i-1].getY();
+			double CX = vertices[(i+1)%length].getX();
+			double CY = vertices[(i+1)%length].getY();
+			DoubleVector BA = new DoubleVector(BX - AX, BY - AY);
+			DoubleVector BC = new DoubleVector(CX - BX, CY - BY);
+			DoublePoint B = new DoublePoint(BX, BY);
+			DoublePoint BAC = new DoublePoint((BX + AX)/2, (BY + AY)/2);
+			DoublePoint BCC = new DoublePoint((BX + CX)/2, (BY + CY)/2);	
+			double BACX = BAC.getX();
+			double BACY = BAC.getY();
+			double BCCX = BCC.getX();
+			double BCCY = BCC.getY();		
+			String strBACX = String.valueOf(BACX);
+			String strBACY = String.valueOf(BACY);
+			String strBCCX = String.valueOf(BCCX);
+			String strBCCY = String.valueOf(BCCY);
+			String strBX = String.valueOf(BX);
+			String strBY = String.valueOf(BY);
+			
+			if (BA.crossProduct(BC) == 0) {
+				commands +=  "line" + strBACX + strBACY + strBX + strBY + System.lineSeparator() + 
+							 "line" + strBX + strBY + strBCCX + strBCCY;
+			}
+			else { 
+				double sizeAB = BA.getSize();
+				DoubleVector BAU = BA.scale(1/sizeAB);
+				double sizeBC = BC.getSize();
+				DoubleVector BCU = BC.scale(1/sizeBC);
+				DoubleVector BS = BAU.plus(BCU);
+				double sizeBS = BS.getSize();
+				DoubleVector BSU = BS.scale(1/sizeBS);
+				double BAUcutoff = BAU.dotProduct(BSU);
+				double UnitRadius = Math.abs(BSU.crossProduct(BAU));
+				double minEdge = Math.min(BCC.minus(B).getSize(), BAC.minus(B).getSize());
+				double scale = 	Math.min(minEdge, this.getRadius()/UnitRadius);
+				
+				DoublePoint center = B.plus(BSU.scale(scale));
+				double actualRadius = UnitRadius * scale;
+				double actualCutoff = BAUcutoff * scale;
+				
+				DoublePoint BAcut = B.plus(BAU.scale(actualCutoff));
+				DoublePoint BCcut = B.plus(BCU.scale(actualCutoff));
+				
+				double startAngle = BA.asAngle() - Math.PI/2;
+				double endAngle = (BC.asAngle() - startAngle);
+				if (endAngle < -Math.PI) {
+					endAngle += 2*Math.PI;
+				}
+				else if (endAngle > Math.PI) {
+					endAngle -= 2*Math.PI;
+				}
+				
+				String strBAcutX  = String.valueOf(BAcut.getX());
+				String strBAcutY  = String.valueOf(BAcut.getY());
+				String strBCcutX  = String.valueOf(BCcut.getX());
+				String strBCcutY  = String.valueOf(BCcut.getY());
+				String strCenterX  = String.valueOf(center.getX());
+				String strCenterY  = String.valueOf(center.getY());
+				String strRadius = String.valueOf(actualRadius);
+				String strStartAngle  = String.valueOf(startAngle);
+				String strEndAngle  = String.valueOf(endAngle);
+				
+				commands += "line" + strBACX + strBACY + strBAcutX + strBAcutY + System.lineSeparator() + 
+							"arc"  + strCenterX + strCenterY + strRadius + strStartAngle + strEndAngle + System.lineSeparator() + 
+							"line" + strBCcutX + strBCcutY + strBCCX + strBCCY;
+			}	
+		}
+		
+		return commands;
+	}
+			
 
 }
