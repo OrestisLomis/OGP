@@ -42,7 +42,7 @@ public class RoundedPolygon {
 	/**
 	 * Sets the vertices of this rounded polygon to be equal to the elements of the given array.
 	 * 
-	 * @mutates |this
+	 * @mutates | this
 	 * @throws IllegalArgumentException  if the given vertices do not define a proper polygon. 
 	 * 		| PointArrays.checkDefinesProperPolygon(newVertices) != null
 	 * @post The given vertices are now the vertices of the polygon.
