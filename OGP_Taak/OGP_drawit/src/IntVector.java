@@ -1,3 +1,5 @@
+package drawit;
+
 public class IntVector {
 	/**
 	 * An instance of this class represents a displacement in the two-dimensional
