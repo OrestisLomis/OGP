@@ -13,7 +13,6 @@ public class IntVector {
 	/**
 	 * Initializes the point with the given integers as coordinates
 	 */
-
 	public IntVector(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -24,7 +23,6 @@ public class IntVector {
 	 * 
 	 * @post This point's X coordinate is the given x. | getX() == x
 	 */
-
 	public int getX() {
 		return this.x;
 	}
@@ -34,7 +32,6 @@ public class IntVector {
 	 * 
 	 * @post This point's Y coordinate is the given y.
 	 */
-
 	public int getY() {
 		return this.y;
 	}
@@ -42,9 +39,11 @@ public class IntVector {
 	/**
 	 * Returns the cross product of this vector and the given vector.
 	 * 
+	 * 
+	 * @pre Argument {@code other} is not {@code null}.
+	 *    | other != null
 	 * @post | result == (long)getX() * other.getY() - (long)getY() * other.getX()
 	 */
-
 	public long crossProduct(IntVector other) {
 		long a = this.getX() * other.getY();
 		long b = this.getY() * other.getX();
@@ -54,10 +53,12 @@ public class IntVector {
 	/**
 	 * Returns whether this vector is collinear with the given vector.
 	 * 
+	 * 
+	 * @pre Argument {@code other} is not {@code null}.	
+	 *    | other != null
 	 * @post The result is whether the cross product of the two vectors equals zero.
 	 *       | result == (this.crossProduct(other) == 0)
 	 */
-
 	public boolean isCollinearWith(IntVector other) {
 		return this.crossProduct(other) == 0;
 	}
@@ -65,10 +66,11 @@ public class IntVector {
 	/**
 	 * Returns the dot product of this vector and the given vector.
 	 * 
+	 * @pre Argument {@code other} is not {@code null}.
+	 *    | other != null
 	 * @post The result is the dot product of the two vectors. | result ==
 	 *       (long)getX() * other.getX() + (long)getY() * other.getY()
 	 */
-
 	public long dotProduct(IntVector other) {
 		long a = this.getX() * other.getX();
 		long b = this.getY() * other.getY();
