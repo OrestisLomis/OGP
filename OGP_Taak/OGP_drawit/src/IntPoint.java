@@ -1,3 +1,5 @@
+package drawit;
+
 /**
  * An immutable abstraction for a point in the two-dimensional plane with int
  * coordinates.
