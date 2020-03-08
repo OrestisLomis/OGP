@@ -83,7 +83,7 @@ public class PointArrays {
 	 * Returns a new array whose elements are the elements of the given array with
 	 * the given point inserted at the given index.
 	 * 
-	 * @pre The given index must be in between 0 and the length of points. | 0 <=
+	 * @pre The given index must be in between 0 and the length of points (N included). | 0 <=
 	 *      index && index <= points.length
 	 * @post The new array's length is the length of points increased by 1. |
 	 *       result.length == points.length + 1
@@ -111,8 +111,8 @@ public class PointArrays {
 	 * Returns a new array whose elements are the elements of the given array with
 	 * the element at the given index removed.
 	 * 
-	 * @pre The given index must be in between 0 and the length of points. | 0 <=
-	 *      index && index <= points.length
+	 * @pre The given index must be in between 0 and the length of points (N excluded). | 0 <=
+	 *      index && index < points.length
 	 * @post The new array's length is the length of points decreased by 1. |
 	 *       result.length == points.length - 1
 	 */
@@ -134,8 +134,8 @@ public class PointArrays {
 	 * Returns a new array whose elements are the elements of the given array with
 	 * the element at the given index replaced by the given point.
 	 * 
-	 * @pre The given index must be in between 0 and the length of points. | 0 <=
-	 *      index && index <= points.length
+	 * @pre The given index must be in between 0 and the length of points (N excluded). | 0 <=
+	 *      index && index < points.length
 	 * @post The length of the array stays the same. | result.length ==
 	 *       points.length
 	 * @post The new array has the given point on the given index. | result[index]
