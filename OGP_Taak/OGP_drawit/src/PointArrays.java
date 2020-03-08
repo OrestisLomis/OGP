@@ -1,3 +1,5 @@
+package drawit;
+
 /**
  * Declares a number of methods useful for working with arrays of IntPoint
  * objects.
