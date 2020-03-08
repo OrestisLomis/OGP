@@ -96,7 +96,7 @@ public class IntPoint {
 	}
 
 	/**
-	 * Returns true iff the open line segment ab intersects the open line segment
+	 * Returns true if the open line segment ab intersects the open line segment
 	 * cd.
 	 * 
 	 * @pre The line segments have at most one point in common.
