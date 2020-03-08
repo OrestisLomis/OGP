@@ -14,7 +14,7 @@ public class RoundedPolygon {
 	public RoundedPolygon() {
 		IntPoint myIntPoint = new IntPoint(-100, -100);
 		IntPoint myIntPoint2 = new IntPoint(-100, 100);
-		IntPoint myIntPoint3 = new IntPoint(100, 100);
+		IntPoint myIntPoint3 = new IntPoint(200, 100);
 		IntPoint myIntPoint4 = new IntPoint(100, -100);
 		
 		IntPoint[] myIntPoints = {myIntPoint, myIntPoint2, myIntPoint3, myIntPoint4};
@@ -97,7 +97,6 @@ public class RoundedPolygon {
 	 * A point is contained by a polygon if it coincides with one of its vertices, 
 	 * or if it is on one of its edges, or if it is in the polygon's interior. 
 	 */
-	
 	public boolean contains(IntPoint point) {		
 		
 		IntPoint [] vertices = this.getVertices();
@@ -160,7 +159,6 @@ public class RoundedPolygon {
 	 *  The corner radius to be used for a particular corner is the largest radius that is not greater than this rounded 
 	 *  polygon's corner radius and that is such that no more than half of each adjacent edge is cut off by it. 
 	 */
-	
 	public String getDrawingCommands() {
 		IntPoint[] vertices = this.getVertices();
 		int length = vertices.length;
@@ -176,6 +174,7 @@ public class RoundedPolygon {
 			double CX = vertices[(i+1)%length].getX();
 			double CY = vertices[(i+1)%length].getY();
 			DoubleVector BA = new DoubleVector(AX - BX, AY - BY);
+			DoubleVector AB = new DoubleVector(BX - AX, BY - AY);
 			DoubleVector BC = new DoubleVector(CX - BX, CY - BY);
 			DoublePoint B = new DoublePoint(BX, BY);
 			DoublePoint BAC = new DoublePoint((BX + AX)/2, (BY + AY)/2);
@@ -192,8 +191,8 @@ public class RoundedPolygon {
 			String strBY = String.valueOf(BY);
 			
 			if (BA.crossProduct(BC) == 0) {
-				commands +=  "line" + strBACX + strBACY + strBX + strBY + System.lineSeparator() + 
-							 "line" + strBX + strBY + strBCCX + strBCCY + System.lineSeparator();
+				commands +=  "line " + strBACX + " " + strBACY + " " + strBX + " " + strBY + System.lineSeparator() + 
+							 "line " + strBX + " " + strBY + " " + strBCCX + " " + strBCCY + System.lineSeparator();
 			}
 			else { 
 				double sizeAB = BA.getSize();
@@ -215,14 +214,25 @@ public class RoundedPolygon {
 				DoublePoint BAcut = B.plus(BAU.scale(actualCutoff));
 				DoublePoint BCcut = B.plus(BCU.scale(actualCutoff));
 				
-				double startAngle = BA.asAngle() - Math.PI;
-				double endAngle = (BC.asAngle() - Math.PI - startAngle);
-				if (endAngle < -Math.PI) {
-					endAngle += 2 * Math.PI;
+				double startAngle = AB.asAngle() - Math.PI/2;
+				double endAngle = BC.asAngle() - Math.PI/2;
+				
+				double extendAngle = (endAngle - startAngle);
+				
+				
+					
+				if (extendAngle < -Math.PI) {
+					extendAngle += 2 * Math.PI;
 				} 
-				else if (endAngle > Math.PI) {
-					endAngle -= 2 * Math.PI;
+				else if (extendAngle > Math.PI) {
+					extendAngle -= 2 * Math.PI;
 				}
+				
+				if (AB.crossProduct(BC) < 0) {
+					startAngle += Math.PI;
+				}
+				
+				
 				
 				String strBAcutX  = String.valueOf(BAcut.getX());
 				String strBAcutY  = String.valueOf(BAcut.getY());
@@ -232,7 +242,7 @@ public class RoundedPolygon {
 				String strCenterY  = String.valueOf(center.getY());
 				String strRadius = String.valueOf(actualRadius);
 				String strStartAngle  = String.valueOf(startAngle);
-				String strEndAngle  = String.valueOf(endAngle);
+				String strEndAngle  = String.valueOf(extendAngle);
 				
 				commands += "line " + strBACX + " " + strBACY + " " + strBAcutX + " " + strBAcutY + System.lineSeparator() + 
 							"arc "  + strCenterX + " " + strCenterY + " " + strRadius + " " + strStartAngle + " " + strEndAngle + System.lineSeparator() + 
@@ -241,6 +251,6 @@ public class RoundedPolygon {
 		}
 
 		return commands;
-	}	
+	}
 }
 
