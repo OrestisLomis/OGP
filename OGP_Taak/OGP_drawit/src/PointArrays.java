@@ -35,7 +35,7 @@ public class PointArrays {
 					CoincidingVertices = true;
 				else if (points[i].IsOnLineSegment(points[j], points[(j + 1) % points.length]))
 					VertexOnEdge = true;
-				else if (IntPoint.lineSegmentsIntersect​(points[i], points[(i + 1) % points.length], points[j],
+				else if (IntPoint.lineSegmentsIntersect(points[i], points[(i + 1) % points.length], points[j],
 						points[(j + 1) % points.length]))
 					IntersectingEdges = true;
 				j++;
