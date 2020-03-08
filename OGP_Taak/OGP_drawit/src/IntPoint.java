@@ -44,7 +44,7 @@ public class IntPoint {
 	}
 
 	/**
-	 * Returns true iff this point is on open line segment bc. An open line segment
+	 * Returns true if this point is on open line segment bc. An open line segment
 	 * does not include its endpoints.
 	 */
 	public boolean IsOnLineSegment(IntPoint b, IntPoint c) {
