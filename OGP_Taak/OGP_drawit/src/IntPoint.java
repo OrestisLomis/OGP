@@ -43,7 +43,7 @@ public class IntPoint {
 	* @pre Argument {@code other} is not {@code null}.
    	*    | other != null
 	* @post Returns true if this point has the same coordinates as the given point; returns false otherwise.
-	* 	| result = (this.getX() == other.getX()) && (this.getY() == other.getY())
+	* 	| result == (this.getX() == other.getX()) && (this.getY() == other.getY())
 	*/
 	public boolean equals(IntPoint other) {
 		return (this.getX() == other.getX()) && (this.getY() == other.getY());
