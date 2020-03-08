@@ -38,9 +38,13 @@ public class IntPoint {
 	}
 
 	/**
-	 * Returns true if this point has the same coordinates as the given point;
-	 * returns false otherwise.
-	 */
+	* Returns whether two IntPoints have the same coordinates.
+	* 
+	* @pre Argument {@code other} is not {@code null}.
+   	*    | other != null
+	* @post Returns true if this point has the same coordinates as the given point; returns false otherwise.
+	* 	| result = (this.getX() == other.getX()) && (this.getY() == other.getY())
+	*/
 	public boolean equals(IntPoint other) {
 		return (this.getX() == other.getX()) && (this.getY() == other.getY());
 	}
@@ -48,6 +52,10 @@ public class IntPoint {
 	/**
 	 * Returns true if this point is on open line segment bc. An open line segment
 	 * does not include its endpoints.
+	 * @pre Argument {@code b} is not {@code null}.
+   	 *    | b != null
+	 * @pre Argument {@code c} is not {@code null}.
+   	 *    | c != null
 	 */
 	public boolean IsOnLineSegment(IntPoint b, IntPoint c) {
 		IntVector ab = new IntVector(b.getX() - this.getX(), b.getY() - this.getY());
@@ -59,6 +67,8 @@ public class IntPoint {
 	/**
 	 * Returns an IntVector object representing the displacement from other to this.
 	 * 
+	 * @pre Argument {@code other} is not {@code null}.
+	 *    | other != null
 	 * @post The X coordinate of the result equals the X coordinate of this point
 	 *       minus the one of the other point | result.getX() == this.getX() -
 	 *       other.getX()
@@ -86,7 +96,10 @@ public class IntPoint {
 	/**
 	 * Returns an IntPoint object representing the point obtained by displacing this
 	 * point by the given vector.
+	 *
 	 * 
+	 * @pre Argument {@code vector} is not {@code null}.
+	 *    | vector != null
 	 * @post The object's X coordinate equals the point's X coordinate plus the
 	 *       vector's X coordinate. | result.getX() == this.getX() + vector.getX()
 	 * @post The object's Y coordinate equals the point's Y coordinate plus the
@@ -102,8 +115,16 @@ public class IntPoint {
 	 * cd.
 	 * 
 	 * @pre The line segments have at most one point in common.
+	 * @pre Argument {@code a} is not {@code null}.
+	 *    | a != null
+	 * @pre Argument {@code b} is not {@code null}.
+	 *    | b != null
+	 * @pre Argument {@code c} is not {@code null}.
+	 *    | c != null
+	 * @pre Argument {@code d} is not {@code null}.
+	 *    | d != null
 	 */
-	public static boolean lineSegmentsIntersect​(IntPoint a, IntPoint b, IntPoint c, IntPoint d) {
+	public static boolean lineSegmentsIntersect(IntPoint a, IntPoint b, IntPoint c, IntPoint d) {
 		IntVector ab = new IntVector(b.getX() - a.getX(), b.getY() - a.getY());
 		IntVector ac = new IntVector(c.getX() - a.getX(), c.getY() - a.getY());
 		IntVector ad = new IntVector(d.getX() - a.getX(), d.getY() - a.getY());
