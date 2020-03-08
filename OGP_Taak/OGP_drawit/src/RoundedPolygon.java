@@ -1,21 +1,20 @@
 package drawit;
 
-/**
+public class RoundedPolygon {
+	
+	/**
 	 * An instance of this class is a mutable abstraction storing a rounded polygon 
 	 * defined by a set of 2D points with integer coordinates and a nonnegative corner radius.
 	 * 
 	 * @mutable
 	 */
-
-public class RoundedPolygon {
-	
 	private IntPoint[] vertices;
 	private int radius;
 	
 	public RoundedPolygon() {
 		IntPoint myIntPoint = new IntPoint(-100, -100);
 		IntPoint myIntPoint2 = new IntPoint(-100, 100);
-		IntPoint myIntPoint3 = new IntPoint(200, 100);
+		IntPoint myIntPoint3 = new IntPoint(100, 100);
 		IntPoint myIntPoint4 = new IntPoint(100, -100);
 		
 		IntPoint[] myIntPoints = {myIntPoint, myIntPoint2, myIntPoint3, myIntPoint4};
@@ -99,7 +98,7 @@ public class RoundedPolygon {
 	 * or if it is on one of its edges, or if it is in the polygon's interior. 
 	 */
 	public boolean contains(IntPoint point) {		
-		
+		IntVector ExitPathVector = new IntVector(1,0);
 		IntPoint [] vertices = this.getVertices();
 		for  (int i = 0; i < vertices.length; i++) {
 			if (point.equals(vertices[i]))
@@ -114,28 +113,31 @@ public class RoundedPolygon {
 			IntPoint first = vertices[i];
 			if (point.getY() != first.getY() || point.getX() > first.getX()) {
 				
-				for (int j = i+1; j < vertices.length - 1; j++ ) {
+				boolean searching = true;
+				int j = i + 1;
+				while ((searching) && (j <= vertices.length)) {
 					IntPoint second = vertices[j%vertices.length];
 					if (point.getY() != second.getY() || point.getX() > second.getX()) {
-							
+						searching = false;	
 						if (j-i == 1) {
 							
-							IntVector VV = new IntVector(first.getX() - second.getX(), first.getY() - second.getY());
-							IntVector VP = new IntVector(first.getX() - point.getX(), first.getY() - second.getY());
-							IntVector Xpos = new IntVector(1,0);
+							IntVector VV = new IntVector(second.getX() - first.getX(), second.getY() - first.getY());
+							IntVector VP = new IntVector(point.getX() - first.getX(), point.getY() - first.getY());
 							
 							if (((first.getY() - point.getY()) * (second.getY() - point.getY())) < 0 &&
-									VP.crossProduct(VV) * Xpos.crossProduct(VV) < 0)
+									(VP.crossProduct(VV) * ExitPathVector.crossProduct(VV)) < 0)
 								count++;
 						}
 						else {
 							if ((first.getY() - point.getY()) * (second.getY() - point.getY()) < 0) 
 								count++;						
 						}
+					
 					}
+					j++;
 				}
 			}
-		}		
+		}
 		
 	if (count % 2 == 0)
 		return false;
