@@ -1,13 +1,14 @@
 package drawit;
 
-public class RoundedPolygon {
-	
-	/**
+/**
 	 * An instance of this class is a mutable abstraction storing a rounded polygon 
 	 * defined by a set of 2D points with integer coordinates and a nonnegative corner radius.
 	 * 
 	 * @mutable
 	 */
+
+public class RoundedPolygon {
+	
 	private IntPoint[] vertices;
 	private int radius;
 	
