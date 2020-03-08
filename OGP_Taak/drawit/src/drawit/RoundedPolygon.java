@@ -89,8 +89,16 @@ public class RoundedPolygon {
 		this.setVertices(newVertices);
 	}
 	
-public boolean contains(IntPoint point) {		
-		
+	/**
+	 * Returns true if the given point is contained by the (non-rounded) polygon defined by this rounded polygon's vertices. 
+	 * <p>
+	 * This method does not take into account this rounded polygon's corner radius; it assumes a corner radius of zero.
+	 * <p>
+	 * A point is contained by a polygon if it coincides with one of its vertices, 
+	 * or if it is on one of its edges, or if it is in the polygon's interior. 
+	 */
+	public boolean contains(IntPoint point) {		
+		IntVector ExitPathVector = new IntVector(1,0);
 		IntPoint [] vertices = this.getVertices();
 		for  (int i = 0; i < vertices.length; i++) {
 			if (point.equals(vertices[i]))
@@ -105,35 +113,55 @@ public boolean contains(IntPoint point) {
 			IntPoint first = vertices[i];
 			if (point.getY() != first.getY() || point.getX() > first.getX()) {
 				
-				for (int j = i+1; j < vertices.length - 1; j++ ) {
+				boolean searching = true;
+				int j = i + 1;
+				while ((searching) && (j <= vertices.length)) {
 					IntPoint second = vertices[j%vertices.length];
 					if (point.getY() != second.getY() || point.getX() > second.getX()) {
-							
+						searching = false;	
 						if (j-i == 1) {
 							
-							IntVector VV = new IntVector(first.getX() - second.getX(), first.getY() - second.getY());
-							IntVector VP = new IntVector(first.getX() - point.getX(), first.getY() - second.getY());
-							IntVector Xpos = new IntVector(1,0);
+							IntVector VV = new IntVector(second.getX() - first.getX(), second.getY() - first.getY());
+							IntVector VP = new IntVector(point.getX() - first.getX(), point.getY() - first.getY());
 							
 							if (((first.getY() - point.getY()) * (second.getY() - point.getY())) < 0 &&
-									VP.crossProduct(VV) * Xpos.crossProduct(VV) < 0)
+									(VP.crossProduct(VV) * ExitPathVector.crossProduct(VV)) < 0)
 								count++;
 						}
 						else {
 							if ((first.getY() - point.getY()) * (second.getY() - point.getY()) < 0) 
 								count++;						
 						}
+					
 					}
+					j++;
 				}
 			}
-		}		
+		}
 		
 	if (count % 2 == 0)
 		return false;
 	return true;
 	}
 	
-	
+	/**
+	 * Returns a textual representation of a set of drawing commands for drawing this rounded polygon. 
+	 * The returned text consists of a sequence of drawing operators and arguments, separated by spaces. 
+	 * The drawing operators are line and arc. Each argument is a decimal representation of a floating-point number.
+	 * <p>
+	 * <p>
+	 * Operator line takes four arguments: X1 Y1 X2 Y2; it draws a line between (X1, Y1) and (X2, Y2). 
+	 * arc takes five: X Y R S E. It draws a part of a circle. The circle is defined by its center (X, Y) and its radius R. 
+	 * <p>
+	 * <p>
+	 * The part to draw is defined by the start angle A and angle extent E, both in radians. 
+	 * Positive X is angle zero; positive Y is angle Math.PI / 2; negative Y is angle -Math.PI / 2.
+	 * <p> 
+	 * <p>
+	 *  By rounding a corner, the adjacent edges are cut short by some amount. 
+	 *  The corner radius to be used for a particular corner is the largest radius that is not greater than this rounded 
+	 *  polygon's corner radius and that is such that no more than half of each adjacent edge is cut off by it. 
+	 */
 	public String getDrawingCommands() {
 		IntPoint[] vertices = this.getVertices();
 		int length = vertices.length;
@@ -149,6 +177,7 @@ public boolean contains(IntPoint point) {
 			double CX = vertices[(i+1)%length].getX();
 			double CY = vertices[(i+1)%length].getY();
 			DoubleVector BA = new DoubleVector(AX - BX, AY - BY);
+			DoubleVector AB = new DoubleVector(BX - AX, BY - AY);
 			DoubleVector BC = new DoubleVector(CX - BX, CY - BY);
 			DoublePoint B = new DoublePoint(BX, BY);
 			DoublePoint BAC = new DoublePoint((BX + AX)/2, (BY + AY)/2);
@@ -165,8 +194,8 @@ public boolean contains(IntPoint point) {
 			String strBY = String.valueOf(BY);
 			
 			if (BA.crossProduct(BC) == 0) {
-				commands +=  "line" + strBACX + strBACY + strBX + strBY + System.lineSeparator() + 
-							 "line" + strBX + strBY + strBCCX + strBCCY + System.lineSeparator();
+				commands +=  "line " + strBACX + " " + strBACY + " " + strBX + " " + strBY + System.lineSeparator() + 
+							 "line " + strBX + " " + strBY + " " + strBCCX + " " + strBCCY + System.lineSeparator();
 			}
 			else { 
 				double sizeAB = BA.getSize();
@@ -188,14 +217,25 @@ public boolean contains(IntPoint point) {
 				DoublePoint BAcut = B.plus(BAU.scale(actualCutoff));
 				DoublePoint BCcut = B.plus(BCU.scale(actualCutoff));
 				
-				double startAngle = BA.asAngle() - Math.PI;
-				double endAngle = (BC.asAngle() - Math.PI - startAngle);
-				if (endAngle < -Math.PI) {
-					endAngle += 2 * Math.PI;
+				double startAngle = AB.asAngle() - Math.PI/2;
+				double endAngle = BC.asAngle() - Math.PI/2;
+				
+				double extendAngle = (endAngle - startAngle);
+				
+				
+					
+				if (extendAngle < -Math.PI) {
+					extendAngle += 2 * Math.PI;
 				} 
-				else if (endAngle > Math.PI) {
-					endAngle -= 2 * Math.PI;
+				else if (extendAngle > Math.PI) {
+					extendAngle -= 2 * Math.PI;
 				}
+				
+				if (AB.crossProduct(BC) < 0) {
+					startAngle += Math.PI;
+				}
+				
+				
 				
 				String strBAcutX  = String.valueOf(BAcut.getX());
 				String strBAcutY  = String.valueOf(BAcut.getY());
@@ -205,7 +245,7 @@ public boolean contains(IntPoint point) {
 				String strCenterY  = String.valueOf(center.getY());
 				String strRadius = String.valueOf(actualRadius);
 				String strStartAngle  = String.valueOf(startAngle);
-				String strEndAngle  = String.valueOf(endAngle);
+				String strEndAngle  = String.valueOf(extendAngle);
 				
 				commands += "line " + strBACX + " " + strBACY + " " + strBAcutX + " " + strBAcutY + System.lineSeparator() + 
 							"arc "  + strCenterX + " " + strCenterY + " " + strRadius + " " + strStartAngle + " " + strEndAngle + System.lineSeparator() + 
@@ -214,6 +254,6 @@ public boolean contains(IntPoint point) {
 		}
 
 		return commands;
-	}	
+	}
 }
 
