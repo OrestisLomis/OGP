@@ -8,8 +8,8 @@ package drawit;
  */
 public class IntPoint {
 
-	private int x;
-	private int y;
+	private final int x;
+	private final int y;
 
 	/**
 	 * Initializes the point with the given coordinates
