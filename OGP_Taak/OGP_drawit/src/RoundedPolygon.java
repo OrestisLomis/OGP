@@ -72,40 +72,40 @@ public class RoundedPolygon {
 	}
 	
 	public void insert(int index, IntPoint point) {
-		if (PointArrays.checkDefinesProperPolygon(this.getVertices()) == null &&
-				0 <= index && index < this.getVertices().length) {
+		if (0 <= index && index < this.getVertices().length) {
 			IntPoint[] Vertices = this.getVertices();
 			IntPoint[] newVertices = PointArrays.insert(Vertices, index, point);
-			this.setVertices(newVertices);
+			if (PointArrays.checkDefinesProperPolygon(newVertices) == null)
+				this.setVertices(newVertices);
+			else 
+				throw new IllegalArgumentException("The new polygon is not a proper polygon");
 		}
-		else if  (PointArrays.checkDefinesProperPolygon(this.getVertices()) != null)
-			throw new IllegalArgumentException("This polygon is not a proper polygon");
 		else 
 			throw new IllegalArgumentException("The index is out of range");
 	}
 	
 	public void remove(int index) {
-		if (PointArrays.checkDefinesProperPolygon(this.getVertices()) == null && 
-				0 <= index && index < this.getVertices().length) {
+		if (0 <= index && index < this.getVertices().length) {
 			IntPoint[] Vertices = this.getVertices();
 			IntPoint[] newVertices = PointArrays.remove(Vertices, index);
-			this.setVertices(newVertices);
+			if  (PointArrays.checkDefinesProperPolygon(newVertices) == null)
+				 this.setVertices(newVertices);
+			 else 
+					throw new IllegalArgumentException("The new polygon is not a proper polygon");
 		}
-		else if  (PointArrays.checkDefinesProperPolygon(this.getVertices()) != null)
-			throw new IllegalArgumentException("This polygon is not a proper polygon");
 		else 
 			throw new IllegalArgumentException("The index is out of range");
 	}
 	
 	public void update(int index, IntPoint point) {
-		if (PointArrays.checkDefinesProperPolygon(this.getVertices()) == null &&
-				0 <= index && index < this.getVertices().length) {
+		if (0 <= index && index < this.getVertices().length) {
 			IntPoint[] Vertices = this.getVertices();
 			IntPoint[] newVertices = PointArrays.update(Vertices, index, point);
-			this.setVertices(newVertices);
+			if  (PointArrays.checkDefinesProperPolygon(newVertices) == null)
+				this.setVertices(newVertices);
+			else
+				throw new IllegalArgumentException("The new polygon is not a proper polygon");
 		}
-		else if  (PointArrays.checkDefinesProperPolygon(this.getVertices()) != null)
-			throw new IllegalArgumentException("This polygon is not a proper polygon");
 		else 
 			throw new IllegalArgumentException("The index is out of range");
 	}
