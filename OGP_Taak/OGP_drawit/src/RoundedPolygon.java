@@ -72,7 +72,7 @@ public class RoundedPolygon {
 	}
 	
 	public void insert(int index, IntPoint point) {
-		if (0 <= index && index < this.getVertices().length) {
+		if (0 <= index && index <= this.getVertices().length) {
 			IntPoint[] Vertices = this.getVertices();
 			IntPoint[] newVertices = PointArrays.insert(Vertices, index, point);
 			if (PointArrays.checkDefinesProperPolygon(newVertices) == null)
