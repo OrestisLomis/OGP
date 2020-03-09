@@ -20,7 +20,7 @@ public class RoundedPolygon {
 		IntPoint[] myIntPoints = {myIntPoint, myIntPoint2, myIntPoint3, myIntPoint4};
 	
 		this.vertices = myIntPoints;
-		this.radius = 10;
+		this.radius = 100;
 	}
 	
 	/**
@@ -42,7 +42,7 @@ public class RoundedPolygon {
 	/**
 	 * Sets the vertices of this rounded polygon to be equal to the elements of the given array.
 	 * 
-	 * @mutates |this
+	 * @mutates | this
 	 * @throws IllegalArgumentException  if the given vertices do not define a proper polygon. 
 	 * 		| PointArrays.checkDefinesProperPolygon(newVertices) != null
 	 * @post The given vertices are now the vertices of the polygon.
