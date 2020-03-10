@@ -20,7 +20,7 @@ public class RoundedPolygon {
 		IntPoint[] myIntPoints = {myIntPoint, myIntPoint2, myIntPoint3, myIntPoint4};
 	
 		this.vertices = myIntPoints;
-		this.radius = 100;
+		this.radius = 10;
 	}
 	
 	/**
@@ -72,21 +72,42 @@ public class RoundedPolygon {
 	}
 	
 	public void insert(int index, IntPoint point) {
-		IntPoint[] Vertices = this.getVertices();
-		IntPoint[] newVertices = PointArrays.insert(Vertices, index, point);
-		this.setVertices(newVertices);
+		if (0 <= index && index <= this.getVertices().length) {
+			IntPoint[] Vertices = this.getVertices();
+			IntPoint[] newVertices = PointArrays.insert(Vertices, index, point);
+			if (PointArrays.checkDefinesProperPolygon(newVertices) == null)
+				this.setVertices(newVertices);
+			else 
+				throw new IllegalArgumentException("The new polygon is not a proper polygon");
+		}
+		else 
+			throw new IllegalArgumentException("The index is out of range");
 	}
 	
 	public void remove(int index) {
-		IntPoint[] Vertices = this.getVertices();
-		IntPoint[] newVertices = PointArrays.remove(Vertices, index);
-		this.setVertices(newVertices);
+		if (0 <= index && index < this.getVertices().length) {
+			IntPoint[] Vertices = this.getVertices();
+			IntPoint[] newVertices = PointArrays.remove(Vertices, index);
+			if  (PointArrays.checkDefinesProperPolygon(newVertices) == null)
+				 this.setVertices(newVertices);
+			 else 
+					throw new IllegalArgumentException("The new polygon is not a proper polygon");
+		}
+		else 
+			throw new IllegalArgumentException("The index is out of range");
 	}
 	
 	public void update(int index, IntPoint point) {
-		IntPoint[] Vertices = this.getVertices();
-		IntPoint[] newVertices = PointArrays.update(Vertices, index, point);
-		this.setVertices(newVertices);
+		if (0 <= index && index < this.getVertices().length) {
+			IntPoint[] Vertices = this.getVertices();
+			IntPoint[] newVertices = PointArrays.update(Vertices, index, point);
+			if  (PointArrays.checkDefinesProperPolygon(newVertices) == null)
+				this.setVertices(newVertices);
+			else
+				throw new IllegalArgumentException("The new polygon is not a proper polygon");
+		}
+		else 
+			throw new IllegalArgumentException("The index is out of range");
 	}
 	
 	/**
@@ -256,4 +277,3 @@ public class RoundedPolygon {
 		return commands;
 	}
 }
-
