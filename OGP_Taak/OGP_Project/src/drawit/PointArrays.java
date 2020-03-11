@@ -3,8 +3,14 @@ package drawit;
 /**
  * Declares a number of methods useful for working with arrays of IntPoint
  * objects.
+ * 
+ * @immutable
  */
 public class PointArrays {
+	
+	private PointArrays() {
+		
+	}
 
 	/**
 	 * Returns null if the given array of points defines a proper polygon;
@@ -33,9 +39,9 @@ public class PointArrays {
 			while (!CoincidingVertices && !(VertexOnEdge) && !(IntersectingEdges) && j < points.length) {
 				if (points[i].equals(points[j]) && i != j)
 					CoincidingVertices = true;
-				else if (points[i].IsOnLineSegment(points[j], points[(j + 1) % points.length]))
+				else if (points[i].isOnLineSegment(points[j], points[(j + 1) % points.length]))
 					VertexOnEdge = true;
-				else if (IntPoint.lineSegmentsIntersect​(points[i], points[(i + 1) % points.length], points[j],
+				else if (IntPoint.lineSegmentsIntersect(points[i], points[(i + 1) % points.length], points[j],
 						points[(j + 1) % points.length]))
 					IntersectingEdges = true;
 				j++;
@@ -66,7 +72,8 @@ public class PointArrays {
 	/**
 	 * Returns a new array with the same contents as the given array.
 	 * 
-	 * @post The length of the array stays the same. | result.length == this.length
+	 * @post The length of the array stays the same. 
+	 * 		| result.length == points.length
 	 */
 	public static IntPoint[] copy(IntPoint[] points) {
 
@@ -84,12 +91,12 @@ public class PointArrays {
 	 * Returns a new array whose elements are the elements of the given array with
 	 * the given point inserted at the given index.
 	 * 
-	 * @pre The given index must be in between 0 and the length of points (N included). | 0 <=
-	 *      index && index <= points.length
-	 * @post The new array's length is the length of points increased by 1. |
-	 *       result.length == points.length + 1
-	 * @post The new array has the given point on the given index. | result[index]
-	 *       == point
+	 * @pre The given index must be in between 0 and the length of points (N included). 
+	 * 		| 0 <= index && index <= points.length
+	 * @post The new array's length is the length of points increased by 1. 
+	 * 		| result.length == points.length + 1
+	 * @post The new array has the given point on the given index. 
+	 * 		| result[index] == point
 	 */
 	public static IntPoint[] insert(IntPoint[] points, int index, IntPoint point) {
 
@@ -111,10 +118,10 @@ public class PointArrays {
 	 * Returns a new array whose elements are the elements of the given array with
 	 * the element at the given index removed.
 	 * 
-	 * @pre The given index must be in between 0 and the length of points (N excluded). | 0 <=
-	 *      index && index < points.length
-	 * @post The new array's length is the length of points decreased by 1. |
-	 *       result.length == points.length - 1
+	 * @pre The given index must be in between 0 and the length of points (N excluded). 
+	 * 		| 0 <= index && index < points.length
+	 * @post The new array's length is the length of points decreased by 1. 
+	 * 		| result.length == points.length - 1
 	 */
 	public static IntPoint[] remove(IntPoint[] points, int index) {
 
@@ -134,12 +141,12 @@ public class PointArrays {
 	 * Returns a new array whose elements are the elements of the given array with
 	 * the element at the given index replaced by the given point.
 	 * 
-	 * @pre The given index must be in between 0 and the length of points (N excluded). | 0 <=
-	 *      index && index < points.length
-	 * @post The length of the array stays the same. | result.length ==
-	 *       points.length
-	 * @post The new array has the given point on the given index. | result[index]
-	 *       == point
+	 * @pre The given index must be in between 0 and the length of points (N excluded). 
+	 * 		| 0 <= index && index < points.length
+	 * @post The length of the array stays the same. 
+	 * 		| result.length == points.length
+	 * @post The new array has the given point on the given index. 
+	 * 		| result[index] == point
 	 */
 	public static IntPoint[] update(IntPoint[] points, int index, IntPoint point) {
 

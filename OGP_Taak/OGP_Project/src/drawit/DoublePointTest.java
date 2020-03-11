@@ -1,11 +1,9 @@
 package drawit.tests;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-
-import drawit.DoublePoint;
-import drawit.DoubleVector;
 
 class DoublePointTest {
 
@@ -29,7 +27,14 @@ class DoublePointTest {
 		assert myDoublePoint.round().getX() == 3;
 		assert myDoublePoint.round().getY() == 4;
 		
+		DoublePoint myDoublePoint3 = new DoublePoint(6.7, -8.9);
+		assert myDoublePoint3.round().getX() == 7;
+		assert myDoublePoint3.round().getY() == -9;
+		
+		DoublePoint myDoublePoint4 = new  DoublePoint(-8.9, 6.7);
+		assert myDoublePoint4.round().getX() == -9;
+		assert myDoublePoint4.round().getY() == 7;
+		
 	}
 
 }
-

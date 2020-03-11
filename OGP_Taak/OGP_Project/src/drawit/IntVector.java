@@ -7,11 +7,16 @@ public class IntVector {
 	 * 
 	 * @immutable
 	 */
-	private int x;
-	private int y;
+	private final int x;
+	private final int y;
 
 	/**
-	 * Initializes the point with the given integers as coordinates
+	 * Initializes the point with the given integers as coordinates.
+	 * 
+	 * @post This point's X coordinate is the given x. 
+	 * 		| this.getX() == x
+	 * @post This point's Y coordinate is the given y. 
+	 * 		| this.getY() == y
 	 */
 
 	public IntVector(int x, int y) {
@@ -21,8 +26,6 @@ public class IntVector {
 
 	/**
 	 * Returns this point's X coordinate.
-	 * 
-	 * @post This point's X coordinate is the given x. | this.getX() == x
 	 */
 
 	public int getX() {
@@ -31,8 +34,6 @@ public class IntVector {
 
 	/**
 	 * Returns this point's Y coordinate.
-	 * 
-	 * @post This point's Y coordinate is the given y. | this.getY() == y
 	 */
 
 	public int getY() {
@@ -42,7 +43,8 @@ public class IntVector {
 	/**
 	 * Returns the cross product of this vector and the given vector.
 	 * 
-	 * @post | result == (long)getX() * other.getY() - (long)getY() * other.getX()
+	 * @post The result is the cross product of the two vectors.
+	 * 		| result == (long)getX() * other.getY() - (long)getY() * other.getX()
 	 */
 
 	public long crossProduct(IntVector other) {
@@ -65,8 +67,8 @@ public class IntVector {
 	/**
 	 * Returns the dot product of this vector and the given vector.
 	 * 
-	 * @post The result is the dot product of the two vectors. | result ==
-	 *       (long)getX() * other.getX() + (long)getY() * other.getY()
+	 * @post The result is the dot product of the two vectors. 
+	 * 		| result == (long)getX() * other.getX() + (long)getY() * other.getY()
 	 */
 
 	public long dotProduct(IntVector other) {
@@ -78,6 +80,11 @@ public class IntVector {
 	/**
 	 * Returns a DoubleVector object that represents the same vector represented by
 	 * this IntVector object.
+	 * 
+	 * @post The X coordinate remains the same.
+	 * 		| result.getX() == this.getX()
+	 * @post The Y coordinate remains the same.
+	 * 		| result.getY() == this.getY()
 	 */
 
 	public DoubleVector asDoubleVector() {

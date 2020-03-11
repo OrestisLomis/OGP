@@ -1,4 +1,3 @@
-
 package drawit.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -63,8 +62,6 @@ class PointArraysTest {
 		for (int i = 0; i < myUpdate.length; i++) {
 			assert myUpdate[i] == myIntPoints7[i];
 		}
-		
+
 	}
-
 }
-
