@@ -54,7 +54,7 @@ public class IntPoint {
 		IntVector ba = this.minus(b);
 		IntVector bc = c.minus(b);
 
-		return ((ba.isCollinearWith(bc)) && (0 < ba.dotProduct(bc)) && (ba.dotProduct(bc) < bc.dotProduct(bc)));
+		return ba.isCollinearWith(bc) && 0 < ba.dotProduct(bc) && ba.dotProduct(bc) < bc.dotProduct(bc);
 	}
 
 	/**

@@ -52,23 +52,27 @@ public class RoundedPolygon {
 		if (PointArrays.checkDefinesProperPolygon(newVertices) == null)
 			this.vertices = newVertices;
 		else 
-			throw new IllegalArgumentException("These vertices do not define a proper polygon");		
+			throw new IllegalArgumentException(PointArrays.checkDefinesProperPolygon(newVertices));		
 	}
 	
 	/**
 	 * Sets this rounded polygon's corner radius to the given value.
-	 * 
 	 * @mutates | this
 	 * @throws IllegalArgumentException if the given radius is negative.
 	 * 		| radius < 0
+	 * @throws IllegalArgumentException if the polygon isn't proper.
+	 * 		| PointArrays.checkDefinesProperPolygon(this.getVertices()) != null
 	 * @post The given radius is now the new radius of the rounded polygon.
 	 * 		| this.getRadius() == radius
 	 */
 	public void setRadius(int radius) {
-		if (radius >= 0)
+		if (radius >= 0) {
 			this.radius = radius;
+			this.setVertices(this.vertices);
+		}
 		else 
-			throw new IllegalArgumentException("The radius has to be positive");			
+			throw new IllegalArgumentException("The radius has to be positive");	
+		
 	}
 	
 	/**
@@ -84,10 +88,7 @@ public class RoundedPolygon {
 		if (0 <= index && index <= this.getVertices().length) {
 			IntPoint[] Vertices = this.getVertices();
 			IntPoint[] newVertices = PointArrays.insert(Vertices, index, point);
-			if (PointArrays.checkDefinesProperPolygon(newVertices) == null)
-				this.setVertices(newVertices);
-			else 
-				throw new IllegalArgumentException("The new polygon is not a proper polygon");
+			this.setVertices(newVertices);
 		}
 		else 
 			throw new IllegalArgumentException("The index is out of range");
@@ -106,10 +107,7 @@ public class RoundedPolygon {
 		if (0 <= index && index < this.getVertices().length) {
 			IntPoint[] Vertices = this.getVertices();
 			IntPoint[] newVertices = PointArrays.remove(Vertices, index);
-			if  (PointArrays.checkDefinesProperPolygon(newVertices) == null)
-				 this.setVertices(newVertices);
-			 else 
-					throw new IllegalArgumentException("The new polygon is not a proper polygon");
+			this.setVertices(newVertices);
 		}
 		else 
 			throw new IllegalArgumentException("The index is out of range");
@@ -128,10 +126,7 @@ public class RoundedPolygon {
 		if (0 <= index && index < this.getVertices().length) {
 			IntPoint[] Vertices = this.getVertices();
 			IntPoint[] newVertices = PointArrays.update(Vertices, index, point);
-			if  (PointArrays.checkDefinesProperPolygon(newVertices) == null)
-				this.setVertices(newVertices);
-			else
-				throw new IllegalArgumentException("The new polygon is not a proper polygon");
+			this.setVertices(newVertices);
 		}
 		else 
 			throw new IllegalArgumentException("The index is out of range");
@@ -176,6 +171,7 @@ public class RoundedPolygon {
 									(VP.crossProduct(VV) * ExitPathVector.crossProduct(VV)) < 0)
 								count++;
 						}
+						
 						else {
 							if ((first.getY() - point.getY()) * (second.getY() - point.getY()) < 0) 
 								count++;						
@@ -258,7 +254,7 @@ public class RoundedPolygon {
 				double BAUcutoff = BAU.dotProduct(BSU);
 				double UnitRadius = Math.abs(BSU.crossProduct(BAU));
 				double minEdge = Math.min(BCC.minus(B).getSize(), BAC.minus(B).getSize());
-				double scale = 	Math.min(minEdge, this.getRadius()/UnitRadius);
+				double scale = 	Math.min(minEdge/BAUcutoff, this.getRadius()/UnitRadius);
 				
 				DoublePoint center = B.plus(BSU.scale(scale));
 				double actualRadius = UnitRadius * scale;
@@ -302,7 +298,6 @@ public class RoundedPolygon {
 							"line " + strBCcutX + " " + strBCcutY + " " + strBCCX + " " + strBCCY + System.lineSeparator();
 			}	
 		}
-
 		return commands;
 	}
 }
