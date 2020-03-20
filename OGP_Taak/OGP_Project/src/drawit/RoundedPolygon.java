@@ -1,13 +1,17 @@
 package drawit;
 
+import java.awt.Color;
+
 public class RoundedPolygon {
 	
 	private IntPoint[] vertices;
 	private int radius;
-	
+	private Color color; 
+
 	/**
 	 * An instance of this class is a mutable abstraction storing a rounded polygon 
 	 * defined by a set of 2D points with integer coordinates and a nonnegative corner radius.
+	 * This object is initialized with the color yellow.
 	 * 
 	 * @post The constructed polygon is proper.
 	 * 		| PointArrays.checkDefinesProperPolygon(this.getVertices()) == null
@@ -23,6 +27,7 @@ public class RoundedPolygon {
 	
 		this.vertices = myIntPoints;
 		this.radius = 10;
+		this.color = Color.yellow;
 	}
 	
 	/**
@@ -212,7 +217,8 @@ public class RoundedPolygon {
 		String commands = "";
 		if (length <= 2)
 			return commands;
-		
+		commands += "pushTranslate 0 0" + System.lineSeparator();
+		commands += "pushScale 1 1" + System.lineSeparator();
 		for (int i = 1; i < length + 1; i++) {
 			DoublePoint B = vertices[i%length].asDoublePoint();
 			DoublePoint A = vertices[i-1].asDoublePoint();
@@ -298,6 +304,27 @@ public class RoundedPolygon {
 							"line " + strBCcutX + " " + strBCcutY + " " + strBCCX + " " + strBCCY + System.lineSeparator();
 			}	
 		}
+		
+		String strRvalue = String.valueOf(this.getColor().getRed());
+		String strGvalue = String.valueOf(this.getColor().getGreen());
+		String strBvalue = String.valueOf(this.getColor().getBlue());
+		commands += "fill " + " " + strRvalue + " " + strGvalue + " " + strBvalue + System.lineSeparator();
+		commands += "popTransform" + System.lineSeparator();
+		commands += "popTransform";
 		return commands;
+	}
+	
+	/**
+	 * Returns the color of this rounded polygon.
+	 */
+	public Color getColor() {
+		return this.color;
+	}
+	
+	/**
+	 * Sets the color of this rounded polygon to the given color.
+	 */
+	public void setColor(Color color) {
+		this.color = color;
 	}
 }
