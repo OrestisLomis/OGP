@@ -74,5 +74,29 @@ public class Extent {
 		this.left = newLeft;
 		return this;
 	}
+	
+	public Extent withTop(int newTop) {
+		this.top = newTop;
+		return this;
+	}
+	
+	public Extent withRight(int newRight) {
+		this.width = newRight - left;
+		return this;
+	}
 
+	public Extent withBottom(int newBottom) {
+		this.height = top - newBottom;
+		return this;
+	}
+	
+	public Extent withWidth(int newWidth) {
+		this.width = newWidth;
+		return this;
+	}
+	
+	public Extent withHeight(int newHeight) {
+		this.height = newHeight;
+		return this;
+	}
 }
