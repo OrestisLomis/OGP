@@ -34,7 +34,7 @@ public class Extent {
 	}
 	
 	public int getBottom() {
-		return getTop() - getHeight();
+		return getTop() + getHeight();
 	}
 	
 	public IntPoint getTopLeft() {
@@ -49,7 +49,7 @@ public class Extent {
 	 * Returns whether this extent, considered as a closed set of points (i.e. including its edges and its vertices), contains the given point.
 	 */
 	public boolean contains(IntPoint point) {
-		return point.getX() >= getLeft() && point.getX() <= getRight() && point.getY() <= getTop() && point.getY() >= getBottom();
+		return point.getX() >= getLeft() && point.getX() <= getRight() && point.getY() >= getTop() && point.getY() <= getBottom();
 	}
 	
 	public static Extent ofLeftTopWidhtHeight(int left, int top, int width, int height) {
@@ -66,7 +66,7 @@ public class Extent {
 		myExtent.left = left;
 		myExtent.top = top;
 		myExtent.width = right - left;
-		myExtent.height = top - bottom;
+		myExtent.height = bottom - top;
 		return myExtent;
 	}
 	
@@ -86,7 +86,7 @@ public class Extent {
 	}
 
 	public Extent withBottom(int newBottom) {
-		this.height = top - newBottom;
+		this.height = newBottom - top;
 		return this;
 	}
 	
