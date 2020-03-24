@@ -65,27 +65,27 @@ public class Extent {
 	}
 	
 	public Extent withLeft(int newLeft) {
-		return this.ofLeftTopRightBottom(newLeft, this.getTop(), this.getRight(), this.getBottom());
+		return ofLeftTopRightBottom(newLeft, this.getTop(), this.getRight(), this.getBottom());
 	}
 	
 	public Extent withTop(int newTop) {
-		return this.ofLeftTopRightBottom(this.getLeft(), newTop, this.getRight(), this.getBottom());
+		return ofLeftTopRightBottom(this.getLeft(), newTop, this.getRight(), this.getBottom());
 	}
 	
 	public Extent withRight(int newRight) {
-		return this.ofLeftTopRightBottom(this.getLeft(), this.getTop(), newRight, this.getBottom());
+		return ofLeftTopRightBottom(this.getLeft(), this.getTop(), newRight, this.getBottom());
 	}
 	
 	public Extent withBottom(int newBottom) {
-		return this.ofLeftTopRightBottom(this.getLeft(), this.getTop(), this.getRight(), newBottom);
+		return ofLeftTopRightBottom(this.getLeft(), this.getTop(), this.getRight(), newBottom);
 	}
 	
 	public Extent withWidth(int newWidth) {
-		return this.ofLeftTopRightBottom(this.getLeft(), this.getTop(), this.getLeft() + newWidth, this.getBottom());
+		return ofLeftTopRightBottom(this.getLeft(), this.getTop(), this.getLeft() + newWidth, this.getBottom());
 	}
 	
 	public Extent withHeight(int newHeight) {
-		return this.ofLeftTopRightBottom(this.getLeft(), this.getTop(), this.getRight(), this.getTop() + newHeight);
+		return ofLeftTopRightBottom(this.getLeft(), this.getTop(), this.getRight(), this.getTop() + newHeight);
 	}
 		
 }
