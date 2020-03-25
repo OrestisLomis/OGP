@@ -99,7 +99,6 @@ public class PointArrays {
 	 * 		| result[index] == point
 	 */
 	public static IntPoint[] insert(IntPoint[] points, int index, IntPoint point) {
-
 		IntPoint[] WithInsertion = new IntPoint[points.length + 1];
 
 		for (int i = 0; i < WithInsertion.length; i++) {
@@ -124,7 +123,6 @@ public class PointArrays {
 	 * 		| result.length == points.length - 1
 	 */
 	public static IntPoint[] remove(IntPoint[] points, int index) {
-
 		IntPoint[] WithRemoved = new IntPoint[points.length - 1];
 
 		for (int i = 0; i < WithRemoved.length; i++) {
@@ -149,8 +147,8 @@ public class PointArrays {
 	 * 		| result[index] == point
 	 */
 	public static IntPoint[] update(IntPoint[] points, int index, IntPoint point) {
-
 		IntPoint[] WithUpdate = new IntPoint[points.length];
+		
 		for (int i = 0; i < WithUpdate.length; i++) {
 			if (i == index)
 				WithUpdate[i] = point;
