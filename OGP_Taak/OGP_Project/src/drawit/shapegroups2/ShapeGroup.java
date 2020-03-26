@@ -16,6 +16,7 @@ public class ShapeGroup {
 	/**
 	 * Initializes this object to represent a leaf shape group that directly contains the given shape.
 	 */
+	@SuppressWarnings("null")
 	public ShapeGroup(RoundedPolygon shape) {
 		this.shape = shape;
 		
@@ -44,6 +45,7 @@ public class ShapeGroup {
 	/**
 	 * Initializes this object to represent a non-leaf shape group that directly contains the given subgroups, in the given order.
 	 */
+	@SuppressWarnings("null")
 	public ShapeGroup(ShapeGroup[] subgroups) {
 		this.subgroups = subgroups;
 		
@@ -129,6 +131,10 @@ public class ShapeGroup {
 		return subgroups[index];
 	}
 	
+	public IntPoint toInnerCoordinatesFromOuter(IntPoint outerCoordinates) {
+		return outerCoordinates;
+	}
+	
 	/**
 	 * Returns the coordinates in this shape group's inner coordinate system of the point whose coordinates in the global coordinate system 
 	 * are the given coordinates. The global coordinate system is the outer coordinate system of this shape group's root ancestor, i.e. the 
@@ -141,28 +147,19 @@ public class ShapeGroup {
 	 * contained by a leaf shape group are interpreted in the inner coordinate system of the shape group.
 	 */
 	public IntPoint toInnerCoordinates(IntPoint globalCoordinates) {
-		Extent innerExtent = this.getOriginalExtent();
-		Extent currentExtent = this.getExtent();
-		
-		/*
-		int verticalTranslate = innerExtent.getLeft() - currentExtent.getLeft();
-		int horizontalTranslate = innerExtent.getTop() - currentExtent.getTop();
-		*/
-		
-		int horizontalOffset = globalCoordinates.getX() - currentExtent.getLeft();
-		int verticalOffset = globalCoordinates.getY() - currentExtent.getTop();
-		
-		double horizontalScale = innerExtent.getWidth()/currentExtent.getWidth();
-		double verticalScale = innerExtent.getHeight()/currentExtent.getHeight();
-		
-		double newHorizontalOffset = horizontalOffset * horizontalScale;
-		double newVerticalOffset = verticalOffset * verticalScale;
-		
-		DoublePoint doubleCoordinates = new DoublePoint(innerExtent.getLeft() + newHorizontalOffset, innerExtent.getTop() + newVerticalOffset);
+		double newXCoordinate = (globalCoordinates.getX() - getExtent().getLeft()) / getHorizontalScale() - getHorizontalTranslate();
+		double newYCoordinate = (globalCoordinates.getY() - getExtent().getTop()) / getVerticalScale() - getVerticalTranslate();
+			
+		DoublePoint doubleCoordinates = new DoublePoint(newXCoordinate, newYCoordinate);
 		
 		IntPoint innerCoordinates = doubleCoordinates.round();
 		
+		if (getParentGroup() != null)
+			return getParentGroup().toInnerCoordinates(innerCoordinates);
+		
 		return innerCoordinates;
+//		
+		
 	}
 	
 	/**
@@ -170,7 +167,17 @@ public class ShapeGroup {
 	 * system are the given coordinates.
 	 */
 	public IntPoint toGlobalCoordinates(IntPoint innerCoordinates) {
-		return innerCoordinates;
+		double newXCoordinate = (innerCoordinates.getX() - getOriginalExtent().getLeft()) * getHorizontalScale() + getHorizontalTranslate();
+		double newYCoordinate = (innerCoordinates.getY() - getOriginalExtent().getTop()) * getVerticalScale() + getVerticalTranslate();
+			
+		DoublePoint doubleCoordinates = new DoublePoint(newXCoordinate, newYCoordinate);
+		
+		IntPoint globalCoordinates = doubleCoordinates.round();
+		
+		if (getParentGroup() != null)
+			return getParentGroup().toInnerCoordinates(globalCoordinates);
+		
+		return globalCoordinates;
 	}
 	
 	/**
@@ -187,16 +194,13 @@ public class ShapeGroup {
 	 * shape group's inner coordinate system.
 	 */
 	public ShapeGroup getSubGroupAt(IntPoint innerCoordinates) {
-		boolean found = false;
-		int i = 0;
-		while (!(found) && i < this.getSubgroupCount()) {
+		for (int i = 0; i < this.getSubgroupCount(); i++) {
 			Extent currentExtent = this.getSubgroup(i).getOriginalExtent();
 			if (currentExtent.contains(innerCoordinates))
-				found = true;
-			i++;
+				return this.getSubgroup(i-1);
 		}
 	
-		return this.getSubgroup(i-1);
+		return null;
 	}
 	
 	/**
@@ -255,7 +259,49 @@ public class ShapeGroup {
 	 * RoundedPolygon.getDrawingCommands().
 	 */
 	public String getDrawingCommands() {
-		return null;
+		String commands = "";
+		commands += "pushTranslate " + getHorizontalTranslate() + getVerticalTranslate() + System.lineSeparator();
+		commands += "pushScale " + getHorizontalScale() + getVerticalScale() + System.lineSeparator();
+		for (int i = 0; i < getSubgroupCount(); i++) {
+			ShapeGroup currentSubgroup = getSubgroup(i);
+			if (currentSubgroup.getShape() != null) {
+				commands += currentSubgroup.getShape().getDrawingCommands();
+			}
+			else {
+				currentSubgroup.getDrawingCommands();
+			}
+				
+		}
+		commands += "popTransform " + System.lineSeparator();
+		commands += "popTransform " + System.lineSeparator();
+		return commands.toString();
 	}
 	
+	/**
+	 * Returns the horizontal scale factor to go from inner to outer coordinates.
+	 */
+	public double getHorizontalScale() {
+		return getExtent().getWidth()/getOriginalExtent().getWidth();
+	}
+	
+	/**
+	 * Returns the vertical scale factor to go from inner to outer coordinates.
+	 */
+	public double getVerticalScale() {
+		return getExtent().getHeight()/getOriginalExtent().getHeight();
+	}
+	
+	/**
+	 * Returns the horizontal tranlate to go from inner to outer coordinates.
+	 */
+	public int getHorizontalTranslate() {
+		return getExtent().getLeft() - getOriginalExtent().getLeft();
+	}
+	
+	/**
+	 * Returns the vertical translate to go from inner to outer coordinates.
+	 */
+	public int getVerticalTranslate() {
+		return getExtent().getTop() - getOriginalExtent().getTop();
+	}
 }

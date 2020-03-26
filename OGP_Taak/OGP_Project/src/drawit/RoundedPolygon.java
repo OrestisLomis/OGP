@@ -217,8 +217,6 @@ public class RoundedPolygon {
 		String commands = "";
 		if (length <= 2)
 			return commands;
-		commands += "pushTranslate 0 0" + System.lineSeparator();
-		commands += "pushScale 1 1" + System.lineSeparator();
 		for (int i = 1; i < length + 1; i++) {
 			DoublePoint B = vertices[i%length].asDoublePoint();
 			DoublePoint A = vertices[i-1].asDoublePoint();
@@ -309,8 +307,6 @@ public class RoundedPolygon {
 		String strGvalue = String.valueOf(this.getColor().getGreen());
 		String strBvalue = String.valueOf(this.getColor().getBlue());
 		commands += "fill " + " " + strRvalue + " " + strGvalue + " " + strBvalue + System.lineSeparator();
-		commands += "popTransform" + System.lineSeparator();
-		commands += "popTransform";
 		return commands;
 	}
 	
