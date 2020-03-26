@@ -1,6 +1,7 @@
 package drawit.shapegroups2;
 
 import drawit.DoublePoint;
+import drawit.DoubleVector;
 import drawit.IntPoint;
 import drawit.IntVector;
 import drawit.RoundedPolygon;
@@ -158,8 +159,6 @@ public class ShapeGroup {
 			return getParentGroup().toInnerCoordinates(innerCoordinates);
 		
 		return innerCoordinates;
-//		
-		
 	}
 	
 	/**
@@ -186,7 +185,19 @@ public class ShapeGroup {
 	 * mutations of this shape group's extent that preserve its width and height.
 	 */
 	public IntVector toInnerCoordinates(IntVector relativeGlobalCoordinates) {
-		return relativeGlobalCoordinates;
+		IntPoint origin = new IntPoint(0, 0);
+		double newXCoordinate = relativeGlobalCoordinates.getX()/getHorizontalScale();
+		double newYCoordinate = relativeGlobalCoordinates.getY()/getVerticalScale();
+		
+		DoublePoint doubleCoordinates = new DoublePoint(newXCoordinate, newYCoordinate);
+		IntPoint intCoordinates = doubleCoordinates.round();
+		
+		IntVector innerCoordinates = intCoordinates.minus(origin);
+		
+		if (getParentGroup() != null)
+			return getParentGroup().toInnerCoordinates(innerCoordinates);
+		
+		return innerCoordinates;
 	}
 	
 	/**
