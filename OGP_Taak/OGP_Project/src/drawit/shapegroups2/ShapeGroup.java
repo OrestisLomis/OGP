@@ -239,14 +239,16 @@ public class ShapeGroup {
 		boolean thisIndexPassed = false;
 		newSubgroups[0] = this;
 		for (int i = 1; i < parentgroup.getSubgroupCount(); i++) {
-			if (parentgroup.getSubgroup(i).equals(this)) 
+			if (parentgroup.getSubgroup(i).equals(this)) {
 				thisIndexPassed = true;
+				newSubgroups[i] = parentgroup.getSubgroup(i-1);
+			}
 			else if (thisIndexPassed)
 				newSubgroups[i] = parentgroup.getSubgroup(i);
 			else
 				newSubgroups[i] = parentgroup.getSubgroup(i-1);
-			parentgroup.subgroups = newSubgroups;
 		}
+		parentgroup.subgroups = newSubgroups;
 	}
 	
 	/**
@@ -258,14 +260,18 @@ public class ShapeGroup {
 		boolean thisIndexPassed = false;
 		newSubgroups[parentgroup.getSubgroupCount()-1] = this;
 		for (int i = 0; i < parentgroup.getSubgroupCount() - 1; i++) {
-			if (parentgroup.getSubgroup(i).equals(this)) 
+			System.out.println(i);
+			if (parentgroup.getSubgroup(i).equals(this)) {
+				System.out.println("p");
 				thisIndexPassed = true;
+				newSubgroups[i] = parentgroup.getSubgroup(i+1);
+			}
 			else if (thisIndexPassed)
 				newSubgroups[i] = parentgroup.getSubgroup(i+1);
 			else
 				newSubgroups[i] = parentgroup.getSubgroup(i);
-			parentgroup.subgroups = newSubgroups;
 		}
+		parentgroup.subgroups = newSubgroups;
 	}
 	
 	/**

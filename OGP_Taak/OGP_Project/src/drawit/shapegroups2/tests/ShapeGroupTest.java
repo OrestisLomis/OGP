@@ -2,6 +2,7 @@ package drawit.shapegroups2.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.awt.Shape;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
@@ -95,6 +96,25 @@ class ShapeGroupTest {
 		assert myShapeGroup.toGlobalCoordinates(new IntPoint(0, 0)).equals(new IntPoint(525, 300));
 		assert myShapeGroup.toInnerCoordinates(new IntVector(5, 10)).getX() == 20;
 		assert myShapeGroup.toInnerCoordinates(new IntVector(5, 10)).getY() == 2;
+		
+		RoundedPolygon myRoundedPolygon3 = new RoundedPolygon();
+		RoundedPolygon myRoundedPolygon4 = new RoundedPolygon();
+		RoundedPolygon myRoundedPolygon5 = new RoundedPolygon();
+		ShapeGroup myShapeGroup4 = new ShapeGroup(myRoundedPolygon3);
+		ShapeGroup myShapeGroup5 = new ShapeGroup(myRoundedPolygon4);
+		ShapeGroup myShapeGroup6 = new ShapeGroup(myRoundedPolygon5);
+		ShapeGroup[] myShapeGroups2 = {myShapeGroup3, myShapeGroup4, myShapeGroup5, myShapeGroup6};
+		ShapeGroup myShapeGroup7 = new ShapeGroup(myShapeGroups2);
+		
+		myShapeGroup4.SendToBack();
+
+		assert Arrays.equals(myShapeGroup7.getSubgroups(), 0, 4, new ShapeGroup[] {myShapeGroup3, myShapeGroup5, myShapeGroup6, myShapeGroup4}, 0, 4);
+		
+		myShapeGroup6.BringToFront();
+		
+		assert Arrays.equals(myShapeGroup7.getSubgroups(), 0, 4, new ShapeGroup[] {myShapeGroup6, myShapeGroup3, myShapeGroup5, myShapeGroup4}, 0, 4);
+		
+		
 	}
 
 }
