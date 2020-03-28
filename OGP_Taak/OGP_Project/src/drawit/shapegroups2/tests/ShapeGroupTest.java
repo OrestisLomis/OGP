@@ -80,9 +80,9 @@ class ShapeGroupTest {
 		assert myShapeGroup3.getSubgroup(0) == myShapeGroup;
 		assert myShapeGroup3.getSubgroupCount() == 2;
 		assert Arrays.equals(myShapeGroup3.getSubgroups(), 0, 2, myShapeGroups, 0, 2);
-		assert myShapeGroup3.getSubGroupAt(myIntPoint3).equals(myShapeGroup2);
-		assert myShapeGroup3.getSubGroupAt(new IntPoint(0, 0)).equals(myShapeGroup);
-		assert myShapeGroup3.getSubGroupAt(new IntPoint(500, 500)) == null;
+		assert myShapeGroup3.getSubgroupAt(myIntPoint3).equals(myShapeGroup2);
+		assert myShapeGroup3.getSubgroupAt(new IntPoint(0, 0)).equals(myShapeGroup);
+		assert myShapeGroup3.getSubgroupAt(new IntPoint(500, 500)) == null;
 		
 		myShapeGroup.setExtent(Extent.ofLeftTopRightBottom(500, -200, 550, 800));
 		
@@ -106,11 +106,11 @@ class ShapeGroupTest {
 		ShapeGroup[] myShapeGroups2 = {myShapeGroup3, myShapeGroup4, myShapeGroup5, myShapeGroup6};
 		ShapeGroup myShapeGroup7 = new ShapeGroup(myShapeGroups2);
 		
-		myShapeGroup4.SendToBack();
+		myShapeGroup4.sendToBack();
 
 		assert Arrays.equals(myShapeGroup7.getSubgroups(), 0, 4, new ShapeGroup[] {myShapeGroup3, myShapeGroup5, myShapeGroup6, myShapeGroup4}, 0, 4);
 		
-		myShapeGroup6.BringToFront();
+		myShapeGroup6.bringToFront();
 		
 		assert Arrays.equals(myShapeGroup7.getSubgroups(), 0, 4, new ShapeGroup[] {myShapeGroup6, myShapeGroup3, myShapeGroup5, myShapeGroup4}, 0, 4);
 		

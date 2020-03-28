@@ -208,7 +208,7 @@ public class ShapeGroup {
 	 * @pre This is a non-leaf shape group.
 	 * 		| this.getSubgroups() != null
 	 */
-	public ShapeGroup getSubGroupAt(IntPoint innerCoordinates) {
+	public ShapeGroup getSubgroupAt(IntPoint innerCoordinates) {
 		for (int i = 0; i < this.getSubgroupCount(); i++) {
 			Extent currentExtent = this.getSubgroup(i).getOriginalExtent();
 			if (currentExtent.contains(innerCoordinates))
@@ -233,7 +233,7 @@ public class ShapeGroup {
 	/**
 	 * Moves this shape group to the front of its parent's list of subgroups.
 	 */
-	public void BringToFront() {
+	public void bringToFront() {
 		ShapeGroup parentgroup = this.getParentGroup();
 		ShapeGroup[] newSubgroups = new ShapeGroup[parentgroup.getSubgroupCount()];
 		boolean thisIndexPassed = false;
@@ -254,15 +254,13 @@ public class ShapeGroup {
 	/**
 	 * Moves this shape group to the back of its parent's list of subgroups.
 	 */
-	public void SendToBack() {
+	public void sendToBack() {
 		ShapeGroup parentgroup = this.getParentGroup();
 		ShapeGroup[] newSubgroups = new ShapeGroup[parentgroup.getSubgroupCount()];
 		boolean thisIndexPassed = false;
 		newSubgroups[parentgroup.getSubgroupCount()-1] = this;
 		for (int i = 0; i < parentgroup.getSubgroupCount() - 1; i++) {
-			System.out.println(i);
 			if (parentgroup.getSubgroup(i).equals(this)) {
-				System.out.println("p");
 				thisIndexPassed = true;
 				newSubgroups[i] = parentgroup.getSubgroup(i+1);
 			}
