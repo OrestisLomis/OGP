@@ -283,19 +283,13 @@ public class ShapeGroup {
 		String commands = "";
 		commands += "pushTranslate " + getHorizontalTranslate() + " " + getVerticalTranslate() + System.lineSeparator();
 		commands += "pushScale " + getHorizontalScale() + " " + getVerticalScale() + System.lineSeparator();
-		for (int i = 0; i < getSubgroupCount(); i++) {
-			ShapeGroup currentSubgroup = getSubgroup(i);
-			if (currentSubgroup.getShape() != null) {
-				commands += "pushTranslate " + currentSubgroup.getHorizontalTranslate() + " " + currentSubgroup.getVerticalTranslate() + System.lineSeparator();
-				commands += "pushScale " + currentSubgroup.getHorizontalScale() + " " + currentSubgroup.getVerticalScale() + System.lineSeparator();
-				commands += currentSubgroup.getShape().getDrawingCommands();
-				commands += "popTransform " + System.lineSeparator();
-				commands += "popTransform " + System.lineSeparator();
+		if (getShape() != null)
+			commands += getShape().getDrawingCommands();
+		else {
+			for (int i = 0; i < getSubgroupCount(); i++) {
+				ShapeGroup currentSubgroup = getSubgroup(i);
+				commands += currentSubgroup.getDrawingCommands();	
 			}
-			else {
-				currentSubgroup.getDrawingCommands();
-			}
-				
 		}
 		commands += "popTransform " + System.lineSeparator();
 		commands += "popTransform " + System.lineSeparator();
