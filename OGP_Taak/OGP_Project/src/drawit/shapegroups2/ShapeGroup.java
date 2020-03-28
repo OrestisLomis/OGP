@@ -17,25 +17,25 @@ public class ShapeGroup {
 	/**
 	 * Initializes this object to represent a leaf shape group that directly contains the given shape.
 	 */
-	@SuppressWarnings("null")
 	public ShapeGroup(RoundedPolygon shape) {
 		this.shape = shape;
 		
-		int mostLeft = (Integer) null;
-		int mostRight = (Integer) null;
-		int mostTop = (Integer) null;
-		int mostBottom = (Integer) null;
 		IntPoint[] vertices = shape.getVertices();
-		for (int i = 0; i < vertices.length; i++) {
+		int mostLeft = vertices[0].getX();
+		int mostRight = vertices[0].getX();
+		int mostTop = vertices[0].getY();
+		int mostBottom = vertices[0].getY();
+		
+		for (int i = 1; i < vertices.length; i++) {
 			int currentX = vertices[i].getX();
 			int currentY = vertices[i].getY();
-			if (mostLeft == (Integer) null || currentX < mostLeft) 
+			if (currentX < mostLeft) 
 				mostLeft = currentX;
-			if (mostRight == (Integer) null || currentX > mostRight) 
+			if (currentX > mostRight) 
 				mostRight = currentX;
-			if (mostTop == (Integer) null || currentY < mostTop) 
+			if (currentY < mostTop) 
 				mostTop = currentY;
-			if (mostBottom == (Integer) null || currentY > mostBottom) 
+			if (currentY > mostBottom) 
 				mostBottom = currentY;
 		}
 		
@@ -46,29 +46,31 @@ public class ShapeGroup {
 	/**
 	 * Initializes this object to represent a non-leaf shape group that directly contains the given subgroups, in the given order.
 	 */
-	@SuppressWarnings("null")
 	public ShapeGroup(ShapeGroup[] subgroups) {
 		this.subgroups = subgroups;
 		
-		int mostLeft = (Integer) null;
-		int mostRight = (Integer) null;
-		int mostTop = (Integer) null;
-		int mostBottom = (Integer) null;
-		for (int i = 0; i < subgroups.length; i++) {
-			subgroups[i].parentgroup = this;
+		Extent firstExtent = getSubgroup(0).getExtent();
+		
+		int mostLeft = firstExtent.getLeft();
+		int mostRight = firstExtent.getRight();
+		int mostTop = firstExtent.getTop();
+		int mostBottom = firstExtent.getBottom();
+		getSubgroup(0).parentgroup = this;
+		for (int i = 1; i < subgroups.length; i++) {
+			getSubgroup(i).parentgroup = this;
 			
-			Extent currentExtent = subgroups[i].getExtent();
+			Extent currentExtent = getSubgroup(i).getExtent();
 			int currentLeft = currentExtent.getLeft();
 			int currentRight = currentExtent.getRight();
 			int currentTop = currentExtent.getTop();
 			int currentBottom = currentExtent.getBottom();
-			if (mostLeft == (Integer) null || currentLeft < mostLeft)
+			if (currentLeft < mostLeft)
 				mostLeft = currentLeft;
-			if (mostRight == (Integer) null || currentRight > mostRight)
+			if (currentRight > mostRight)
 				mostRight = currentRight;
-			if (mostTop == (Integer) null || currentTop < mostTop)
+			if (currentTop < mostTop)
 				mostTop = currentTop;
-			if (mostBottom == (Integer) null || currentBottom > mostBottom)
+			if (currentBottom > mostBottom)
 				mostBottom = currentBottom;
 		}
 		
@@ -120,6 +122,8 @@ public class ShapeGroup {
 	
 	/**
 	 * Returns the number of subgroups of this non-leaf shape group.
+	 * @pre This is a non-leaf shape group.
+	 * 		| this.getSubgroups() != null
 	 */
 	public int getSubgroupCount() {
 		return subgroups.length;
@@ -127,13 +131,11 @@ public class ShapeGroup {
 	
 	/**
 	 * Returns the subgroup at the given (zero-based) index in this non-leaf shape group's list of subgroups.
+	 * @pre This is a non-leaf shape group.
+	 * 		| this.getSubgroups() != null
 	 */
 	public ShapeGroup getSubgroup(int index) {
 		return subgroups[index];
-	}
-	
-	public IntPoint toInnerCoordinatesFromOuter(IntPoint outerCoordinates) {
-		return outerCoordinates;
 	}
 	
 	/**
@@ -148,9 +150,9 @@ public class ShapeGroup {
 	 * contained by a leaf shape group are interpreted in the inner coordinate system of the shape group.
 	 */
 	public IntPoint toInnerCoordinates(IntPoint globalCoordinates) {
-		double newXCoordinate = (globalCoordinates.getX() - getExtent().getLeft()) / getHorizontalScale() - getHorizontalTranslate();
-		double newYCoordinate = (globalCoordinates.getY() - getExtent().getTop()) / getVerticalScale() - getVerticalTranslate();
-			
+		double newXCoordinate = (globalCoordinates.getX() - getExtent().getLeft()) / getHorizontalScale() + getOriginalExtent().getLeft();
+		double newYCoordinate = (globalCoordinates.getY() - getExtent().getTop()) / getVerticalScale() + getOriginalExtent().getTop();
+		
 		DoublePoint doubleCoordinates = new DoublePoint(newXCoordinate, newYCoordinate);
 		
 		IntPoint innerCoordinates = doubleCoordinates.round();
@@ -166,8 +168,8 @@ public class ShapeGroup {
 	 * system are the given coordinates.
 	 */
 	public IntPoint toGlobalCoordinates(IntPoint innerCoordinates) {
-		double newXCoordinate = (innerCoordinates.getX() - getOriginalExtent().getLeft()) * getHorizontalScale() + getHorizontalTranslate();
-		double newYCoordinate = (innerCoordinates.getY() - getOriginalExtent().getTop()) * getVerticalScale() + getVerticalTranslate();
+		double newXCoordinate = (innerCoordinates.getX() - getOriginalExtent().getLeft()) * getHorizontalScale() + getExtent().getLeft();
+		double newYCoordinate = (innerCoordinates.getY() - getOriginalExtent().getTop()) * getVerticalScale() + getExtent().getTop();
 			
 		DoublePoint doubleCoordinates = new DoublePoint(newXCoordinate, newYCoordinate);
 		
@@ -203,12 +205,14 @@ public class ShapeGroup {
 	/**
 	 * Return the first subgroup in this non-leaf shape group's list of subgroups whose extent contains the given point, expressed in this 
 	 * shape group's inner coordinate system.
+	 * @pre This is a non-leaf shape group.
+	 * 		| this.getSubgroups() != null
 	 */
 	public ShapeGroup getSubGroupAt(IntPoint innerCoordinates) {
 		for (int i = 0; i < this.getSubgroupCount(); i++) {
 			Extent currentExtent = this.getSubgroup(i).getOriginalExtent();
 			if (currentExtent.contains(innerCoordinates))
-				return this.getSubgroup(i-1);
+				return this.getSubgroup(i);
 		}
 	
 		return null;
@@ -292,14 +296,14 @@ public class ShapeGroup {
 	 * Returns the horizontal scale factor to go from inner to outer coordinates.
 	 */
 	public double getHorizontalScale() {
-		return getExtent().getWidth()/getOriginalExtent().getWidth();
+		return getExtent().getWidth()/(double) getOriginalExtent().getWidth();
 	}
 	
 	/**
 	 * Returns the vertical scale factor to go from inner to outer coordinates.
 	 */
 	public double getVerticalScale() {
-		return getExtent().getHeight()/getOriginalExtent().getHeight();
+		return getExtent().getHeight()/(double) getOriginalExtent().getHeight();
 	}
 	
 	/**

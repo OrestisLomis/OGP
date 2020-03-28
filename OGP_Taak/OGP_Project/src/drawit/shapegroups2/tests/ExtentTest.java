@@ -49,37 +49,54 @@ class ExtentTest {
 		assert myExtent3.getLeft() == -5;
 		assert myExtent3.getRight() == 5;
 		assert myExtent3.getWidth() == 10;
+		assert myExtent3.getTop() == 0;
+		assert myExtent3.getBottom() == 5;
+		assert myExtent3.getHeight() == 5;
 		
 		Extent myExtent4 = myExtent.withRight(10);
 		
 		assert myExtent4.getLeft() == 0;
 		assert myExtent4.getRight() == 10;
 		assert myExtent4.getWidth() == 10;
+		assert myExtent4.getTop() == 0;
+		assert myExtent4.getBottom() == 5;
+		assert myExtent4.getHeight() == 5;
 		
 		Extent myExtent5 = myExtent.withTop(-5);
 		
 		assert myExtent5.getTop() == -5;
 		assert myExtent5.getBottom() == 5;
 		assert myExtent5.getHeight() == 10;
+		assert myExtent5.getLeft() == 0;
+		assert myExtent5.getRight() == 5;
+		assert myExtent5.getWidth() == 5;
 		
 		Extent myExtent6 = myExtent.withBottom(10);
 		
 		assert myExtent6.getBottom() == 10;
 		assert myExtent6.getTop() == 0;
 		assert myExtent6.getHeight() == 10;
+		assert myExtent6.getLeft() == 0;
+		assert myExtent6.getRight() == 5;
+		assert myExtent6.getWidth() == 5;
 		
 		Extent myExtent7 = myExtent.withWidth(10);
 		
 		assert myExtent7.getLeft() == 0;
 		assert myExtent7.getRight() == 10;
 		assert myExtent7.getWidth() == 10;
+		assert myExtent7.getTop() == 0;
+		assert myExtent7.getBottom() == 5;
+		assert myExtent7.getHeight() == 5;
 		
 		Extent myExtent8 = myExtent.withHeight(10);
 		
 		assert myExtent8.getTop() == 0;
 		assert myExtent8.getBottom() == 10;
 		assert myExtent8.getHeight() == 10;
-		
+		assert myExtent8.getLeft() == 0;
+		assert myExtent8.getRight() == 5;
+		assert myExtent8.getWidth() == 5;	
 	}
 
 }
