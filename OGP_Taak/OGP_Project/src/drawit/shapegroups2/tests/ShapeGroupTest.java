@@ -88,8 +88,8 @@ class ShapeGroupTest {
 		
 		assert myShapeGroup.getHorizontalScale() == 0.25;
 		assert myShapeGroup.getVerticalScale() == 5;
-		assert myShapeGroup.getHorizontalTranslate() == 600;
-		assert myShapeGroup.getVerticalTranslate() == -100;
+		assert myShapeGroup.getHorizontalTranslate() == 525;
+		assert myShapeGroup.getVerticalTranslate() == 300;
 		assert myShapeGroup.toInnerCoordinates(new IntPoint(500, -200)).equals(new IntPoint(-100, -100));
 		assert myShapeGroup.toInnerCoordinates(new IntPoint(525, 300)).equals(new IntPoint(0, 0));
 		assert myShapeGroup.toGlobalCoordinates(new IntPoint(-100, -100)).equals(new IntPoint(500, -200));
@@ -98,7 +98,11 @@ class ShapeGroupTest {
 		assert myShapeGroup.toInnerCoordinates(new IntVector(5, 10)).getY() == 2;
 		
 		RoundedPolygon myRoundedPolygon3 = new RoundedPolygon();
+		IntPoint[] myIntPoints2 = {new IntPoint(500, 400), new IntPoint(500, 200), new IntPoint(300, 0)};
+		myRoundedPolygon3.setVertices(myIntPoints2);
 		RoundedPolygon myRoundedPolygon4 = new RoundedPolygon();
+		IntPoint[] myIntPoints3 = {new IntPoint(-100, 100), new IntPoint(0, 0), new IntPoint(100, 100)};
+		myRoundedPolygon4.setVertices(myIntPoints3);
 		RoundedPolygon myRoundedPolygon5 = new RoundedPolygon();
 		ShapeGroup myShapeGroup4 = new ShapeGroup(myRoundedPolygon3);
 		ShapeGroup myShapeGroup5 = new ShapeGroup(myRoundedPolygon4);
@@ -116,7 +120,21 @@ class ShapeGroupTest {
 		
 		assertEquals("pushTranslate 0 0\r\n" + 
 				"pushScale 1.0 1.0\r\n" + 
-				"pushTranslate 600 -100\r\n" + 
+				"pushTranslate 0 0\r\n" + 
+				"pushScale 1.0 1.0\r\n" + 
+				"line 300.0 200.0 375.85786437626905 200.0\r\n" + 
+				"arc 375.85786437626905 210.0 10.0 -1.5707963267948966 2.356194490192345\r\n" + 
+				"line 382.9289321881345 217.07106781186548 350.0 250.0\r\n" + 
+				"line 350.0 250.0 307.0710678118655 292.9289321881345\r\n" + 
+				"arc 300.0 285.85786437626905 10.0 0.7853981633974483 1.5707963267948966\r\n" + 
+				"line 292.9289321881345 292.9289321881345 250.0 250.0\r\n" + 
+				"line 250.0 250.0 217.07106781186548 217.07106781186548\r\n" + 
+				"arc 224.14213562373095 210.0 10.0 -3.9269908169872414 2.356194490192345\r\n" + 
+				"line 224.14213562373095 200.0 300.0 200.0\r\n" + 
+				"fill  255 255 0\r\n" + 
+				"popTransform \r\n" + 
+				"popTransform \r\n" + 
+				"pushTranslate 525 300\r\n" + 
 				"pushScale 0.25 5.0\r\n" + 
 				"line -100.0 0.0 -100.0 90.0\r\n" + 
 				"arc -90.0 90.0 10.0 3.141592653589793 -1.5707963267948966\r\n" + 
@@ -130,20 +148,6 @@ class ShapeGroupTest {
 				"line 0.0 -100.0 -90.0 -100.0\r\n" + 
 				"arc -90.0 -90.0 10.0 -1.5707963267948966 -1.5707963267948966\r\n" + 
 				"line -100.0 -90.0 -100.0 0.0\r\n" + 
-				"fill  255 255 0\r\n" + 
-				"popTransform \r\n" + 
-				"popTransform \r\n" + 
-				"pushTranslate 0 0\r\n" + 
-				"pushScale 1.0 1.0\r\n" + 
-				"line 300.0 200.0 375.85786437626905 200.0\r\n" + 
-				"arc 375.85786437626905 210.0 10.0 -1.5707963267948966 2.356194490192345\r\n" + 
-				"line 382.9289321881345 217.07106781186548 350.0 250.0\r\n" + 
-				"line 350.0 250.0 307.0710678118655 292.9289321881345\r\n" + 
-				"arc 300.0 285.85786437626905 10.0 0.7853981633974483 1.5707963267948966\r\n" + 
-				"line 292.9289321881345 292.9289321881345 250.0 250.0\r\n" + 
-				"line 250.0 250.0 217.07106781186548 217.07106781186548\r\n" + 
-				"arc 224.14213562373095 210.0 10.0 -3.9269908169872414 2.356194490192345\r\n" + 
-				"line 224.14213562373095 200.0 300.0 200.0\r\n" + 
 				"fill  255 255 0\r\n" + 
 				"popTransform \r\n" + 
 				"popTransform \r\n" + 

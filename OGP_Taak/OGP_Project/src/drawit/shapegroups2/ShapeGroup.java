@@ -284,7 +284,7 @@ public class ShapeGroup {
 		if (getShape() != null)
 			commands += getShape().getDrawingCommands();
 		else {
-			for (int i = 0; i < getSubgroupCount(); i++) {
+			for (int i = getSubgroupCount() - 1; i >= 0; i--) {
 				ShapeGroup currentSubgroup = getSubgroup(i);
 				commands += currentSubgroup.getDrawingCommands();	
 			}
@@ -312,13 +312,13 @@ public class ShapeGroup {
 	 * Returns the horizontal tranlate to go from inner to outer coordinates.
 	 */
 	public int getHorizontalTranslate() {
-		return getExtent().getLeft() - getOriginalExtent().getLeft();
+		return (int) (getExtent().getLeft() - getOriginalExtent().getLeft() * getHorizontalScale());
 	}
 	
 	/**
 	 * Returns the vertical translate to go from inner to outer coordinates.
 	 */
 	public int getVerticalTranslate() {
-		return getExtent().getTop() - getOriginalExtent().getTop();
+		return (int) (getExtent().getTop() - getOriginalExtent().getTop() * getVerticalScale());
 	}
 }
