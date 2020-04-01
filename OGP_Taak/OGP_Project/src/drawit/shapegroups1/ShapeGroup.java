@@ -141,11 +141,9 @@ public class ShapeGroup {
 		double newX = (innerCoordinates.getX() - getOriginalExtent().getLeft()) * getHorizontalScale() + getExtent().getLeft();
 		double newY = (innerCoordinates.getY() - getOriginalExtent().getTop()) * getVerticalScale() + getExtent().getTop();
 			
-		DoublePoint doubleCoordinates = new DoublePoint(newX, newY);
+		DoublePoint result = new DoublePoint(newX, newY);
 		
-		IntPoint globalCoordinates = doubleCoordinates.round();
-		
-		return globalCoordinates;
+		return result.round();
 		
 	}
 	
