@@ -3,13 +3,13 @@ package drawit.shapegroups1;
 import drawit.RoundedPolygon;
 import drawit.DoublePoint;
 import drawit.PointArrays;
+import drawit.IntPoint;
+import drawit.IntVector;
+import drawit.DoubleVector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import drawit.IntPoint;
-import drawit.IntVector;
 
 public class ShapeGroup {
 	
@@ -122,8 +122,8 @@ public class ShapeGroup {
 		return shape;
 	}
 	
-	public ShapeGroup[] getSubgroups() {
-		return subgroups;
+	public List<ShapeGroup> getSubgroups() {
+		return Arrays.asList(subgroups);
 	}
 	
 	public int getSubgroupCount() {
@@ -131,34 +131,108 @@ public class ShapeGroup {
 	}
 	
 	public ShapeGroup getSubgroup(int index) {
-		return this.getSubgroups()[index];
+		return this.getSubgroups().get(index);
 	}
 	
-	public IntPoint toInnerCoordinates() {
+	public IntPoint toInnerCoordinates(IntPoint globalCoordinates) {
 		if (getParentGroup() != null)
 			return getParentGroup().toInnerCoordinates(globalCoordinates);
 		
-		double newX = (innerCoordinates.getX() - getOriginalExtent().getLeft()) * getHorizontalScale() + getExtent().getLeft();
-		double newY = (innerCoordinates.getY() - getOriginalExtent().getTop()) * getVerticalScale() + getExtent().getTop();
+		int newX = (int) (globalCoordinates.getX() - getExtent().getLeft()) / getHorizontalScale() + getOriginalExtent().getLeft();
+		int newY = (int) (globalCoordinates.getY() - getExtent().getTop()) / getVerticalScale() + getOriginalExtent().getTop());
+		
+		DoublePoint doubleCoordinates = new DoublePoint(newX, newY);
+		
+		IntPoint innerCoordinates = doubleCoordinates.round();
+		
+		return new IntPoint(newX, newY);
+	}
+	
+	public IntPoint toGlobalCoordinates(IntPoint innerCoordinates) {
+		if (getParentGroup() != null)
+			return getParentGroup().toGlobalCoordinates(innerCoordinates);
+		
+		int newX = (int) ((innerCoordinates.getX() - getOriginalExtent().getLeft()) * getHorizontalScale() + getExtent().getLeft());
+		int newY = (int) ((innerCoordinates.getY() - getOriginalExtent().getTop()) * getVerticalScale() + getExtent().getTop());
 			
-		DoublePoint result = new DoublePoint(newX, newY);
-		
-		return result.round();
-		
+		return new IntPoint(newX, newY);
 	}
 	
-	public IntPoint toGlobalCoordinates() {
+	public IntVector toInnerCoordinates(IntVector relativeGlobalCoordinates) {
+		if (getParentGroup() != null)
+			return getParentGroup().toInnerCoordinates(relativeGlobalCoordinates);
 		
+		int newX = (int) (relativeGlobalCoordinates.getX()/getHorizontalScale());
+		int newY = (int) (relativeGlobalCoordinates.getY()/getVerticalScale());
+		
+		return new IntVector(newX, newY);
 	}
-	
+		
 	public ShapeGroup getSubgroupAt(IntPoint innerCoordinates) {
+		for (int i = 0; i < this.getSubgroupCount(); i++) {
+			Extent current = this.getSubgroup(i).getOriginalExtent();
+			if (current.contains(innerCoordinates))
+				return this.getSubgroup(i);
+		}
+		return null;
 		
 	}
 	
 	public void setExtent(Extent newExtent) {
-		
+		this.extent = newExtent;		
 	}
 	
+	public void bringToFront() {
+		ShapeGroup parent = getParentGroup();
+		ShapeGroup[] newGroups = new ShapeGroup[parent.getSubgroupCount()];
+		newGroups[0] = this;
+		
+		int index = parent.getSubgroups().indexOf(this);
+		
+		for (int i = 0; i < parent.getSubgroupCount(); i++) {
+			if (i < index)
+				newGroups[i + 1] = parent.getSubgroup(i);
+			else if (i > index)
+				newGroups[i] = parent.getSubgroup(i);
+		}
+		parent.subgroups = newGroups;	
+	}
 	
+	public void sendToBack() {
+		ShapeGroup parent = getParentGroup();
+		ShapeGroup[] newGroups = new ShapeGroup[parent.getSubgroupCount()];
+		newGroups[parent.getSubgroupCount() - 1] = this;
+		
+		int index = parent.getSubgroups().indexOf(this);
+		
+		for (int i = 0; i < parent.getSubgroupCount(); i++) {
+			if (i < index)
+				newGroups[i] = parent.getSubgroup(i);
+			else if (i > index)
+				newGroups[i - 1] = parent.getSubgroup(i);
+		}
+		parent.subgroups = newGroups;	
+	}
+	
+	public String getDrawingCommands() {
+		String commands = "";
+		commands += "pushTranslate " + getHorizontalTranslate() + " " + getVerticalTranslate() + System.lineSeparator();
+		commands += "pushScale " + getHorizontalScale() + " " + getVerticalScale() + System.lineSeparator();
+		if (this.getShape() != null)
+			commands += getShape().getDrawingCommands();
+		else 
+			for (int i = getSubgroupCount() - 1; i >= 0; i--)
+				commands += getSubgroup(i).getDrawingCommands();
+		commands += "popTransform " + System.lineSeparator();
+		commands += "popTransform " + System.lineSeparator();
+		
+		return commands;
+	}
+	
+	public double getHorizontalScale() {
+		return getExtent().getHeight();
+	}
+	
+	//Ik weet nog niet of ik ook getHorizontalScale enzo ga doen, heb dat nu even over genomen 
 
 }
