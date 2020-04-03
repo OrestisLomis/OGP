@@ -161,7 +161,7 @@ public class ShapeGroup {
 	 */
 	public IntPoint toInnerCoordinates(IntPoint globalCoordinates) {
 		if (getParentGroup() != null)
-			return getParentGroup().toInnerCoordinates(globalCoordinates);
+			globalCoordinates = getParentGroup().toInnerCoordinates(globalCoordinates);
 		
 		double newX = (globalCoordinates.getX() - getExtent().getLeft()) / getHorizontalScale() + getOriginalExtent().getLeft();
 		double newY = (globalCoordinates.getY() - getExtent().getTop()) / getVerticalScale() + getOriginalExtent().getTop();
@@ -198,7 +198,7 @@ public class ShapeGroup {
 	 */
 	public IntVector toInnerCoordinates(IntVector relativeGlobalCoordinates) {
 		if (getParentGroup() != null)
-			return getParentGroup().toInnerCoordinates(relativeGlobalCoordinates);
+			relativeGlobalCoordinates = getParentGroup().toInnerCoordinates(relativeGlobalCoordinates);
 		
 		IntPoint origin = new IntPoint(0, 0);
 		double newXCoordinate = relativeGlobalCoordinates.getX()/getHorizontalScale();
