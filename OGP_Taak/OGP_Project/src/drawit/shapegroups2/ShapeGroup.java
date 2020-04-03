@@ -210,7 +210,7 @@ public class ShapeGroup {
 	 */
 	public ShapeGroup getSubgroupAt(IntPoint innerCoordinates) {
 		for (int i = 0; i < this.getSubgroupCount(); i++) {
-			Extent currentExtent = this.getSubgroup(i).getOriginalExtent();
+			Extent currentExtent = this.getSubgroup(i).getExtent();
 			if (currentExtent.contains(innerCoordinates))
 				return this.getSubgroup(i);
 		}
@@ -309,10 +309,10 @@ public class ShapeGroup {
 	}
 	
 	/**
-	 * Returns the horizontal tranlate to go from inner to outer coordinates.
+	 * Returns the horizontal translate to go from inner to outer coordinates.
 	 */
 	public int getHorizontalTranslate() {
-		return (int) (getExtent().getLeft() - getOriginalExtent().getLeft() * getHorizontalScale());
+		return (int) (getExtent().getLeft() - getOriginalExtent().getLeft() * getHorizontalScale()); 
 	}
 	
 	/**
