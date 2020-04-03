@@ -30,7 +30,7 @@ public class Extent {
 	}
 	
 	public int getHeight() {
-		return getTop() - getBottom();
+		return getBottom() - getTop();
 	}
 	
 	public IntPoint getTopLeft() {
@@ -43,7 +43,7 @@ public class Extent {
 	
 	public boolean contains(IntPoint point) {
 		return (this.getLeft() <= point.getX() && point.getX() <= this.getRight() &&
-				this.getBottom() <= point.getY() && point.getY() <= this.getTop());
+				this.getBottom() >= point.getY() && point.getY() >= this.getTop());
 	}
 	
 	public static Extent ofLeftTopWidthHeight(int left, int top, int width, int height) {
@@ -51,7 +51,7 @@ public class Extent {
 		myExtent.left = left;
 		myExtent.top = top;
 		myExtent.right = left + width;
-		myExtent.bottom = top - height;
+		myExtent.bottom = top + height;
 		return myExtent;		
 	}
 	
