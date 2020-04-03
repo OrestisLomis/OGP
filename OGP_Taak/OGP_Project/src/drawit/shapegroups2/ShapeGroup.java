@@ -1,10 +1,14 @@
 package drawit.shapegroups2;
 
+import java.util.Arrays;
+import java.util.List;
+
 import drawit.DoublePoint;
 import drawit.DoubleVector;
 import drawit.IntPoint;
 import drawit.IntVector;
 import drawit.RoundedPolygon;
+
 
 public class ShapeGroup {
 	
@@ -116,8 +120,8 @@ public class ShapeGroup {
 	/**
 	 * Returns the list of subgroups of this shape group, or null if this is a leaf shape group.
 	 */
-	public ShapeGroup[] getSubgroups() {
-		return subgroups;
+	public List<ShapeGroup> getSubgroups() {
+		return Arrays.asList(subgroups);
 	}
 	
 	/**
@@ -135,7 +139,7 @@ public class ShapeGroup {
 	 * 		| this.getSubgroups() != null
 	 */
 	public ShapeGroup getSubgroup(int index) {
-		return subgroups[index];
+		return getSubgroups().get(index);
 	}
 	
 	/**
@@ -150,15 +154,15 @@ public class ShapeGroup {
 	 * contained by a leaf shape group are interpreted in the inner coordinate system of the shape group.
 	 */
 	public IntPoint toInnerCoordinates(IntPoint globalCoordinates) {
+		if (getParentGroup() != null)
+			return getParentGroup().toInnerCoordinates(globalCoordinates);
+		
 		double newXCoordinate = (globalCoordinates.getX() - getExtent().getLeft()) / getHorizontalScale() + getOriginalExtent().getLeft();
 		double newYCoordinate = (globalCoordinates.getY() - getExtent().getTop()) / getVerticalScale() + getOriginalExtent().getTop();
 		
 		DoublePoint doubleCoordinates = new DoublePoint(newXCoordinate, newYCoordinate);
 		
 		IntPoint innerCoordinates = doubleCoordinates.round();
-		
-		if (getParentGroup() != null)
-			return getParentGroup().toInnerCoordinates(innerCoordinates);
 		
 		return innerCoordinates;
 	}
@@ -187,6 +191,8 @@ public class ShapeGroup {
 	 * mutations of this shape group's extent that preserve its width and height.
 	 */
 	public IntVector toInnerCoordinates(IntVector relativeGlobalCoordinates) {
+		if (getParentGroup() != null)
+			return getParentGroup().toInnerCoordinates(relativeGlobalCoordinates);
 		IntPoint origin = new IntPoint(0, 0);
 		double newXCoordinate = relativeGlobalCoordinates.getX()/getHorizontalScale();
 		double newYCoordinate = relativeGlobalCoordinates.getY()/getVerticalScale();
@@ -195,9 +201,6 @@ public class ShapeGroup {
 		IntPoint intCoordinates = doubleCoordinates.round();
 		
 		IntVector innerCoordinates = intCoordinates.minus(origin);
-		
-		if (getParentGroup() != null)
-			return getParentGroup().toInnerCoordinates(innerCoordinates);
 		
 		return innerCoordinates;
 	}

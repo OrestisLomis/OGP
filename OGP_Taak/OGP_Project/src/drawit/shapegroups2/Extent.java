@@ -79,7 +79,7 @@ public class Extent {
 	/**
 	 * Returns an extent with the given variables.
 	 */
-	public static Extent ofLeftTopWidhtHeight(int left, int top, int width, int height) {
+	public static Extent ofLeftTopWidthHeight(int left, int top, int width, int height) {
 		Extent myExtent = new Extent();
 		myExtent.left = left;
 		myExtent.top = top;
@@ -132,13 +132,13 @@ public class Extent {
 	 * Returns an object that has the given width and the same left, top, and bottom coordinate as this object.
 	 */
 	public Extent withWidth(int newWidth) {
-		return ofLeftTopWidhtHeight(getLeft(), getTop(), newWidth, getHeight());
+		return ofLeftTopWidthHeight(getLeft(), getTop(), newWidth, getHeight());
 	}
 	
 	/**
 	 * Returns an object that has the given height and the same left, top, and right coordinate as this object.
 	 */
 	public Extent withHeight(int newHeight) {
-		return ofLeftTopWidhtHeight(getLeft(), getTop(), getWidth(), newHeight);
+		return ofLeftTopWidthHeight(getLeft(), getTop(), getWidth(), newHeight);
 	}
 }

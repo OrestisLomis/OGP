@@ -20,7 +20,7 @@ class ExtentTest {
 		assert myExtent.getHeight() == 5;
 		assert myExtent.getWidth() == 5;
 		
-		Extent myExtent2 = Extent.ofLeftTopWidhtHeight(0, 0, 5, 5);
+		Extent myExtent2 = Extent.ofLeftTopWidthHeight(0, 0, 5, 5);
 		
 		assert myExtent2.getLeft() == 0;
 		assert myExtent2.getTop() == 0;
