@@ -172,7 +172,7 @@ public class ShapeGroup {
 	 * this.setExtent() may cause the inner and outer coordinate systems to no longer coincide. The inner coordinate system of a non-leaf shape 
 	 * group always coincides with the outer coordinate systems of its subgroups. Furthermore, the coordinates of the vertices of a shape 
 	 * contained by a leaf shape group are interpreted in the inner coordinate system of the shape group.
-	 * @throws IllegalArgumentException if the given point is {@code} null
+	 * @throws IllegalArgumentException if the given point is {@code null}.
 	 * 		| globalCoordinates == null
 	 */
 	public IntPoint toInnerCoordinates(IntPoint globalCoordinates) {
@@ -194,7 +194,7 @@ public class ShapeGroup {
 	/**
 	 * Returns the coordinates in the global coordinate system of the point whose coordinates in this shape group's inner coordinate 
 	 * system are the given coordinates.
-	 * @throws IllegalArgumentException if the given point is {@code} null
+	 * @throws IllegalArgumentException if the given point is {@code null}.
 	 * 		| innerCoordinates == null
 	 */
 	public IntPoint toGlobalCoordinates(IntPoint innerCoordinates) {
@@ -217,7 +217,7 @@ public class ShapeGroup {
 	 * Returns the coordinates in this shape group's inner coordinate system of the vector whose coordinates in the global coordinate system are 
 	 * the given coordinates. This transformation is affected only by mutations of the width or height of this shape group's extent, not by 
 	 * mutations of this shape group's extent that preserve its width and height.
-	 * @throws IllegalArgumentException if the given point is {@code} null
+	 * @throws IllegalArgumentException if the given point is {@code null}.
 	 * 		| relativeGlobalCoordinates == null
 	 */
 	public IntVector toInnerCoordinates(IntVector relativeGlobalCoordinates) {
@@ -259,7 +259,7 @@ public class ShapeGroup {
 	 * of the vertices stored by the shape or the extents stored by the subgroups contained by this shape group. However, since these are 
 	 * interpreted in this shape group's inner coordinate system, this method effectively defines a transformation of this shape or these 
 	 * subgroups.
-	 * @throws IllegalArgumentException if the given extent is {@code} null.
+	 * @throws IllegalArgumentException if the given extent is {@code null}.
 	 * 		| newExtent == null
 	 */
 	public void setExtent(Extent newExtent) {
