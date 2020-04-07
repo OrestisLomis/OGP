@@ -39,9 +39,10 @@ public class ShapeGroup {
 				left = currentX;
 			if (currentX > right)
 				right = currentX;
-			if (currentY > top)
+			if (currentY < top)
 				top = currentY;
-			if (currentY < bottom);
+			if (currentY > bottom);
+				bottom = currentY;
 		}
 		
 		this.extent = Extent.ofLeftTopRightBottom(left, top, right, bottom);
@@ -72,9 +73,9 @@ public class ShapeGroup {
 				left = current.getLeft();
 			if (current.getRight() > right)
 				right = current.getRight();
-			if (current.getTop() > top)
+			if (current.getTop() < top)
 				top = current.getTop();
-			if (current.getBottom() < bottom)
+			if (current.getBottom() > bottom)
 				bottom = current.getBottom();
 		}
 		

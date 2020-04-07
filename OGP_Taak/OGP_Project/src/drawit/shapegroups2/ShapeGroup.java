@@ -181,8 +181,8 @@ public class ShapeGroup {
 		if (getParentGroup() != null) 
 			globalCoordinates = getParentGroup().toInnerCoordinates(globalCoordinates);
 		
-		double newXCoordinate = (globalCoordinates.getX() - getExtent().getLeft()) / getHorizontalScale() + getOriginalExtent().getLeft();
-		double newYCoordinate = (globalCoordinates.getY() - getExtent().getTop()) / getVerticalScale() + getOriginalExtent().getTop();
+		double newXCoordinate = (globalCoordinates.getX() - getHorizontalTranslate()) / getHorizontalScale();
+		double newYCoordinate = (globalCoordinates.getY() - getVerticalTranslate()) / getVerticalScale();
 		
 		DoublePoint doubleCoordinates = new DoublePoint(newXCoordinate, newYCoordinate);
 		
@@ -200,8 +200,8 @@ public class ShapeGroup {
 	public IntPoint toGlobalCoordinates(IntPoint innerCoordinates) {
 		if (innerCoordinates == null)
 			throw new IllegalArgumentException("There is no point given.");
-		double newXCoordinate = (innerCoordinates.getX() - getOriginalExtent().getLeft()) * getHorizontalScale() + getExtent().getLeft();
-		double newYCoordinate = (innerCoordinates.getY() - getOriginalExtent().getTop()) * getVerticalScale() + getExtent().getTop();
+		double newXCoordinate = innerCoordinates.getX() * getHorizontalScale() + getHorizontalTranslate();
+		double newYCoordinate = innerCoordinates.getY() * getVerticalScale() + getVerticalTranslate();
 			
 		DoublePoint doubleCoordinates = new DoublePoint(newXCoordinate, newYCoordinate);
 		
