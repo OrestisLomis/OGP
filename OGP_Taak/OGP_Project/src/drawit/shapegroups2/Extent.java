@@ -5,6 +5,7 @@ import drawit.IntPoint;
 /**
  * Each instance of this class represents a nonempty rectangular area in a 2D coordinate system, 
  * whose edges are parallel to the coordinate axes. This class must deal with illegal arguments defensively.
+ * @immutable
  */
 public class Extent {
 	
@@ -83,10 +84,14 @@ public class Extent {
 
 	/**
 	 * Returns whether this extent, considered as a closed set of points (i.e. including its edges and its vertices), contains the given point.
+	 * @throws IllegalArgumentException if there is no point given.
+	 * 		| point == null
 	 * @post the result equals true when the point is between the closed interval of the extent in each dimension.
-	 * 		| result == point.getX() >= getLeft() && point.getX() <= getRight() && point.getY() >= getTop() && point.getY() <= getBottom()
+	 * 		| result == (point.getX() >= getLeft() && point.getX() <= getRight() && point.getY() >= getTop() && point.getY() <= getBottom())
 	 */
 	public boolean contains(IntPoint point) {
+		if (point == null)
+			throw new IllegalArgumentException("There is no point given.");
 		return point.getX() >= getLeft() && point.getX() <= getRight() && point.getY() >= getTop() && point.getY() <= getBottom();
 	}
 	

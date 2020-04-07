@@ -2,12 +2,9 @@ package drawit.shapegroups1;
 
 import drawit.RoundedPolygon;
 import drawit.DoublePoint;
-import drawit.PointArrays;
 import drawit.IntPoint;
 import drawit.IntVector;
-import drawit.DoubleVector;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,8 +18,15 @@ public class ShapeGroup {
 	
 	/**
 	 * Initializes this object to represent a leaf shape group that directly contains the given shape.
+	 * @throws IllegalArgumentException if there is no shape given.
+	 * 		| shape == null
+	 * @post This shape groups shape equals the given shape
+	 * 		| this.getShape() == shape
 	 */
 	public ShapeGroup(RoundedPolygon shape) {
+		if (shape == null)
+			throw new IllegalArgumentException("There is no shape given.");
+		
 		this.shape = shape;
 		IntPoint[] vertices = shape.getVertices();
 		IntPoint start = vertices[0];
@@ -53,8 +57,15 @@ public class ShapeGroup {
 	/**
 	 * Initializes this object to represent a non-leaf shape group that directly contains the given subgroups, 
 	 * in the given order.
+	 * @throws IllegalArgumentException if the given array is {@code null}.
+	 * 		| subgroups == null
+	 * @throws IllegalArgumentException if any of the subgroups already have a parent.
+	 * 		| Arrays.stream(subgroups).anyMatch(subgroup -> subgroup.getParentGroup() != null)
 	 */
 	public ShapeGroup(ShapeGroup[] subgroups) {
+		if (subgroups == null)
+			throw new IllegalArgumentException("There are no subgroups given.");
+		
 		this.subgroups = subgroups;
 		ShapeGroup start = subgroups[0];
 		start.parentgroup = this;
@@ -133,20 +144,26 @@ public class ShapeGroup {
 	
 	/**
 	 * Returns the number of subgroups of this non-leaf shape group.
-	 * @pre This is a non-leaf shape group.
-	 * 		| this.getSubgroups() != null
+	 * @throws if this is a leaf shape group.
+	 * 		| this.getSubgroups() == null
 	 */
 	public int getSubgroupCount() {
-		return subgroups.length;
+		if (this.getSubgroups() != null)
+			return subgroups.length;
+		else
+			throw new IllegalArgumentException("This shape group has no subgroups.");
 	}
 
 	/**
 	 * Returns the subgroup at the given (zero-based) index in this non-leaf shape group's list of subgroups.
-	 * @pre This is a non-leaf shape group.
-	 * 		| this.getSubgroups() != null
+	 * @throws if this is a leaf shape group.
+	 * 		| this.getSubgroups() == null
 	 */
 	public ShapeGroup getSubgroup(int index) {
-		return this.getSubgroups().get(index);
+		if (this.getSubgroups() != null)
+			return subgroups[index];
+		else
+			throw new IllegalArgumentException("This shape group has no subgroups.");
 	}
 	
 	/**
@@ -159,8 +176,12 @@ public class ShapeGroup {
 	 * this.setExtent() may cause the inner and outer coordinate systems to no longer coincide. The inner coordinate system of a non-leaf shape 
 	 * group always coincides with the outer coordinate systems of its subgroups. Furthermore, the coordinates of the vertices of a shape 
 	 * contained by a leaf shape group are interpreted in the inner coordinate system of the shape group.
+	 * @throws IllegalArgumentException if the given point is {@code null}.
+	 * 		| globalCoordinates == null
 	 */
 	public IntPoint toInnerCoordinates(IntPoint globalCoordinates) {
+		if (globalCoordinates == null)
+			throw new IllegalArgumentException("There is no point given.");
 		if (getParentGroup() != null)
 			globalCoordinates = getParentGroup().toInnerCoordinates(globalCoordinates);
 		
@@ -177,8 +198,12 @@ public class ShapeGroup {
 	/**
 	 * Returns the coordinates in the global coordinate system of the point whose coordinates in this shape group's inner coordinate 
 	 * system are the given coordinates.
+	 * @throws IllegalArgumentException if the given point is {@code null}.
+	 * 		| innerCoordinates == null
 	 */
 	public IntPoint toGlobalCoordinates(IntPoint innerCoordinates) {
+		if (innerCoordinates == null)
+			throw new IllegalArgumentException("There is no point given.");
 		double newX = ((innerCoordinates.getX() - getOriginalExtent().getLeft()) * getHorizontalScale() + getExtent().getLeft());
 		double newY = ((innerCoordinates.getY() - getOriginalExtent().getTop()) * getVerticalScale() + getExtent().getTop());
 		
@@ -196,8 +221,12 @@ public class ShapeGroup {
 	 * Returns the coordinates in this shape group's inner coordinate system of the vector whose coordinates in the global coordinate system are 
 	 * the given coordinates. This transformation is affected only by mutations of the width or height of this shape group's extent, not by 
 	 * mutations of this shape group's extent that preserve its width and height.
+	 * @throws IllegalArgumentException if the given point is {@code null}.
+	 * 		| relativeGlobalCoordinates == null
 	 */
 	public IntVector toInnerCoordinates(IntVector relativeGlobalCoordinates) {
+		if (relativeGlobalCoordinates == null)
+			throw new IllegalArgumentException("There is no point given.");
 		if (getParentGroup() != null)
 			relativeGlobalCoordinates = getParentGroup().toInnerCoordinates(relativeGlobalCoordinates);
 		
@@ -216,10 +245,12 @@ public class ShapeGroup {
 	/**
 	 * Return the first subgroup in this non-leaf shape group's list of subgroups whose extent contains the given point, expressed in this 
 	 * shape group's inner coordinate system.
-	 * @pre This is a non-leaf shape group.
-	 * 		| this.getSubgroups() != null
+	 * @throws IllegalArgumentException if this is a non-leaf shape group.
+	 * 		| this.getSubgroups() == null
 	 */
 	public ShapeGroup getSubgroupAt(IntPoint innerCoordinates) {
+		if (this.getSubgroups() == null)
+			throw new IllegalArgumentException("This shape group has no subgroups.");
 		for (int i = 0; i < this.getSubgroupCount(); i++) {
 			Extent current = this.getSubgroup(i).getExtent();
 			if (current.contains(innerCoordinates))
@@ -236,15 +267,26 @@ public class ShapeGroup {
 	 * of the vertices stored by the shape or the extents stored by the subgroups contained by this shape group. However, since these are 
 	 * interpreted in this shape group's inner coordinate system, this method effectively defines a transformation of this shape or these 
 	 * subgroups.
+	 * @throws IllegalArgumentException if the given extent is {@code null}.
+	 * 		| newExtent == null
 	 */
 	public void setExtent(Extent newExtent) {
+		if (newExtent == null)
+			throw new IllegalArgumentException("There is no extent given.");
 		this.extent = newExtent;		
 	}
 	
 	/**
 	 * Moves this shape group to the front of its parent's list of subgroups.
+	 * @throws IllegalArgumentException if the selected shape group has no parent.
+	 * 		| this.getParentGroup() == null
+	 * @post this shape is the first element of its parents subgroups.
+	 * 		| this.getParentGroup().getSubgroup(0) == this
+	 * @mutates | this
 	 */
 	public void bringToFront() {
+		if(this.getParentGroup() == null)
+			throw new IllegalArgumentException("This shape group has no parent.");
 		ShapeGroup parent = getParentGroup();
 		ShapeGroup[] newGroups = new ShapeGroup[parent.getSubgroupCount()];
 		newGroups[0] = this;
@@ -262,8 +304,15 @@ public class ShapeGroup {
 	
 	/**
 	 * Moves this shape group to the back of its parent's list of subgroups.
+	 * @throws IllegalArgumentException if the selected shape group has no parent.
+	 * 		| this.getParentGroup() == null
+	 * @post this shape is the last element of its parent subgroups.
+	 * 		| this.getParentGroup().getSubgroup(this.getParentGroup().getSubgroupCount() - 1) == this
+	 * @mutates | this
 	 */
 	public void sendToBack() {
+		if(this.getParentGroup() == null)
+			throw new IllegalArgumentException("This shape group has no parent.");
 		ShapeGroup parent = getParentGroup();
 		ShapeGroup[] newGroups = new ShapeGroup[parent.getSubgroupCount()];
 		newGroups[parent.getSubgroupCount() - 1] = this;
@@ -299,28 +348,28 @@ public class ShapeGroup {
 	/**
 	 * Returns the horizontal scale factor to go from inner to outer coordinates.
 	 */
-	public double getHorizontalScale() {
+	private double getHorizontalScale() {
 		return getExtent().getWidth()/(double) getOriginalExtent().getWidth();
 	}
 	
 	/**
 	 * Returns the vertical scale factor to go from inner to outer coordinates.
 	 */
-	public double getVerticalScale() {
+	private double getVerticalScale() {
 		return getExtent().getHeight()/(double) getOriginalExtent().getHeight();
 	}
 	
 	/**
 	 * Returns the horizontal translate to go from inner to outer coordinates.
 	 */
-	public int getHorizontalTranslate() {
+	private int getHorizontalTranslate() {
 		return (int) (getExtent().getLeft() - getOriginalExtent().getLeft() * getHorizontalScale()); 
 	}
 	
 	/**
 	 * Returns the vertical translate to go from inner to outer coordinates.
 	 */
-	public int getVerticalTranslate() {
+	private int getVerticalTranslate() {
 		return (int) (getExtent().getTop() - getOriginalExtent().getTop() * getVerticalScale());
 	}
 
