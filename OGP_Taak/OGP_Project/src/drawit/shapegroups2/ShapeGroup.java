@@ -50,10 +50,12 @@ public class ShapeGroup {
 		this.shape = shape;
 		
 		IntPoint[] vertices = shape.getVertices();
-		int mostLeft = vertices[0].getX();
-		int mostRight = vertices[0].getX();
-		int mostTop = vertices[0].getY();
-		int mostBottom = vertices[0].getY();
+		IntPoint firstVertex = vertices[0];
+		
+		int mostLeft = firstVertex.getX();
+		int mostRight = firstVertex.getX();
+		int mostTop = firstVertex.getY();
+		int mostBottom = firstVertex.getY();
 		
 		for (int i = 1; i < vertices.length; i++) {
 			int currentX = vertices[i].getX();
@@ -321,21 +323,23 @@ public class ShapeGroup {
 		ShapeGroup parentgroup = this.getParentGroup();
 		if(this.parentgroup == null)
 			throw new IllegalArgumentException("This shape group has no parent.");
-		
-		ShapeGroup[] newSubgroups = new ShapeGroup[parentgroup.getSubgroupCount()];
-		boolean thisIndexPassed = false;
-		newSubgroups[0] = this;
-		for (int i = 1; i < parentgroup.getSubgroupCount(); i++) {
-			if (parentgroup.getSubgroup(i).equals(this)) {
-				thisIndexPassed = true;
-				newSubgroups[i] = parentgroup.getSubgroup(i-1);
+		if (parentgroup.getSubgroup(0) != this) {
+			
+			ShapeGroup[] newSubgroups = new ShapeGroup[parentgroup.getSubgroupCount()];
+			boolean thisIndexPassed = false;
+			newSubgroups[0] = this;
+			for (int i = 1; i < parentgroup.getSubgroupCount(); i++) {
+				if (parentgroup.getSubgroup(i).equals(this)) {
+					thisIndexPassed = true;
+					newSubgroups[i] = parentgroup.getSubgroup(i-1);
+				}
+				else if (thisIndexPassed)
+					newSubgroups[i] = parentgroup.getSubgroup(i);
+				else
+					newSubgroups[i] = parentgroup.getSubgroup(i-1);
 			}
-			else if (thisIndexPassed)
-				newSubgroups[i] = parentgroup.getSubgroup(i);
-			else
-				newSubgroups[i] = parentgroup.getSubgroup(i-1);
+			parentgroup.subgroups = newSubgroups;
 		}
-		parentgroup.subgroups = newSubgroups;
 		
 //		if (this == parentgroup.getSubgroup(parentgroup.getSubgroupCount())) {
 //			

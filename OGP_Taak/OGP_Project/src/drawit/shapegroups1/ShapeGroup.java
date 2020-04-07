@@ -137,8 +137,12 @@ public class ShapeGroup {
 
 	/**
 	 * Returns the list of subgroups of this shape group, or null if this is a leaf shape group.
+	 * @throws IllegalArgumentException if this shape group has no subroups.
+	 * 		| this.getShape() != null
 	 */	
 	public List<ShapeGroup> getSubgroups() {
+		if (this.getShape() != null)
+			throw new IllegalArgumentException("This shape group has no subgroups.");
 		return Arrays.asList(subgroups);
 	}
 	
