@@ -17,6 +17,11 @@ public class ShapeGroup {
 	private final Extent originalExtent;
 	private Extent extent;
 	private ShapeGroup parentgroup;
+	private ShapeGroup next;
+	private ShapeGroup previous;
+	private ShapeGroup firstSubgroup;
+	private ShapeGroup lastSubgroup;
+	
 	
 	/**
 	 * Initializes this object to represent a leaf shape group that directly contains the given shape.
@@ -91,13 +96,26 @@ public class ShapeGroup {
 		int mostLeft = firstExtent.getLeft();
 		int mostRight = firstExtent.getRight();
 		int mostTop = firstExtent.getTop();
-		int mostBottom = firstExtent.getBottom();	
+		int mostBottom = firstExtent.getBottom();
+		this.firstSubgroup = firstSub;
+		this.firstSubgroup.previous = this.firstSubgroup;
+		this.firstSubgroup.next = subgroups[1];
+		firstSub.parentgroup = this;
+		this.subgroups.add(firstSub);
 		
-		for (ShapeGroup subgroup : subgroups) {
-			subgroup.parentgroup = this;
-			this.subgroups.add(subgroup);
+		for (int i = 1; i < subgroups.length; i++) {
+			ShapeGroup currentSub = subgroups[i];
+			currentSub.parentgroup = this;
+			if (i == subgroups.length - 1) {
+				currentSub.next = currentSub;
+				this.lastSubgroup = currentSub;
+			}
+			else
+				currentSub.next = subgroups[i+1];
+			currentSub.previous = subgroups[i-1];
+			this.subgroups.add(currentSub);
 				
-			Extent currentExtent = subgroup.getExtent();
+			Extent currentExtent = currentSub.getExtent();
 			int currentLeft = currentExtent.getLeft();
 			int currentRight = currentExtent.getRight();
 			int currentTop = currentExtent.getTop();
@@ -155,10 +173,17 @@ public class ShapeGroup {
 	 * Returns the list of subgroups of this shape group, or {@code null} if this is a leaf shape group.
 	 */
 	public List<ShapeGroup> getSubgroups() {
+		LinkedList<ShapeGroup> subgroups = new LinkedList<ShapeGroup>();
+		subgroups.add(firstSubgroup);
+		ShapeGroup currentSub = firstSubgroup.next;
+		while (!(currentSub.next.equals(currentSub))) {
+			subgroups.add(currentSub);
+			currentSub = currentSub.next;
+		}
 		return subgroups;
 	}
 	
-	/**S
+	/**
 	 * Returns the number of subgroups of this non-leaf shape group.
 	 * @throws if this is a leaf shape group.
 	 * 		| this.getSubgroups() == null
@@ -176,12 +201,26 @@ public class ShapeGroup {
 	 * 		| this.getSubgroups() == null
 	 */
 	public ShapeGroup getSubgroup(int index) {
-		if (this.getSubgroups() != null)
-			return subgroups.get(index);
-		else
+		if (this.getSubgroups() == null)
 			throw new IllegalArgumentException("This shape group has no subgroups.");
+		int numberSubgroups = getSubgroupCount();
+		ShapeGroup currentSub = null;
+		if (index > numberSubgroups/2) {
+			currentSub = this.lastSubgroup;
+			while (numberSubgroups > index + 1) {
+				currentSub = currentSub.previous;
+				numberSubgroups--;
+			}
+		}
+		else {
+			currentSub = this.firstSubgroup;
+			for (int i = 0; i < index; i++) {
+				currentSub = currentSub.next;
+			}	
+		}
+		return currentSub;
 	}
-	
+		
 	/**
 	 * Returns the coordinates in this shape group's inner coordinate system of the point whose coordinates in the global coordinate system 
 	 * are the given coordinates. The global coordinate system is the outer coordinate system of this shape group's root ancestor, i.e. the 
@@ -302,8 +341,21 @@ public class ShapeGroup {
 		if(this.parentgroup == null)
 			throw new IllegalArgumentException("This shape group has no parent.");
 
-		parentgroup.subgroups.remove(this);
-		parentgroup.subgroups.addFirst(this);
+		if (!(this.equals(parentgroup.firstSubgroup))) {
+			if (this.equals(parentgroup.lastSubgroup)) {
+				parentgroup.lastSubgroup = this.previous;
+				parentgroup.lastSubgroup.next = parentgroup.lastSubgroup;
+				
+			}
+			else {
+				this.next.previous = this.previous;
+				this.previous.next = this.next;
+			}
+			this.next = parentgroup.firstSubgroup;
+			parentgroup.firstSubgroup.previous = this;
+			parentgroup.firstSubgroup = this;
+			this.previous = this;
+		}
 	}
 	
 	/**
@@ -317,11 +369,24 @@ public class ShapeGroup {
 	 */
 	public void sendToBack() {
 		ShapeGroup parentgroup = this.getParentGroup();
-		if(this.getParentGroup() == null)
+		if (this.getParentGroup() == null)
 			throw new IllegalArgumentException("This shape group has no parent.");
 
-		parentgroup.subgroups.remove(this);
-		parentgroup.subgroups.add(this);
+		if (!(this.equals(parentgroup.lastSubgroup))) {
+			if (this.equals(parentgroup.firstSubgroup)) {
+				parentgroup.firstSubgroup = this.next;
+				parentgroup.firstSubgroup.previous = parentgroup.firstSubgroup;
+				
+			}
+			else {
+				this.next.previous = this.previous;
+				this.previous.next = this.next;
+			}
+			this.previous = parentgroup.lastSubgroup;
+			parentgroup.lastSubgroup.next = this;
+			parentgroup.lastSubgroup = this;
+			this.next = this;
+		}			
 	}
 	
 	/**
