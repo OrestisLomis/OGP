@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import drawit.IntPoint;
 import drawit.IntVector;
 import drawit.RoundedPolygon;
-import drawit.shapegroups2.Extent;
-import drawit.shapegroups2.ShapeGroup;
+import drawit.shapegroups1.Extent;
+import drawit.shapegroups1.ShapeGroup;
 
 class ShapeGroupTest {
 

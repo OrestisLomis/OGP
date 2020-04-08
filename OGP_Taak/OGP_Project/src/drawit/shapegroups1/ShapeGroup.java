@@ -6,12 +6,13 @@ import drawit.IntPoint;
 import drawit.IntVector;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ShapeGroup {
 	
 	private RoundedPolygon shape;
-	private ShapeGroup[] subgroups;
+	private LinkedList<ShapeGroup> subgroups;
 	private final Extent originalExtent;
 	private Extent extent;
 	private ShapeGroup parentgroup;
@@ -45,7 +46,7 @@ public class ShapeGroup {
 				right = currentX;
 			if (currentY < top)
 				top = currentY;
-			if (currentY > bottom);
+			if (currentY > bottom)
 				bottom = currentY;
 		}
 		
@@ -65,9 +66,18 @@ public class ShapeGroup {
 	public ShapeGroup(ShapeGroup[] subgroups) {
 		if (subgroups == null)
 			throw new IllegalArgumentException("There are no subgroups given.");
+		if (subgroups.length <= 1)
+			throw new IllegalArgumentException("There is only 1 subgroup given.");
+		for (ShapeGroup subgroup : subgroups) {
+			if (subgroup == null)
+				throw new IllegalArgumentException("One of the given subgroups does not exist.");
+			if (subgroup.getParentGroup() != null)
+				throw new IllegalArgumentException("One of the given subgroups already has a parent.");
+		}
 		
-		this.subgroups = subgroups;
+		this.subgroups = new LinkedList<ShapeGroup>();
 		ShapeGroup start = subgroups[0];
+		this.subgroups.add(start);
 		start.parentgroup = this;
 		Extent startExtent = start.getExtent();
 		
@@ -78,6 +88,7 @@ public class ShapeGroup {
 		
 		for (int i = 1; i < subgroups.length; i++) {
 			subgroups[i].parentgroup = this;
+			this.subgroups.add(subgroups[i]);
 			Extent current = subgroups[i].getExtent();
 			
 			if (current.getLeft() < left)
@@ -137,13 +148,9 @@ public class ShapeGroup {
 
 	/**
 	 * Returns the list of subgroups of this shape group, or null if this is a leaf shape group.
-	 * @throws IllegalArgumentException if this shape group has no subroups.
-	 * 		| this.getShape() != null
 	 */	
 	public List<ShapeGroup> getSubgroups() {
-		if (this.getShape() != null)
-			throw new IllegalArgumentException("This shape group has no subgroups.");
-		return Arrays.asList(subgroups);
+		return subgroups;
 	}
 	
 	/**
@@ -153,7 +160,7 @@ public class ShapeGroup {
 	 */
 	public int getSubgroupCount() {
 		if (this.getSubgroups() != null)
-			return subgroups.length;
+			return subgroups.size();
 		else
 			throw new IllegalArgumentException("This shape group has no subgroups.");
 	}
@@ -165,7 +172,7 @@ public class ShapeGroup {
 	 */
 	public ShapeGroup getSubgroup(int index) {
 		if (this.getSubgroups() != null)
-			return subgroups[index];
+			return subgroups.get(index);
 		else
 			throw new IllegalArgumentException("This shape group has no subgroups.");
 	}
@@ -289,21 +296,12 @@ public class ShapeGroup {
 	 * @mutates | this
 	 */
 	public void bringToFront() {
-		if(this.getParentGroup() == null)
+		ShapeGroup parentgroup = this.getParentGroup();
+		if(this.parentgroup == null)
 			throw new IllegalArgumentException("This shape group has no parent.");
-		ShapeGroup parent = getParentGroup();
-		ShapeGroup[] newGroups = new ShapeGroup[parent.getSubgroupCount()];
-		newGroups[0] = this;
-		
-		int index = parent.getSubgroups().indexOf(this);
-		
-		for (int i = 0; i < parent.getSubgroupCount(); i++) {
-			if (i < index)
-				newGroups[i + 1] = parent.getSubgroup(i);
-			else if (i > index)
-				newGroups[i] = parent.getSubgroup(i);
-		}
-		parent.subgroups = newGroups;	
+
+		parentgroup.subgroups.remove(this);
+		parentgroup.subgroups.addFirst(this);
 	}
 	
 	/**
@@ -315,21 +313,12 @@ public class ShapeGroup {
 	 * @mutates | this
 	 */
 	public void sendToBack() {
+		ShapeGroup parentgroup = this.getParentGroup();
 		if(this.getParentGroup() == null)
 			throw new IllegalArgumentException("This shape group has no parent.");
-		ShapeGroup parent = getParentGroup();
-		ShapeGroup[] newGroups = new ShapeGroup[parent.getSubgroupCount()];
-		newGroups[parent.getSubgroupCount() - 1] = this;
-		
-		int index = parent.getSubgroups().indexOf(this);
-		
-		for (int i = 0; i < parent.getSubgroupCount(); i++) {
-			if (i < index)
-				newGroups[i] = parent.getSubgroup(i);
-			else if (i > index)
-				newGroups[i - 1] = parent.getSubgroup(i);
-		}
-		parent.subgroups = newGroups;	
+
+		parentgroup.subgroups.remove(this);
+		parentgroup.subgroups.add(this);	
 	}
 	
 	public String getDrawingCommands() {
