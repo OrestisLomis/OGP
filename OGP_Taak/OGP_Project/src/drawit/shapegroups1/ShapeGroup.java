@@ -258,6 +258,8 @@ public class ShapeGroup {
 	 * shape group's inner coordinate system.
 	 * @throws IllegalArgumentException if this is a non-leaf shape group.
 	 * 		| this.getSubgroups() == null
+	 * @post the result is {@code null} or the given point is contained by the extent of the returned subgroup.
+	 * 		| (result == null) || (result.getExtent().contains(innerCoordinates))
 	 */
 	public ShapeGroup getSubgroupAt(IntPoint innerCoordinates) {
 		if (this.getSubgroups() == null)
@@ -293,7 +295,10 @@ public class ShapeGroup {
 	 * 		| this.getParentGroup() == null
 	 * @post this shape is the first element of its parents subgroups.
 	 * 		| this.getParentGroup().getSubgroup(0) == this
+	 * @post the amount of subgroups remains the same.
+	 * 		| this.getParentGroup().getSubgroupCount() == old(this.getParentGroup().getSubgroupCount())
 	 * @mutates | this
+	 * @mutates | this.getParentGroup()
 	 */
 	public void bringToFront() {
 		ShapeGroup parentgroup = this.getParentGroup();
@@ -310,7 +315,10 @@ public class ShapeGroup {
 	 * 		| this.getParentGroup() == null
 	 * @post this shape is the last element of its parent subgroups.
 	 * 		| this.getParentGroup().getSubgroup(this.getParentGroup().getSubgroupCount() - 1) == this
+	 * @post the amount of subgroups remains the same.
+	 * 		| this.getParentGroup().getSubgroupCount() == old(this.getParentGroup().getSubgroupCount())
 	 * @mutates | this
+	 * @mutates | this.getParentGroup()
 	 */
 	public void sendToBack() {
 		ShapeGroup parentgroup = this.getParentGroup();
