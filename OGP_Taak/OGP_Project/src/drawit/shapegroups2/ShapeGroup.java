@@ -90,32 +90,32 @@ public class ShapeGroup {
 		
 		this.subgroups = new LinkedList<ShapeGroup>();
 		
-		ShapeGroup firstSub = subgroups[0];
-		Extent firstExtent = firstSub.getExtent();
+		ShapeGroup firstSubgroup = subgroups[0];
+		Extent firstExtent = firstSubgroup.getExtent();
 		
 		int mostLeft = firstExtent.getLeft();
 		int mostRight = firstExtent.getRight();
 		int mostTop = firstExtent.getTop();
 		int mostBottom = firstExtent.getBottom();
-		this.firstSubgroup = firstSub;
+		this.firstSubgroup = firstSubgroup;
 		this.firstSubgroup.previous = this.firstSubgroup;
 		this.firstSubgroup.next = subgroups[1];
-		firstSub.parentgroup = this;
-		this.subgroups.add(firstSub);
+		firstSubgroup.parentgroup = this;
+		this.subgroups.add(firstSubgroup);
 		
 		for (int i = 1; i < subgroups.length; i++) {
-			ShapeGroup currentSub = subgroups[i];
-			currentSub.parentgroup = this;
+			ShapeGroup currentSubgroup = subgroups[i];
+			currentSubgroup.parentgroup = this;
 			if (i == subgroups.length - 1) {
-				currentSub.next = currentSub;
-				this.lastSubgroup = currentSub;
+				currentSubgroup.next = currentSubgroup;
+				this.lastSubgroup = currentSubgroup;
 			}
 			else
-				currentSub.next = subgroups[i+1];
-			currentSub.previous = subgroups[i-1];
-			this.subgroups.add(currentSub);
+				currentSubgroup.next = subgroups[i+1];
+			currentSubgroup.previous = subgroups[i-1];
+			this.subgroups.add(currentSubgroup);
 				
-			Extent currentExtent = currentSub.getExtent();
+			Extent currentExtent = currentSubgroup.getExtent();
 			int currentLeft = currentExtent.getLeft();
 			int currentRight = currentExtent.getRight();
 			int currentTop = currentExtent.getTop();
@@ -175,10 +175,10 @@ public class ShapeGroup {
 	public List<ShapeGroup> getSubgroups() {
 		LinkedList<ShapeGroup> subgroups = new LinkedList<ShapeGroup>();
 		subgroups.add(firstSubgroup);
-		ShapeGroup currentSub = firstSubgroup.next;
-		while (!(currentSub.next.equals(currentSub))) {
-			subgroups.add(currentSub);
-			currentSub = currentSub.next;
+		ShapeGroup currentSubgroup = firstSubgroup.next;
+		while (!(currentSubgroup.next.equals(currentSubgroup))) {
+			subgroups.add(currentSubgroup);
+			currentSubgroup = currentSubgroup.next;
 		}
 		return subgroups;
 	}
@@ -206,21 +206,21 @@ public class ShapeGroup {
 		if (this.getSubgroups() == null)
 			throw new IllegalArgumentException("This shape group has no subgroups.");
 		int numberSubgroups = getSubgroupCount();
-		ShapeGroup currentSub = null;
+		ShapeGroup currentSubgroup = null;
 		if (index > numberSubgroups/2) {
-			currentSub = this.lastSubgroup;
+			currentSubgroup = this.lastSubgroup;
 			while (numberSubgroups > index + 1) {
-				currentSub = currentSub.previous;
+				currentSubgroup = currentSubgroup.previous;
 				numberSubgroups--;
 			}
 		}
 		else {
-			currentSub = this.firstSubgroup;
+			currentSubgroup = this.firstSubgroup;
 			for (int i = 0; i < index; i++) {
-				currentSub = currentSub.next;
+				currentSubgroup = currentSubgroup.next;
 			}	
 		}
-		return currentSub;
+		return currentSubgroup;
 	}
 		
 	/**
