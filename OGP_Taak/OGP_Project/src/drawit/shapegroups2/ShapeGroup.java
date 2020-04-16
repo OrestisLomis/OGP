@@ -29,6 +29,10 @@ public class ShapeGroup {
 	 * 		| shape == null
 	 * @post This shape groups shape equals the given shape
 	 * 		| this.getShape() == shape
+	 * @post This shape group has no subgroups
+	 * 		| this.getSubgroups() == null
+	 * @post This shape groups original extent equals the current one.
+	 * 		| this.getExtent() == this.getOriginalExtent()
 	 */
 	public ShapeGroup(RoundedPolygon shape) {
 		if (shape == null)
@@ -75,6 +79,10 @@ public class ShapeGroup {
 	 * 		| Arrays.equals(this.getSubgroups().toArray(), 0, this.getSubgroupCount() - 1, subgroups, 0, subgroups.length - 1)
 	 * @post This shape group is the parent of all its subgroups
 	 * 		| Arrays.stream(subgroups).allMatch(subgroup -> subgroup.getParentGroup() == this)
+	 * @post This shape group has no shape.
+	 * 		| this.getShape() == null
+	 * @post This shape groups original extent equals the current one.
+	 * 		| this.getExtent() == this.getOriginalExtent()
 	 */
 	public ShapeGroup(ShapeGroup[] subgroups) {
 		if (subgroups == null)
@@ -174,13 +182,17 @@ public class ShapeGroup {
 	 */
 	public List<ShapeGroup> getSubgroups() {
 		LinkedList<ShapeGroup> subgroups = new LinkedList<ShapeGroup>();
-		subgroups.add(firstSubgroup);
-		ShapeGroup currentSubgroup = firstSubgroup.next;
-		while (!(currentSubgroup.next.equals(currentSubgroup))) {
+		if (firstSubgroup != null) {
+			ShapeGroup currentSubgroup = firstSubgroup;
+			while (!(currentSubgroup.next.equals(currentSubgroup))) {
+				subgroups.add(currentSubgroup);
+				currentSubgroup = currentSubgroup.next;
+			}
 			subgroups.add(currentSubgroup);
-			currentSubgroup = currentSubgroup.next;
+			return subgroups;
 		}
-		return subgroups;
+		else
+			return null;
 	}
 	
 	/**

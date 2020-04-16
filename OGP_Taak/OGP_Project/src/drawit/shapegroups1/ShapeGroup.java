@@ -23,6 +23,10 @@ public class ShapeGroup {
 	 * 		| shape == null
 	 * @post This shape groups shape equals the given shape
 	 * 		| this.getShape() == shape
+	 * @post This shape group has no subgroups
+	 * 		| this.getSubgroups() == null
+	 * @post This shape groups original extent equals the current one.
+	 * 		| this.getExtent() == this.getOriginalExtent()
 	 */
 	public ShapeGroup(RoundedPolygon shape) {
 		if (shape == null)
@@ -51,7 +55,7 @@ public class ShapeGroup {
 		}
 		
 		this.extent = Extent.ofLeftTopRightBottom(left, top, right, bottom);
-		this.originalExtent = Extent.ofLeftTopRightBottom(left, top, right, bottom);
+		this.originalExtent = extent;
 		
 	}
 	
@@ -60,8 +64,20 @@ public class ShapeGroup {
 	 * in the given order.
 	 * @throws IllegalArgumentException if the given array is {@code null}.
 	 * 		| subgroups == null
+	 * @throws IllegalArgumentException if there is only 1 subgroup given.
+	 * 		| subgroups.length <= 1
+	 * @throws IllegalArgumentException if one of the given subgroups is {@code null}.
+	 * 		| Arrays.stream(subgroups).anyMatch(subgroup -> subgroup == null)
 	 * @throws IllegalArgumentException if any of the subgroups already have a parent.
 	 * 		| Arrays.stream(subgroups).anyMatch(subgroup -> subgroup.getParentGroup() != null)
+	 * @post This shape groups subgroups equal the given subgroups.
+	 * 		| Arrays.equals(this.getSubgroups().toArray(), 0, this.getSubgroupCount() - 1, subgroups, 0, subgroups.length - 1)
+	 * @post This shape group is the parent of all its subgroups
+	 * 		| Arrays.stream(subgroups).allMatch(subgroup -> subgroup.getParentGroup() == this)
+	 * @post This shape group has no shape.
+	 * 		| this.getShape() == null
+	 * @post This shape groups original extent equals the current one.
+	 * 		| this.getExtent().equals(this.getOriginalExtent())
 	 */
 	public ShapeGroup(ShapeGroup[] subgroups) {
 		if (subgroups == null)
@@ -102,7 +118,7 @@ public class ShapeGroup {
 		}
 		
 		this.extent = Extent.ofLeftTopRightBottom(left, top, right, bottom);
-		this.originalExtent = Extent.ofLeftTopRightBottom(left, top, right, bottom);
+		this.originalExtent = extent;
 		
 		
 	}
@@ -157,10 +173,12 @@ public class ShapeGroup {
 	 * Returns the number of subgroups of this non-leaf shape group.
 	 * @throws if this is a leaf shape group.
 	 * 		| this.getSubgroups() == null
+	 * @post the result is greater than or equal to 2.
+	 * 		| result >= 2
 	 */
 	public int getSubgroupCount() {
 		if (this.getSubgroups() != null)
-			return subgroups.size();
+			return getSubgroups().size();
 		else
 			throw new IllegalArgumentException("This shape group has no subgroups.");
 	}
@@ -169,10 +187,11 @@ public class ShapeGroup {
 	 * Returns the subgroup at the given (zero-based) index in this non-leaf shape group's list of subgroups.
 	 * @throws if this is a leaf shape group.
 	 * 		| this.getSubgroups() == null
+	 * @post | result == getSubgroups().get(index)
 	 */
 	public ShapeGroup getSubgroup(int index) {
 		if (this.getSubgroups() != null)
-			return subgroups.get(index);
+			return getSubgroups().get(index);
 		else
 			throw new IllegalArgumentException("This shape group has no subgroups.");
 	}
