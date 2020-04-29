@@ -6,8 +6,13 @@ import drawit.shapegroups2.ShapeGroup;
 
 public class ControlPointShape implements ControlPoint {
 	
-	private ShapeGroup shape;
+	private ShapeGroup group;
 	private IntPoint point;
+	
+	public ControlPointShape(ShapeGroup group, IntPoint point) {
+		this.group = group;
+		this.point = point;
+	}
 
 	@Override
 	public IntPoint getLocation() {
@@ -17,7 +22,6 @@ public class ControlPointShape implements ControlPoint {
 	@Override
 	public void move(IntVector delta) {
 		point.plus(delta);
-		
 	}
 
 	@Override

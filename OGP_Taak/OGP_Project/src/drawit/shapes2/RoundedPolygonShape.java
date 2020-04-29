@@ -25,14 +25,14 @@ public class RoundedPolygonShape implements Shape {
 
 	@Override
 	public ControlPoint[] createControlPoints() {
-		IntPoint[] vertices = getPolygon().getVertices();
+		RoundedPolygon polygon2 = getPolygon();
+		IntPoint[] vertices = polygon2.getVertices();
 		int length = vertices.length;
 		ControlPoint[] controlPoints = new ControlPoint[length];
 		for (int i = 0; i < length; i++) {
-			controlPoints[i] = (ControlPoint) vertices[i];
-			
+			controlPoints[i] = new ControlPointPolygon(vertices[i], polygon2, i);
 		}
-		return null;
+		return controlPoints;
 	}
 
 	@Override

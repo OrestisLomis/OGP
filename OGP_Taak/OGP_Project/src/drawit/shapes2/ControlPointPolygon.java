@@ -29,14 +29,11 @@ public class ControlPointPolygon implements ControlPoint {
 	@Override
 	public void move(IntVector delta) {
 		controlPoint.plus(delta);
-		
 	}
 
 	@Override
 	public void remove() {
 		getPolygon().remove(vertex);
-	
-		
 	}
 
 }

@@ -1,6 +1,7 @@
 package drawit.shapes2;
 
 import drawit.IntPoint;
+import drawit.shapegroups2.Extent;
 import drawit.shapegroups2.ShapeGroup;
 
 public class ShapeGroupShape implements Shape {
@@ -22,7 +23,9 @@ public class ShapeGroupShape implements Shape {
 
 	@Override
 	public ControlPoint[] createControlPoints() {
-		return null;
+		ShapeGroup shape = getShapeGroup();
+		Extent extent = shape.getExtent();
+		return new ControlPoint[] {new ControlPointShape(shape, extent.getTopLeft()), new ControlPointShape(shape, extent.getBottomRight())};
 	}
 
 	@Override
