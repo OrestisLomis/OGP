@@ -1,5 +1,7 @@
 package drawit.shapegroups2;
 
+import org.hamcrest.core.IsInstanceOf;
+
 import drawit.IntPoint;
 
 /**
@@ -281,8 +283,9 @@ public class Extent {
 		return ofLeftTopWidthHeight(getLeft(), getTop(), getWidth(), newHeight);
 	}
 	
-	public boolean equals(Extent other) {
-		return this.getTopLeft().equals(other.getTopLeft()) && this.getBottomRight().equals(other.getBottomRight());
+	@Override
+	public boolean equals(Object other) {
+		return other instanceof Extent && this.getTopLeft().equals(((Extent) other).getTopLeft()) && this.getBottomRight().equals(((Extent) other).getBottomRight());
 	}
 	
 	@Override
