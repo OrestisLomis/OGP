@@ -280,4 +280,24 @@ public class Extent {
 	public Extent withHeight(int newHeight) {
 		return ofLeftTopWidthHeight(getLeft(), getTop(), getWidth(), newHeight);
 	}
+	
+	public boolean equals(Extent other) {
+		return this.getTopLeft().equals(other.getTopLeft()) && this.getBottomRight().equals(other.getBottomRight());
+	}
+	
+	@Override
+	public String toString() {
+		return "Extent " + String.valueOf(getTop()) + "  " + String.valueOf(getRight()) + "  " + String.valueOf(getBottom()) + "  " + String.valueOf(getLeft());
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + getTop();
+		result = prime * result + getRight();
+		result = prime * result + getBottom();
+		result = prime * result + getLeft();
+		return result;
+	}
 }
