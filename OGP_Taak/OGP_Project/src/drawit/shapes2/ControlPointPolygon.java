@@ -35,7 +35,7 @@ public class ControlPointPolygon implements ControlPoint {
 	@Override
 	public void remove() {
 		getPolygon().remove(vertex);
-		}
+	
 		
 	}
 
