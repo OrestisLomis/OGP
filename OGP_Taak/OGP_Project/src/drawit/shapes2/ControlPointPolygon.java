@@ -28,7 +28,7 @@ public class ControlPointPolygon implements ControlPoint {
 
 	@Override
 	public void move(IntVector delta) {
-		controlPoint.plus(delta);
+		this.controlPoint = controlPoint.plus(delta);
 	}
 
 	@Override

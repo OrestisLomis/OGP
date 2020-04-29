@@ -25,12 +25,12 @@ public class RoundedPolygonShape implements Shape {
 
 	@Override
 	public ControlPoint[] createControlPoints() {
-		RoundedPolygon polygon2 = getPolygon();
-		IntPoint[] vertices = polygon2.getVertices();
+		RoundedPolygon polygon = getPolygon();
+		IntPoint[] vertices = polygon.getVertices();
 		int length = vertices.length;
 		ControlPoint[] controlPoints = new ControlPoint[length];
 		for (int i = 0; i < length; i++) {
-			controlPoints[i] = new ControlPointPolygon(vertices[i], polygon2, i);
+			controlPoints[i] = new ControlPointPolygon(vertices[i], polygon, i);
 		}
 		return controlPoints;
 	}
@@ -47,12 +47,18 @@ public class RoundedPolygonShape implements Shape {
 
 	@Override
 	public IntPoint toGlobalCoordinates(IntPoint p) {
-		return getParent().toGlobalCoordinates(p);
+		if (getParent() == null)
+			return p;
+		else 
+			return getParent().toGlobalCoordinates(p);
 	}
 
 	@Override
 	public IntPoint toShapeCoordinates(IntPoint p) {
-		return getParent().toInnerCoordinates(p);
+		if (getParent() == null)
+			return p;
+		else
+			return getParent().toInnerCoordinates(p);
 	}
 
 }

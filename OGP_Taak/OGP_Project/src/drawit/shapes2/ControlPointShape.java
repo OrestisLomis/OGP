@@ -21,7 +21,7 @@ public class ControlPointShape implements ControlPoint {
 
 	@Override
 	public void move(IntVector delta) {
-		point.plus(delta);
+		this.point = point.plus(delta);
 	}
 
 	@Override
