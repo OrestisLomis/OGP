@@ -10,137 +10,15 @@ import drawit.IntVector;
 import drawit.RoundedPolygon;
 
 
-public class ShapeGroup {
+abstract public class ShapeGroup {
 	
-	private RoundedPolygon shape;
-	private LinkedList<ShapeGroup> subgroups;
-	private final Extent originalExtent;
-	private Extent extent;
-	private ShapeGroup parentgroup;
-	private ShapeGroup next;
-	private ShapeGroup previous;
-	private ShapeGroup firstSubgroup;
-	private ShapeGroup lastSubgroup;
-	
-	
-	/**
-	 * Initializes this object to represent a leaf shape group that directly contains the given shape.
-	 * @throws IllegalArgumentException if there is no shape given.
-	 * 		| shape == null
-	 * @post This shape groups shape equals the given shape
-	 * 		| this.getShape() == shape
-	 * @post This shape group has no subgroups
-	 * 		| this.getSubgroups() == null
-	 * @post This shape groups original extent equals the current one.
-	 * 		| this.getExtent() == this.getOriginalExtent()
-	 */
-	public ShapeGroup(RoundedPolygon shape) {
-		if (shape == null)
-			throw new IllegalArgumentException("There is no shape given.");
-		
-		this.shape = shape;
-		
-		IntPoint[] vertices = shape.getVertices();
-		IntPoint firstVertex = vertices[0];
-		
-		int mostLeft = firstVertex.getX();
-		int mostRight = firstVertex.getX();
-		int mostTop = firstVertex.getY();
-		int mostBottom = firstVertex.getY();
-		
-		for (int i = 1; i < vertices.length; i++) {
-			int currentX = vertices[i].getX();
-			int currentY = vertices[i].getY();
-			if (currentX < mostLeft) 
-				mostLeft = currentX;
-			if (currentX > mostRight) 
-				mostRight = currentX;
-			if (currentY < mostTop) 
-				mostTop = currentY;
-			if (currentY > mostBottom) 
-				mostBottom = currentY;
-		}
-		
-		this.extent = Extent.ofLeftTopRightBottom(mostLeft, mostTop, mostRight, mostBottom);
-		this.originalExtent = extent;
-	}
-	
-	/**
-	 * Initializes this object to represent a non-leaf shape group that directly contains the given subgroups, in the given order.
-	 * @throws IllegalArgumentException if the given array is {@code null}.
-	 * 		| subgroups == null
-	 * @throws IllegalArgumentException if there is only 1 subgroup given.
-	 * 		| subgroups.length <= 1
-	 * @throws IllegalArgumentException if one of the given subgroups is {@code null}.
-	 * 		| Arrays.stream(subgroups).anyMatch(subgroup -> subgroup == null)
-	 * @throws IllegalArgumentException if any of the subgroups already have a parent.
-	 * 		| Arrays.stream(subgroups).anyMatch(subgroup -> subgroup.getParentGroup() != null)
-	 * @post This shape groups subgroups equal the given subgroups.
-	 * 		| Arrays.equals(this.getSubgroups().toArray(), 0, this.getSubgroupCount() - 1, subgroups, 0, subgroups.length - 1)
-	 * @post This shape group is the parent of all its subgroups
-	 * 		| Arrays.stream(subgroups).allMatch(subgroup -> subgroup.getParentGroup() == this)
-	 * @post This shape group has no shape.
-	 * 		| this.getShape() == null
-	 * @post This shape groups original extent equals the current one.
-	 * 		| this.getExtent() == this.getOriginalExtent()
-	 */
-	public ShapeGroup(ShapeGroup[] subgroups) {
-		if (subgroups == null)
-			throw new IllegalArgumentException("There are no subgroups given.");
-		if (subgroups.length <= 1)
-			throw new IllegalArgumentException("There is only 1 subgroup given.");
-		for (ShapeGroup subgroup : subgroups) {
-			if (subgroup == null)
-				throw new IllegalArgumentException("One of the given subgroups does not exist.");
-			if (subgroup.getParentGroup() != null)
-				throw new IllegalArgumentException("One of the given subgroups already has a parent.");
-		}
-		
-		this.subgroups = new LinkedList<ShapeGroup>();
-		
-		ShapeGroup firstSubgroup = subgroups[0];
-		Extent firstExtent = firstSubgroup.getExtent();
-		
-		int mostLeft = firstExtent.getLeft();
-		int mostRight = firstExtent.getRight();
-		int mostTop = firstExtent.getTop();
-		int mostBottom = firstExtent.getBottom();
-		this.firstSubgroup = firstSubgroup;
-		this.firstSubgroup.previous = this.firstSubgroup;
-		this.firstSubgroup.next = subgroups[1];
-		firstSubgroup.parentgroup = this;
-		this.subgroups.add(firstSubgroup);
-		
-		for (int i = 1; i < subgroups.length; i++) {
-			ShapeGroup currentSubgroup = subgroups[i];
-			currentSubgroup.parentgroup = this;
-			if (i == subgroups.length - 1) {
-				currentSubgroup.next = currentSubgroup;
-				this.lastSubgroup = currentSubgroup;
-			}
-			else
-				currentSubgroup.next = subgroups[i+1];
-			currentSubgroup.previous = subgroups[i-1];
-			this.subgroups.add(currentSubgroup);
-				
-			Extent currentExtent = currentSubgroup.getExtent();
-			int currentLeft = currentExtent.getLeft();
-			int currentRight = currentExtent.getRight();
-			int currentTop = currentExtent.getTop();
-			int currentBottom = currentExtent.getBottom();
-			if (currentLeft < mostLeft)
-				mostLeft = currentLeft;
-			if (currentRight > mostRight)
-				mostRight = currentRight;
-			if (currentTop < mostTop)
-				mostTop = currentTop;
-			if (currentBottom > mostBottom)
-				mostBottom = currentBottom;
-		}
-		
-		this.extent = Extent.ofLeftTopRightBottom(mostLeft, mostTop, mostRight, mostBottom);
-		this.originalExtent = extent;
-	}
+
+
+	protected Extent originalExtent;
+	protected Extent extent;
+	protected NonleafShapeGroup parentgroup;
+	protected ShapeGroup next;
+	protected ShapeGroup previous;
 	
 	/**
 	 * Returns the extent of this shape group, expressed in its outer coordinate system. The extent of a shape group is the smallest 
@@ -166,73 +44,8 @@ public class ShapeGroup {
 	/**
 	 * Returns the shape group that directly contains this shape group, or null if no shape group directly contains this shape group.
 	 */
-	public ShapeGroup getParentGroup() {
+	public NonleafShapeGroup getParentGroup() {
 		return parentgroup;
-	}
-	
-	/**
-	 * Returns the shape directly contained by this shape group, or null if this is a non-leaf shape group.
-	 */
-	public RoundedPolygon getShape() {
-		return shape;
-	}
-	
-	/**
-	 * Returns the list of subgroups of this shape group, or {@code null} if this is a leaf shape group.
-	 */
-	public List<ShapeGroup> getSubgroups() {
-		LinkedList<ShapeGroup> subgroups = new LinkedList<ShapeGroup>();
-		if (firstSubgroup != null) {
-			ShapeGroup currentSubgroup = firstSubgroup;
-			while (!(currentSubgroup.next.equals(currentSubgroup))) {
-				subgroups.add(currentSubgroup);
-				currentSubgroup = currentSubgroup.next;
-			}
-			subgroups.add(currentSubgroup);
-			return subgroups;
-		}
-		else
-			return null;
-	}
-	
-	/**
-	 * Returns the number of subgroups of this non-leaf shape group.
-	 * @throws if this is a leaf shape group.
-	 * 		| this.getSubgroups() == null
-	 * @post the result is greater than or equal to 2.
-	 * 		| result >= 2
-	 */
-	public int getSubgroupCount() {
-		if (this.getSubgroups() != null)
-			return subgroups.size();
-		else
-			throw new IllegalArgumentException("This shape group has no subgroups.");
-	}
-	
-	/**
-	 * Returns the subgroup at the given (zero-based) index in this non-leaf shape group's list of subgroups.
-	 * @throws if this is a leaf shape group.
-	 * 		| this.getSubgroups() == null
-	 */
-	public ShapeGroup getSubgroup(int index) {
-		if (this.getSubgroups() == null)
-			throw new IllegalArgumentException("This shape group has no subgroups.");
-		int numberSubgroups = getSubgroupCount();
-		ShapeGroup currentSubgroup = null;
-		if (index > numberSubgroups/2) {
-			currentSubgroup = this.lastSubgroup;
-			while (numberSubgroups > index + 1) {
-				currentSubgroup = currentSubgroup.previous;
-				numberSubgroups--;
-			}
-		}
-		else {
-			currentSubgroup = this.firstSubgroup;
-			for (int i = 0; i < index; i++) {
-				currentSubgroup = currentSubgroup.next;
-			}	
-		}
-		return currentSubgroup;
 	}
 		
 	/**
@@ -307,27 +120,6 @@ public class ShapeGroup {
 		return innerCoordinates;
 	}
 	
-	/**
-	 * Return the first subgroup in this non-leaf shape group's list of subgroups whose extent contains the given point, expressed in this 
-	 * shape group's inner coordinate system.
-	 * @throws IllegalArgumentException if this is a non-leaf shape group.
-	 * 		| this.getSubgroups() == null
-	 * @post the result is {@code null} or the given point is contained by the extent of the returned subgroup.
-	 * 		| (result == null) || (result.getExtent().contains(innerCoordinates))
-	 */
-	public ShapeGroup getSubgroupAt(IntPoint innerCoordinates) {
-		if (this.getSubgroups() == null)
-			throw new IllegalArgumentException("This shape group has no subgroups.");
-		ShapeGroup currentSubgroup = this.firstSubgroup;
-		for (int i = 0; i < this.getSubgroupCount(); i++) {
-			Extent currentExtent = currentSubgroup.getExtent();
-			if (currentExtent.contains(innerCoordinates))
-				return this.getSubgroup(i);
-			currentSubgroup = currentSubgroup.next;
-		}
-	
-		return null;
-	}
 	
 	/**
 	 * Registers the given extent as this shape group's extent, expressed in this shape group's outer coordinate system. As a consequence, 
@@ -357,7 +149,7 @@ public class ShapeGroup {
 	 * @mutates | this.getParentGroup()
 	 */
 	public void bringToFront() {
-		ShapeGroup parentgroup = this.getParentGroup();
+		NonleafShapeGroup parentgroup = this.getParentGroup();
 		if(this.parentgroup == null)
 			throw new IllegalArgumentException("This shape group has no parent.");
 
@@ -390,7 +182,7 @@ public class ShapeGroup {
 	 * @mutates | this.getParentGroup()
 	 */
 	public void sendToBack() {
-		ShapeGroup parentgroup = this.getParentGroup();
+		NonleafShapeGroup parentgroup = this.getParentGroup();
 		if (this.getParentGroup() == null)
 			throw new IllegalArgumentException("This shape group has no parent.");
 
@@ -416,49 +208,33 @@ public class ShapeGroup {
 	 * group, expressed in this shape group's outer coordinate system. For the syntax of the drawing commands, see 
 	 * RoundedPolygon.getDrawingCommands().
 	 */
-	public String getDrawingCommands() {
-		String commands = "";
-		commands += "pushTranslate " + getHorizontalTranslate() + " " + getVerticalTranslate() + System.lineSeparator();
-		commands += "pushScale " + getHorizontalScale() + " " + getVerticalScale() + System.lineSeparator();
-		if (getShape() != null)
-			commands += getShape().getDrawingCommands();
-		else {
-			ShapeGroup currentSubgroup = this.lastSubgroup;
-			for (int i = getSubgroupCount() - 1; i >= 0; i--) {
-				commands += currentSubgroup.getDrawingCommands();
-				currentSubgroup = currentSubgroup.previous;
-			}
-		}
-		commands += "popTransform " + System.lineSeparator();
-		commands += "popTransform " + System.lineSeparator();
-		return commands.toString();
-	}
+	abstract public String getDrawingCommands();
 	
 	/**
 	 * Returns the horizontal scale factor to go from inner to outer coordinates.
 	 */
-	private double getHorizontalScale() {
+	protected double getHorizontalScale() {
 		return getExtent().getWidth()/(double) getOriginalExtent().getWidth();
 	}
 	
 	/**
 	 * Returns the vertical scale factor to go from inner to outer coordinates.
 	 */
-	private double getVerticalScale() {
+	protected double getVerticalScale() {
 		return getExtent().getHeight()/(double) getOriginalExtent().getHeight();
 	}
 	
 	/**
 	 * Returns the horizontal translate to go from inner to outer coordinates.
 	 */
-	private int getHorizontalTranslate() {
+	protected int getHorizontalTranslate() {
 		return (int) (getExtent().getLeft() - getOriginalExtent().getLeft() * getHorizontalScale()); 
 	}
 	
 	/**
 	 * Returns the vertical translate to go from inner to outer coordinates.
 	 */
-	private int getVerticalTranslate() {
+	protected int getVerticalTranslate() {
 		return (int) (getExtent().getTop() - getOriginalExtent().getTop() * getVerticalScale());
 	}
 }
