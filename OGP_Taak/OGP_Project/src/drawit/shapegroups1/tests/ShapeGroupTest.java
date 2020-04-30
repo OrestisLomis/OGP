@@ -10,6 +10,8 @@ import drawit.IntPoint;
 import drawit.IntVector;
 import drawit.RoundedPolygon;
 import drawit.shapegroups1.Extent;
+import drawit.shapegroups1.LeafShapeGroup;
+import drawit.shapegroups1.NonleafShapeGroup;
 import drawit.shapegroups1.ShapeGroup;
 
 class ShapeGroupTest {
@@ -17,7 +19,7 @@ class ShapeGroupTest {
 	@Test
 	void test() {
 		RoundedPolygon myRoundedPolygon = new RoundedPolygon();
-		ShapeGroup myShapeGroup = new ShapeGroup(myRoundedPolygon);
+		LeafShapeGroup myShapeGroup = new LeafShapeGroup(myRoundedPolygon);
 		
 		assert myShapeGroup.getShape() == myRoundedPolygon;
 		
@@ -65,10 +67,10 @@ class ShapeGroupTest {
 		
 		myRoundedPolygon2.setVertices(myIntPoints);
 		
-		ShapeGroup myShapeGroup2 = new ShapeGroup(myRoundedPolygon2);
+		LeafShapeGroup myShapeGroup2 = new LeafShapeGroup(myRoundedPolygon2);
 		
 		ShapeGroup[] myShapeGroups = {myShapeGroup, myShapeGroup2};
-		ShapeGroup myShapeGroup3 = new ShapeGroup(myShapeGroups);
+		NonleafShapeGroup myShapeGroup3 = new NonleafShapeGroup(myShapeGroups);
 		Extent myExtent3 = myShapeGroup3.getExtent();
 		
 		assert myExtent3.getLeft() == -150;
@@ -99,11 +101,11 @@ class ShapeGroupTest {
 		IntPoint[] myIntPoints3 = {new IntPoint(-100, 100), new IntPoint(0, 0), new IntPoint(100, 100)};
 		myRoundedPolygon4.setVertices(myIntPoints3);
 		RoundedPolygon myRoundedPolygon5 = new RoundedPolygon();
-		ShapeGroup myShapeGroup4 = new ShapeGroup(myRoundedPolygon3);
-		ShapeGroup myShapeGroup5 = new ShapeGroup(myRoundedPolygon4);
-		ShapeGroup myShapeGroup6 = new ShapeGroup(myRoundedPolygon5);
+		LeafShapeGroup myShapeGroup4 = new LeafShapeGroup(myRoundedPolygon3);
+		LeafShapeGroup myShapeGroup5 = new LeafShapeGroup(myRoundedPolygon4);
+		LeafShapeGroup myShapeGroup6 = new LeafShapeGroup(myRoundedPolygon5);
 		ShapeGroup[] myShapeGroups2 = {myShapeGroup3, myShapeGroup4, myShapeGroup5, myShapeGroup6};
-		ShapeGroup myShapeGroup7 = new ShapeGroup(myShapeGroups2);
+		NonleafShapeGroup myShapeGroup7 = new NonleafShapeGroup(myShapeGroups2);
 		
 		myShapeGroup4.sendToBack();
 		myShapeGroup4.sendToBack();
