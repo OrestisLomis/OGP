@@ -8,11 +8,11 @@ import drawit.IntVector;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ShapeGroup {
+abstract public class ShapeGroup {
 	
 	protected Extent originalExtent;
 	protected Extent extent;
-	protected ShapeGroup parentgroup;
+	protected NonleafShapeGroup parentgroup;
 	
 	
 	/**
@@ -42,7 +42,7 @@ public class ShapeGroup {
 	 * Returns the shape group that directly contains this shape group, 
 	 * or null if no shape group directly contains this shape group.
 	 */
-	public ShapeGroup getParentGroup() {
+	public NonleafShapeGroup getParentGroup() {
 		return parentgroup;
 	}
 	
@@ -147,7 +147,7 @@ public class ShapeGroup {
 	 * @mutates | this
 	 */
 	public void bringToFront() {
-		ShapeGroup parentgroup = this.getParentGroup();
+		NonleafShapeGroup parentgroup = this.getParentGroup();
 		if(this.parentgroup == null)
 			throw new IllegalArgumentException("This shape group has no parent.");
 
@@ -164,13 +164,20 @@ public class ShapeGroup {
 	 * @mutates | this
 	 */
 	public void sendToBack() {
-		ShapeGroup parentgroup = this.getParentGroup();
+		NonleafShapeGroup parentgroup = this.getParentGroup();
 		if(this.getParentGroup() == null)
 			throw new IllegalArgumentException("This shape group has no parent.");
 
 		parentgroup.subgroups.remove(this);
 		parentgroup.subgroups.add(this);	
 	}
+	
+	/**
+	 * Returns a textual representation of a sequence of drawing commands for drawing the shapes contained directly or indirectly by this shape 
+	 * group, expressed in this shape group's outer coordinate system. For the syntax of the drawing commands, see 
+	 * RoundedPolygon.getDrawingCommands().
+	 */
+	abstract public String getDrawingCommands();
 	
 	/**
 	 * Returns the horizontal scale factor to go from inner to outer coordinates.

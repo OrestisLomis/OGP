@@ -2,13 +2,15 @@ package drawit.shapegroups1;
 
 import drawit.RoundedPolygon;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 import drawit.IntPoint;
 
 public class NonleafShapeGroup extends ShapeGroup{
-	protected LinkedList<ShapeGroup> subgroups;
+	
+	LinkedList<ShapeGroup> subgroups;
 	
 	
 	/**
@@ -99,6 +101,7 @@ public class NonleafShapeGroup extends ShapeGroup{
 		
 	}
 	
+	@Override
 	public String getDrawingCommands() {
 		String commands = "";
 		commands += "pushTranslate " + getHorizontalTranslate() + " " + getVerticalTranslate() + System.lineSeparator();

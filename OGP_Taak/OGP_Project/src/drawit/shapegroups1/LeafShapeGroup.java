@@ -51,6 +51,7 @@ public class LeafShapeGroup extends ShapeGroup{
 		return shape;
 	}
 	
+	@Override
 	public String getDrawingCommands() {
 		String commands = "";
 		commands += "pushTranslate " + getHorizontalTranslate() + " " + getVerticalTranslate() + System.lineSeparator();
