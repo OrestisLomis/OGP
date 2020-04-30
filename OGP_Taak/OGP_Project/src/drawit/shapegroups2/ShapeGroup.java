@@ -14,11 +14,11 @@ abstract public class ShapeGroup {
 	
 
 
-	protected Extent originalExtent;
-	protected Extent extent;
-	protected NonleafShapeGroup parentgroup;
-	protected ShapeGroup next;
-	protected ShapeGroup previous;
+	Extent originalExtent;
+	Extent extent;
+	NonleafShapeGroup parentgroup;
+	ShapeGroup next;
+	ShapeGroup previous;
 	
 	/**
 	 * Returns the extent of this shape group, expressed in its outer coordinate system. The extent of a shape group is the smallest 
