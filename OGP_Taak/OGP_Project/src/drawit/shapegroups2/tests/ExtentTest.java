@@ -102,7 +102,7 @@ class ExtentTest {
 		assert myExtent8.getRight() == 5;
 		assert myExtent8.getWidth() == 5;
 		
-		assertEquals("Extent 0  5  5  0", myExtent.toString());
+		assertEquals("Extent left 0 top 0 right 5 bottom 5", myExtent.toString());
 		
 		Extent myExtent9 = Extent.ofLeftTopRightBottom(0, 0, 5, 5);
 		

@@ -290,7 +290,7 @@ public class Extent {
 	
 	@Override
 	public String toString() {
-		return "Extent " + String.valueOf(getTop()) + "  " + String.valueOf(getRight()) + "  " + String.valueOf(getBottom()) + "  " + String.valueOf(getLeft());
+		return "Extent left " + String.valueOf(getLeft() + " top " + String.valueOf(getTop()) + " right " + String.valueOf(getRight()) + " bottom " + String.valueOf(getBottom()) );
 	}
 	
 	@Override

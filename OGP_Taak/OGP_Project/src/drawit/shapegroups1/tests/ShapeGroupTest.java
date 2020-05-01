@@ -17,7 +17,7 @@ import drawit.shapegroups1.ShapeGroup;
 class ShapeGroupTest {
 
 	@Test
-	void test() {
+	void test() {		
 		RoundedPolygon myRoundedPolygon = new RoundedPolygon();
 		LeafShapeGroup myShapeGroup = new LeafShapeGroup(myRoundedPolygon);
 		
