@@ -25,7 +25,7 @@ public class ShapeGroupShape implements Shape {
 	public ControlPoint[] createControlPoints() {
 		ShapeGroup shape = getShapeGroup();
 		Extent extent = shape.getExtent();
-		return new ControlPoint[] {new ControlPointShape(shape, extent.getTopLeft()), new ControlPointShape(shape, extent.getBottomRight())};
+		return new ControlPoint[] {new ControlPointShape(shape, true, extent), new ControlPointShape(shape, false, extent)};
 	}
 
 	@Override

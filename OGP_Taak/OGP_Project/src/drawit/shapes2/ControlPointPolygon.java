@@ -3,37 +3,45 @@ package drawit.shapes2;
 import drawit.IntPoint;
 import drawit.IntVector;
 import drawit.RoundedPolygon;
+import drawit.shapegroups2.ShapeGroup;
 
 public class ControlPointPolygon implements ControlPoint {
 	
-	private IntPoint controlPoint;
-	private RoundedPolygon polygon;
-	private int vertex;
+	private final IntPoint point;
+	private final RoundedPolygonShape polygon;
+	private final int vertex;
 
 	
-	public ControlPointPolygon (IntPoint controlPoint, RoundedPolygon polygon, int vertex) {
-		this.controlPoint = controlPoint;
+	public ControlPointPolygon (IntPoint point, RoundedPolygonShape polygon, int vertex) {
+		this.point = point;
 		this.polygon = polygon;
 		this.vertex = vertex;
 	}
 	
-	public RoundedPolygon getPolygon() {
+	public RoundedPolygonShape getPolygon() {
 		return this.polygon;
 	}
 
 	@Override
 	public IntPoint getLocation() {
-		return controlPoint;
+		return this.point;
 	}
 
 	@Override
 	public void move(IntVector delta) {
-		this.controlPoint = controlPoint.plus(delta);
+		IntVector fixedDelta = null;
+		ShapeGroup parent = getPolygon().getParent();
+		if (parent != null)
+			fixedDelta = parent.toInnerCoordinates(delta);
+		else 
+			fixedDelta = delta;
+		IntPoint newLocation = getLocation().plus(fixedDelta);
+		getPolygon().getPolygon().update(vertex, newLocation);
 	}
 
 	@Override
 	public void remove() {
-		getPolygon().remove(vertex);
+		getPolygon().getPolygon().remove(vertex);
 	}
 
 }
