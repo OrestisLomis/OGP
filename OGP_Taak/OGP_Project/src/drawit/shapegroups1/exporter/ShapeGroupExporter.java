@@ -26,7 +26,7 @@ public class ShapeGroupExporter {
 			IntPoint[] vertices = shape.getVertices();
 
 			List<Map<String, Integer>> vertexCoords = new ArrayList<Map<String, Integer>>();
-			Arrays.stream(vertices).forEach(vertex -> vertexCoords.add(Map.of("x", vertex.getX(), "y", vertex.getY())));
+			Arrays.stream(vertices).parallel().forEach(vertex -> vertexCoords.add(Map.of("x", vertex.getX(), "y", vertex.getY())));
 
 			Color color = shape.getColor();
 			result = Map.of("originalExtent",
@@ -44,7 +44,7 @@ public class ShapeGroupExporter {
 			List<ShapeGroup> subgroups = nlsg.getSubgroups();
 
 			List<Object> subgroupMaps = new ArrayList<Object>();
-			subgroups.stream().forEach(subgroup -> subgroupMaps.add(ShapeGroupExporter.toPlainData(subgroup)));
+			subgroups.parallelStream().forEach(subgroup -> subgroupMaps.add(ShapeGroupExporter.toPlainData(subgroup)));
 
 			result = Map.of("originalExtent",
 					Map.of("left", original.getLeft(), "top", original.getTop(), "right", original.getRight(), "bottom",
