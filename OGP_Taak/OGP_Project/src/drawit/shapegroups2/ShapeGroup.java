@@ -1,14 +1,8 @@
 package drawit.shapegroups2;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
 import drawit.DoublePoint;
 import drawit.IntPoint;
 import drawit.IntVector;
-import drawit.RoundedPolygon;
-
 
 abstract public class ShapeGroup {
 	

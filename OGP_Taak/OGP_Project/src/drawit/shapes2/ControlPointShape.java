@@ -17,7 +17,7 @@ public class ControlPointShape implements ControlPoint {
 		this.topleft = topleft;
 		this.extent = extent;
 		if (topleft)
-			this.point = getGroup().getOriginalExtent().getTopLeft();
+			this.point = getGroup().getExtent().getTopLeft();
 		else
 			this.point = getGroup().getOriginalExtent().getBottomRight();
 	}
@@ -35,7 +35,7 @@ public class ControlPointShape implements ControlPoint {
 	public void move(IntVector delta) {
 		IntPoint newLocation = getLocation().plus(delta);
 		if (topleft) {
-			Extent between = this.extent.withTop(newLocation.getY());
+			Extent between = getGroup().getOriginalExtent().withTop(newLocation.getY());
 			getGroup().setExtent(between.withLeft(newLocation.getX()));
 		}
 		else {
@@ -45,7 +45,11 @@ public class ControlPointShape implements ControlPoint {
 	}
 
 	@Override
+	/**
+	 * @throws UnsupportedOperationException
+	 */
 	public void remove() {
+		throw new UnsupportedOperationException("You can only remove vertices.");
 	}
 
 }

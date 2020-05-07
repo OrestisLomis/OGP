@@ -6,7 +6,7 @@ import java.util.List;
 
 import drawit.IntPoint;
 
-public class NonleafShapeGroup extends ShapeGroup{
+public class NonleafShapeGroup extends ShapeGroup {
 	
 	private LinkedList<ShapeGroup> subgroups;
 	ShapeGroup firstSubgroup;

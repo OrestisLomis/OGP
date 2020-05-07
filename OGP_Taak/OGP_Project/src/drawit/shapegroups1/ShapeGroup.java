@@ -1,18 +1,14 @@
 package drawit.shapegroups1;
 
-import drawit.RoundedPolygon;
 import drawit.DoublePoint;
 import drawit.IntPoint;
 import drawit.IntVector;
 
-import java.util.LinkedList;
-import java.util.List;
-
 abstract public class ShapeGroup {
 	
-	protected Extent originalExtent;
-	protected Extent extent;
-	protected NonleafShapeGroup parentgroup;
+	Extent originalExtent;
+	Extent extent;
+	NonleafShapeGroup parentgroup;
 	
 	
 	/**
