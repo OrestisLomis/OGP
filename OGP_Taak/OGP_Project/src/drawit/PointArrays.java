@@ -25,8 +25,8 @@ public class PointArrays {
 	 */
 	public static String checkDefinesProperPolygon(IntPoint[] points) {
 
-		if (points.length <= 2)
-			return "A proper polygon is defined by at least 3 points.";
+		if (points.length == 2)
+			return "Line segments 0 and 1 intersect.";
 
 		boolean CoincidingVertices = false;
 		boolean VertexOnEdge = false;
