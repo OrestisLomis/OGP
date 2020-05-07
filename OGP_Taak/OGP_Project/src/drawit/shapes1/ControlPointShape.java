@@ -3,26 +3,26 @@ package drawit.shapes1;
 import drawit.IntPoint;
 import drawit.IntVector;
 import drawit.shapegroups1.Extent;
-import drawit.shapegroups1.ShapeGroup;
 
 public class ControlPointShape implements ControlPoint {
 	
-	private final ShapeGroup group;
+	private final ShapeGroupShape group;
 	private final boolean topleft;
 	private final IntPoint point;
 	private Extent extent;
 	
-	public ControlPointShape(ShapeGroup group, boolean topleft, Extent extent) {
+	public ControlPointShape(ShapeGroupShape group, boolean topleft, Extent extent) {
 		this.group = group;
 		this.topleft = topleft;
 		this.extent = extent;
 		if (topleft)
-			this.point = getGroup().getOriginalExtent().getTopLeft();
+			this.point = getGroup().getShapeGroup().getOriginalExtent().getTopLeft();
 		else
-			this.point = getGroup().getOriginalExtent().getBottomRight();
+			this.point = getGroup().getShapeGroup().getOriginalExtent().getBottomRight();
 	}
 	
-	public ShapeGroup getGroup() {
+
+	public ShapeGroupShape getGroup() {
 		return this.group;
 	}
 
@@ -33,14 +33,15 @@ public class ControlPointShape implements ControlPoint {
 
 	@Override
 	public void move(IntVector delta) {
-		IntPoint newLocation = getLocation().plus(delta);
+		IntVector fixedDelta = getGroup().toShapeCoordinates(delta);
+		IntPoint newLocation = getLocation().plus(fixedDelta);
 		if (topleft) {
 			Extent between = this.extent.withTop(newLocation.getY());
-			getGroup().setExtent(between.withLeft(newLocation.getX()));
+			getGroup().getShapeGroup().setExtent(between.withLeft(newLocation.getX()));
 		}
 		else {
 			Extent between = this.extent.withBottom(newLocation.getY());
-			getGroup().setExtent(between.withRight(newLocation.getX()));
+			getGroup().getShapeGroup().setExtent(between.withRight(newLocation.getX()));
 		}
 	}
 

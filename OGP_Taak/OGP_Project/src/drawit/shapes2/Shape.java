@@ -13,5 +13,7 @@ public interface Shape {
 	drawit.IntPoint toGlobalCoordinates(drawit.IntPoint p);
 	
 	drawit.IntPoint toShapeCoordinates(drawit.IntPoint p);
+	
+	drawit.IntVector toShapeCoordinates(drawit.IntVector v);
 
 }

@@ -2,8 +2,6 @@ package drawit.shapes2;
 
 import drawit.IntPoint;
 import drawit.IntVector;
-import drawit.RoundedPolygon;
-import drawit.shapegroups2.ShapeGroup;
 
 public class ControlPointPolygon implements ControlPoint {
 	
@@ -29,12 +27,7 @@ public class ControlPointPolygon implements ControlPoint {
 
 	@Override
 	public void move(IntVector delta) {
-		IntVector fixedDelta = null;
-		ShapeGroup parent = getPolygon().getParent();
-		if (parent != null)
-			fixedDelta = parent.toInnerCoordinates(delta);
-		else 
-			fixedDelta = delta;
+		IntVector fixedDelta = getPolygon().toShapeCoordinates(delta);
 		IntPoint newLocation = getLocation().plus(fixedDelta);
 		getPolygon().getPolygon().update(vertex, newLocation);
 	}

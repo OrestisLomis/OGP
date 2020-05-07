@@ -1,6 +1,7 @@
 package drawit.shapes1;
 
 import drawit.IntPoint;
+import drawit.IntVector;
 import drawit.shapegroups1.Extent;
 import drawit.shapegroups1.ShapeGroup;
 
@@ -25,7 +26,7 @@ public class ShapeGroupShape implements Shape {
 	public ControlPoint[] createControlPoints() {
 		ShapeGroup shape = getShapeGroup();
 		Extent extent = shape.getExtent();
-		return new ControlPoint[] {new ControlPointShape(shape, true, extent), new ControlPointShape(shape, false, extent)};
+		return new ControlPoint[] {new ControlPointShape(this, true, extent), new ControlPointShape(this, false, extent)};
 	}
 
 	@Override
@@ -45,7 +46,20 @@ public class ShapeGroupShape implements Shape {
 
 	@Override
 	public IntPoint toShapeCoordinates(IntPoint p) {
-		return getShapeGroup().toInnerCoordinates(p);
+		ShapeGroup parent = getParent();
+		if (parent != null)
+			return parent.toInnerCoordinates(p);
+		else
+			return p;
+	}
+
+	@Override
+	public IntVector toShapeCoordinates(IntVector v) {
+		ShapeGroup parent = getParent();
+		if (parent != null)
+			return parent.toInnerCoordinates(v);
+		else
+			return v;
 	}
 
 }

@@ -1,6 +1,7 @@
 package drawit.shapes2;
 
 import drawit.IntPoint;
+import drawit.IntVector;
 import drawit.RoundedPolygon;
 import drawit.shapegroups2.ShapeGroup;
 
@@ -59,6 +60,15 @@ public class RoundedPolygonShape implements Shape {
 			return p;
 		else
 			return getParent().toInnerCoordinates(p);
+	}
+
+	@Override
+	public IntVector toShapeCoordinates(IntVector v) {
+		ShapeGroup parent = getParent();
+		if (parent != null)
+			return parent.toInnerCoordinates(v);
+		else
+			return v;
 	}
 
 }

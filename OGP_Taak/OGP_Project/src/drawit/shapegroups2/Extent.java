@@ -1,7 +1,5 @@
 package drawit.shapegroups2;
 
-import org.hamcrest.core.IsInstanceOf;
-
 import drawit.IntPoint;
 
 /**
