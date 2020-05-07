@@ -222,13 +222,13 @@ abstract public class ShapeGroup {
 	 * Returns the horizontal translate to go from inner to outer coordinates.
 	 */
 	protected int getHorizontalTranslate() {
-		return (int) (getExtent().getLeft() - getOriginalExtent().getLeft() * getHorizontalScale()); 
+		return (int) Math.round((getExtent().getLeft() - getOriginalExtent().getLeft() * getHorizontalScale())); 
 	}
 	
 	/**
 	 * Returns the vertical translate to go from inner to outer coordinates.
 	 */
 	protected int getVerticalTranslate() {
-		return (int) (getExtent().getTop() - getOriginalExtent().getTop() * getVerticalScale());
+		return (int) Math.round((getExtent().getTop() - getOriginalExtent().getTop() * getVerticalScale()));
 	}
 }

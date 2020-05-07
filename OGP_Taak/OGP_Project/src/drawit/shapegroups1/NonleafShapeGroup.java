@@ -1,7 +1,5 @@
 package drawit.shapegroups1;
 
-import drawit.RoundedPolygon;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;

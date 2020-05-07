@@ -28,12 +28,7 @@ public class ControlPointPolygon implements ControlPoint {
 
 	@Override
 	public void move(IntVector delta) {
-		IntVector fixedDelta = null;
-		ShapeGroup parent = getPolygon().getParent();
-		if (parent != null)
-			fixedDelta = parent.toInnerCoordinates(delta);
-		else 
-			fixedDelta = delta;
+		IntVector fixedDelta = getPolygon().toShapeCoordinates(delta);
 		IntPoint newLocation = getLocation().plus(fixedDelta);
 		getPolygon().getPolygon().update(vertex, newLocation);
 	}

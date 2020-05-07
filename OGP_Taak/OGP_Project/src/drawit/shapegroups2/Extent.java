@@ -145,7 +145,7 @@ public class Extent {
 	 * 		| result.getBottom() == bottom
 	 */
 	public static Extent ofLeftTopRightBottom(int left, int top, int right, int bottom) {
-		if (left > right || top > bottom)
+		if (left >= right || top >= bottom)
 			throw new IllegalArgumentException("The width and height must be positive.");
 		Extent myExtent = new Extent();
 		myExtent.left = left;
