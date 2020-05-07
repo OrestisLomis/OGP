@@ -2,7 +2,6 @@ package drawit.shapes1;
 
 import drawit.IntPoint;
 import drawit.IntVector;
-import drawit.shapegroups1.ShapeGroup;
 
 public class ControlPointPolygon implements ControlPoint {
 	
