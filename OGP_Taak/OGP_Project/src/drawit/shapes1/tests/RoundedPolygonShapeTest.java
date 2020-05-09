@@ -44,6 +44,23 @@ class RoundedPolygonShapeTest {
 		assert shape2.contains(new IntPoint(100,200));
 		assert myPolygon2.getDrawingCommands().equals(shape2.getDrawingCommands());
 		
+		IntPoint[] vertices = shape1.getPolygon().getVertices();
+		
+		assert vertices.length == 4;
+		
+		ControlPointPolygon CPoint1 = new ControlPointPolygon(vertices[0], shape1, 0);
+		ControlPointPolygon CPoint2 = new ControlPointPolygon(vertices[1], shape1, 1);
+		ControlPointPolygon CPoint3 = new ControlPointPolygon(vertices[2], shape1, 2);
+		ControlPointPolygon CPoint4 = new ControlPointPolygon(vertices[3], shape1, 3);	
+		
+		ControlPoint[] controlPoints = shape1.createControlPoints();
+		
+		assert controlPoints.length == 4;
+		assert controlPoints[0].getLocation() == CPoint1.getLocation();
+		assert controlPoints[1].getLocation() == CPoint2.getLocation();
+		assert controlPoints[2].getLocation() == CPoint3.getLocation();
+		assert controlPoints[3].getLocation() == CPoint4.getLocation();
+		
 		Extent myOriginalExtent = mygroup.getOriginalExtent();
 		Extent newExtent = Extent.ofLeftTopRightBottom(0,100,100,200);
 		mygroup.setExtent(newExtent);
@@ -72,3 +89,4 @@ class RoundedPolygonShapeTest {
 	}
 
 }
+
