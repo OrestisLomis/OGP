@@ -33,7 +33,7 @@ class RoundedPolygonShapeTest {
 		assert shape1.contains(new IntPoint(-100,100));
 		assert shape1.contains(new IntPoint(0,0));
 		assert shape1.contains(new IntPoint(0,100));
-		assert myPolygon1.getDrawingCommands().equals(shape1.getDrawingCommands());
+		assertEquals(myPolygon1.getDrawingCommands(),shape1.getDrawingCommands());
 		
 		RoundedPolygonShape shape2 = new RoundedPolygonShape(mygroup, myPolygon2);
 		
