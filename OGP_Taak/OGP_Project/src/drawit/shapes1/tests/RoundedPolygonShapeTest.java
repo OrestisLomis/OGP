@@ -6,6 +6,7 @@ import drawit.shapes1.ControlPointPolygon;
 import drawit.shapes1.RoundedPolygonShape;
 import drawit.shapegroups1.*;
 
+import static org.junit.Assert.assertEquals;
 
 import org.junit.jupiter.api.Test;
 

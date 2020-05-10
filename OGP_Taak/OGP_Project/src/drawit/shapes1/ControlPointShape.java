@@ -11,10 +11,10 @@ public class ControlPointShape implements ControlPoint {
 	private final IntPoint point;
 	private Extent extent;
 	
-	public ControlPointShape(ShapeGroupShape group, boolean topleft, Extent extent) {
+	public ControlPointShape(ShapeGroupShape group, boolean topleft) {
 		this.group = group;
 		this.topleft = topleft;
-		this.extent = extent;
+		this.extent = group.getShapeGroup().getExtent();
 		if (topleft)
 			this.point = getGroup().getShapeGroup().getOriginalExtent().getTopLeft();
 		else
