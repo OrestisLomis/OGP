@@ -27,20 +27,20 @@ class ControlPointPolygonTest {
 		
 		IntPoint[] newVertices = polygon.getVertices();
 		
-		assert !(point1 == newVertices[0]);
+		assert !(point1.equals(newVertices[0]));
 		assert newVertices[0].equals(new IntPoint(0,0));
-		assert point2 == newVertices[1];
-		assert point3 == newVertices[2];
-		assert point4 == newVertices[3];
+		assert point2.equals(newVertices[1]);
+		assert point3.equals(newVertices[2]);
+		assert point4.equals(newVertices[3]);
 		assert newVertices.length == 4;
 		
 		cpoint1.remove();
 		IntPoint[] NewestVertices = shape.getPolygon().getVertices();
 		
 		assert NewestVertices.length == 3;
-		assert point2 == NewestVertices[0];
-		assert point3 == NewestVertices[1];
-		assert point4 == NewestVertices[2];
+		assert point2.equals(NewestVertices[0]);
+		assert point3.equals(NewestVertices[1]);
+		assert point4.equals(NewestVertices[2]);
 		
 		
 	}
