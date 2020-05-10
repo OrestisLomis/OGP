@@ -1,6 +1,5 @@
 package drawit.shapes1.tests;
 
-import static org.junit.jupiter.api.Assertions.*;
 import drawit.*;
 import drawit.shapes1.ControlPoint;
 import drawit.shapes1.ControlPointPolygon;
@@ -89,4 +88,3 @@ class RoundedPolygonShapeTest {
 	}
 
 }
-
