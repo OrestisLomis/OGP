@@ -1,7 +1,5 @@
 package drawit.shapes1.tests;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 
 import drawit.IntPoint;
@@ -11,6 +9,7 @@ import drawit.shapegroups1.Extent;
 import drawit.shapegroups1.LeafShapeGroup;
 import drawit.shapegroups1.NonleafShapeGroup;
 import drawit.shapegroups1.ShapeGroup;
+import drawit.shapes1.ControlPoint;
 import drawit.shapes1.ShapeGroupShape;
 
 class ShapeGroupShapeTest {
@@ -66,6 +65,12 @@ class ShapeGroupShapeTest {
 		assert myshape.toShapeCoordinates(new IntPoint(100,100)).equals(new IntPoint(200,-100));
 		assert myshape.toShapeCoordinates(new IntVector(1,3)).getX() == 3;
 		assert myshape.toShapeCoordinates(new IntVector(1,3)).getY() == 9;
+		
+		ControlPoint[] controlpoints = myshape.createControlPoints();
+		
+		assert controlpoints.length == 2;
+		assert controlpoints[0].getLocation().equals(myshape.getShapeGroup().getExtent().getTopLeft());
+		assert controlpoints[1].getLocation().equals(myshape.getShapeGroup().getExtent().getBottomRight());
 	}
 
 }
