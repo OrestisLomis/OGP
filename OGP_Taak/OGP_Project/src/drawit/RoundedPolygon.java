@@ -104,7 +104,7 @@ public class RoundedPolygon {
 	 * 
 	 * @mutates | this
 	 * @throws IllegalArgumentException if the index is out of range.
-	 * 		| 0 > index || index > this.getVertices().length
+	 * 		| 0 > index || index >= this.getVertices().length
 	 * @post The length of the vertices is decreased by 1.
 	 * 		| old(this.getVertices().length) - 1 == this.getVertices().length
 	 */
@@ -123,7 +123,7 @@ public class RoundedPolygon {
 	 * 
 	 * @mutates | this
 	 * @throws IllegalArgumentException if the index is out of range.
-	 * 		| 0 > index || index > this.getVertices().length
+	 * 		| 0 > index || index >= this.getVertices().length
 	 * @post The length of the vertices remains the same.
 	 * 		| old(this.getVertices().length) == this.getVertices().length
 	 */
