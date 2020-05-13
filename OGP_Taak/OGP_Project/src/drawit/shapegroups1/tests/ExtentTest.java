@@ -1,5 +1,11 @@
 package drawit.shapegroups1.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import drawit.IntPoint;
@@ -95,6 +101,22 @@ Extent myExtent = Extent.ofLeftTopRightBottom(0, 0, 5, 5);
 		assert myExtent8.getLeft() == 0;
 		assert myExtent8.getRight() == 5;
 		assert myExtent8.getWidth() == 5;
+		
+		assertEquals("Extent left 0 top 0 right 5 bottom 5", myExtent.toString());
+		
+		Extent myExtent9 = Extent.ofLeftTopRightBottom(0, 0, 5, 5);
+		
+		List<Extent> myExtents = new ArrayList<Extent>();
+		myExtents.add(myExtent9);
+		myExtents.add(myExtent8);
+		myExtents.add(myExtent7);
+		assert myExtents.contains(myExtent);
+		
+		HashSet<Integer> hash = new HashSet<>();
+		hash.add(myExtent9.hashCode());
+		hash.add(myExtent8.hashCode());
+		hash.add(myExtent7.hashCode());
+		assert hash.contains(myExtent.hashCode());
 	}
 
 }
