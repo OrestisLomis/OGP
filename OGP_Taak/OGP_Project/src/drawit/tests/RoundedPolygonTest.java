@@ -92,8 +92,19 @@ class RoundedPolygonTest {
 		IntPoint myIntPoint17 = new IntPoint(0, 10);
 		IntPoint[] myIntPoints6 = {myIntPoint16, myIntPoint10, myIntPoint11, myIntPoint12, myIntPoint13, myIntPoint14, myIntPoint15};
 		RoundedPolygon myRoundedPolygon3 = new RoundedPolygon();
+		
+		assert myRoundedPolygon3.getExtent().getLeft() == -100;
+		assert myRoundedPolygon3.getExtent().getRight() == 100;
+		assert myRoundedPolygon3.getExtent().getTop() == -100;
+		assert myRoundedPolygon3.getExtent().getBottom() == 100;
+		
 		myRoundedPolygon3.setVertices(myIntPoints6);
+		
 		assert !(myRoundedPolygon3.contains(myIntPoint17));
+		assert myRoundedPolygon3.getExtent().getLeft() == -20;
+		assert myRoundedPolygon3.getExtent().getRight() == 20;
+		assert myRoundedPolygon3.getExtent().getTop() == -10;
+		assert myRoundedPolygon3.getExtent().getBottom() == 20;
 		
 		/*assertEquals("line -100.0 0.0 -100.0 85.58481559887747" + System.lineSeparator() +
 				"arc -80.0 85.58481559887747 20.0 3.141592653589793 -1.2490457723982544" + System.lineSeparator() +
