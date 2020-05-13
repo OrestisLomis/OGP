@@ -7,6 +7,7 @@ public class RoundedPolygon {
 	private IntPoint[] vertices;
 	private int radius;
 	private Color color; 
+	private Extent extent;
 
 	/**
 	 * An instance of this class is a mutable abstraction storing a rounded polygon 
@@ -28,6 +29,7 @@ public class RoundedPolygon {
 		this.vertices = myIntPoints;
 		this.radius = 10;
 		this.color = Color.yellow;
+		this.extent = Extent.ofLeftTopRightBottom(-100, -100, 100, 100);
 	}
 	
 	/**
@@ -45,6 +47,13 @@ public class RoundedPolygon {
 	}
 	
 	/**
+	* Returns the bounding box of the polygon.
+	*/
+	public Extent getExtent() {
+		return this.extent;
+	}
+	
+	/**
 	 * Sets the vertices of this rounded polygon to be equal to the elements of the given array.
 	 * 
 	 * @mutates | this
@@ -54,8 +63,28 @@ public class RoundedPolygon {
 	 * 		| this.getVertices() == newVertices
 	 */	
 	public void setVertices(IntPoint[] newVertices) {
-		if (PointArrays.checkDefinesProperPolygon(newVertices) == null)
+		if (PointArrays.checkDefinesProperPolygon(newVertices) == null) {
 			this.vertices = newVertices;
+			
+			int left = newVertices[0].getX();
+			int right = newVertices[0].getX();
+			int top = newVertices[0].getY();
+			int bottom = newVertices[0].getY();
+			
+			for (int i=0; i< newVertices.length; i++) {
+				IntPoint vertex = newVertices [i];
+				if (vertex.getX() < left)
+					left = vertex.getX();
+				if (vertex.getX() > right) 
+					right = vertex.getX();
+				if (vertex.getY() < top)
+					top = vertex.getY();
+				if (vertex.getY() > bottom) 
+					bottom = vertex.getY();
+			}
+			
+			this.extent = Extent.ofLeftTopRightBottom(left, top, right, bottom);
+		}
 		else 
 			throw new IllegalArgumentException(PointArrays.checkDefinesProperPolygon(newVertices));		
 	}
