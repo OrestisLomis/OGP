@@ -281,5 +281,26 @@ public class Extent {
 	public Extent withHeight(int newHeight) {
 		return ofLeftTopRightBottom(this.getLeft(), this.getTop(), this.getRight(), this.getTop() + newHeight);
 	}
+	
+	@Override
+	public boolean equals(Object other) {
+		return other instanceof Extent && this.getTopLeft().equals(((Extent) other).getTopLeft()) && this.getBottomRight().equals(((Extent) other).getBottomRight());
+	}
+	
+	@Override
+	public String toString() {
+		return "Extent left " + String.valueOf(getLeft() + " top " + String.valueOf(getTop()) + " right " + String.valueOf(getRight()) + " bottom " + String.valueOf(getBottom()) );
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + getTop();
+		result = prime * result + getRight();
+		result = prime * result + getBottom();
+		result = prime * result + getLeft();
+		return result;
+	}
 		
 }
