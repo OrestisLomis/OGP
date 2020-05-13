@@ -3,6 +3,8 @@ package drawit.shapes2;
 import drawit.IntPoint;
 import drawit.IntVector;
 import drawit.shapegroups2.Extent;
+import drawit.shapes2.ControlPoint;
+import drawit.shapes2.ShapeGroupShape;
 
 public class ControlPointShape implements ControlPoint {
 	
@@ -11,16 +13,17 @@ public class ControlPointShape implements ControlPoint {
 	private final IntPoint point;
 	private Extent extent;
 	
-	public ControlPointShape(ShapeGroupShape group, boolean topleft, Extent extent) {
+	public ControlPointShape(ShapeGroupShape group, boolean topleft) {
 		this.group = group;
 		this.topleft = topleft;
-		this.extent = extent;
+		this.extent = group.getShapeGroup().getExtent();
 		if (topleft)
 			this.point = getGroup().getShapeGroup().getOriginalExtent().getTopLeft();
 		else
 			this.point = getGroup().getShapeGroup().getOriginalExtent().getBottomRight();
 	}
 	
+
 	public ShapeGroupShape getGroup() {
 		return this.group;
 	}
@@ -45,11 +48,7 @@ public class ControlPointShape implements ControlPoint {
 	}
 
 	@Override
-	/**
-	 * @throws UnsupportedOperationException
-	 */
 	public void remove() {
-		throw new UnsupportedOperationException("You can only remove vertices.");
 	}
 
 }
