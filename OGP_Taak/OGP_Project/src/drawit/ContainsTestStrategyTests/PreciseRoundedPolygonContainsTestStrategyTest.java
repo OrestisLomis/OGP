@@ -1,7 +1,5 @@
 package drawit.ContainsTestStrategyTests;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 
 import drawit.IntPoint;
@@ -23,10 +21,12 @@ class PreciseRoundedPolygonContainsTestStrategyTest {
 		
 		mypolygon.setVertices(points);
 		
-		assert PreciseRoundedPolygonContainsTestStrategy.contains(mypolygon, point1);
-		assert PreciseRoundedPolygonContainsTestStrategy.contains(mypolygon, new IntPoint(0,0));
-		assert !(PreciseRoundedPolygonContainsTestStrategy.contains(mypolygon, new IntPoint(150,0)));
-		assert !(PreciseRoundedPolygonContainsTestStrategy.contains(mypolygon, new IntPoint(201, 100)));
+		PreciseRoundedPolygonContainsTestStrategy test = new PreciseRoundedPolygonContainsTestStrategy();
+		
+		assert test.contains(mypolygon, point1);
+		assert test.contains(mypolygon, new IntPoint(0,0));
+		assert !(test.contains(mypolygon, new IntPoint(150,0)));
+		assert !(test.contains(mypolygon, new IntPoint(201, 100)));
 	}
 
 }
