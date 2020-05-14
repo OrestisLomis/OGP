@@ -2,6 +2,8 @@ package drawit;
 
 import java.awt.Color;
 
+import drawit.shapegroups1.Extent;
+
 public class RoundedPolygon {
 	
 	private IntPoint[] vertices;

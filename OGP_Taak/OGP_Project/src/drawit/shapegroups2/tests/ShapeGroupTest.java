@@ -126,9 +126,9 @@ class ShapeGroupTest {
 		assert Arrays.equals((myShapeGroup7.getSubgroups()).toArray(), 0, 4, new ShapeGroup[] {myShapeGroup6, myShapeGroup3, myShapeGroup5, myShapeGroup4}, 0, 4);
 		
 		
-		assertEquals("pushTranslate 0 0" + System.lineSeparator() +
+		assertEquals("pushTranslate 0.0 0.0" + System.lineSeparator() +
 				"pushScale 1.0 1.0" + System.lineSeparator() +
-				"pushTranslate 0 0" + System.lineSeparator() +
+				"pushTranslate 0.0 0.0" + System.lineSeparator() +
 				"pushScale 1.0 1.0" + System.lineSeparator() +
 				"line 300.0 200.0 375.85786437626905 200.0" + System.lineSeparator() +
 				"arc 375.85786437626905 210.0 10.0 -1.5707963267948966 2.356194490192345" + System.lineSeparator() +
@@ -142,7 +142,7 @@ class ShapeGroupTest {
 				"fill  255 255 0" + System.lineSeparator() +
 				"popTransform " + System.lineSeparator() +
 				"popTransform " + System.lineSeparator() +
-				"pushTranslate 525 300" + System.lineSeparator() +
+				"pushTranslate 525.0 300.0" + System.lineSeparator() +
 				"pushScale 0.25 5.0" + System.lineSeparator() +
 				"line -100.0 0.0 -100.0 90.0" + System.lineSeparator() +
 				"arc -90.0 90.0 10.0 3.141592653589793 -1.5707963267948966" + System.lineSeparator() +

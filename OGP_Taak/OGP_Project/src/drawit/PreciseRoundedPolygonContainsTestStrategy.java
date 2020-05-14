@@ -1,6 +1,8 @@
 package drawit;
 
-public class PreciseRoundedPolygonContainsTestStrategy {
+public class PreciseRoundedPolygonContainsTestStrategy implements RoundedPolygonContainsTestStrategy {
+	
+	public PreciseRoundedPolygonContainsTestStrategy() {};
 	
 	/** Returns whether the given polygon contains the given point. The edges and vertices of the polygon are also considered 
 	 * the inside of the polygon.

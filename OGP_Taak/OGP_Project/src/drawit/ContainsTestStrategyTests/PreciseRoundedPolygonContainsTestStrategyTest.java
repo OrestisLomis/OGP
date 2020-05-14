@@ -23,10 +23,12 @@ class PreciseRoundedPolygonContainsTestStrategyTest {
 		
 		mypolygon.setVertices(points);
 		
-		assert PreciseRoundedPolygonContainsTestStrategy.contains(mypolygon, point1);
-		assert PreciseRoundedPolygonContainsTestStrategy.contains(mypolygon, new IntPoint(0,0));
-		assert !(PreciseRoundedPolygonContainsTestStrategy.contains(mypolygon, new IntPoint(150,0)));
-		assert !(PreciseRoundedPolygonContainsTestStrategy.contains(mypolygon, new IntPoint(201, 100)));
+		PreciseRoundedPolygonContainsTestStrategy myPreciseRoundedPolygonContainsTestStrategy = new PreciseRoundedPolygonContainsTestStrategy();
+		
+		assert myPreciseRoundedPolygonContainsTestStrategy.contains(mypolygon, point1);
+		assert myPreciseRoundedPolygonContainsTestStrategy.contains(mypolygon, new IntPoint(0,0));
+		assert !(myPreciseRoundedPolygonContainsTestStrategy.contains(mypolygon, new IntPoint(150,0)));
+		assert !(myPreciseRoundedPolygonContainsTestStrategy.contains(mypolygon, new IntPoint(201, 100)));
 	}
 
 }

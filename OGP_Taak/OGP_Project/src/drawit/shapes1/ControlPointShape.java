@@ -46,7 +46,11 @@ public class ControlPointShape implements ControlPoint {
 	}
 
 	@Override
+	/**
+	 * @throws UnsupportedOperationException
+	 */
 	public void remove() {
+		throw new UnsupportedOperationException("You can only remove vertices.");
 	}
 
 }

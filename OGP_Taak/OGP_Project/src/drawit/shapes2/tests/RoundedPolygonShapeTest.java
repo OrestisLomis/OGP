@@ -72,8 +72,7 @@ class RoundedPolygonShapeTest {
 		assert shape1.toShapeCoordinates(new IntPoint(100,200)).equals(new IntPoint(200,200));
 		assert shape2.toShapeCoordinates(new IntPoint(100,100)).equals(new IntPoint(200,-100));
 		assert shape1.toShapeCoordinates(new IntVector(1,3)).getX() == 3;
-		assert shape2.toShapeCoordinates(new IntVector(1,3)).getY() == 9;
-		
+		assert shape2.toShapeCoordinates(new IntVector(1,3)).getY() == 9;	
 		
 		RoundedPolygonShape shape3 = new RoundedPolygonShape(null, new RoundedPolygon());
 		
@@ -82,8 +81,7 @@ class RoundedPolygonShapeTest {
 		assert shape3.toShapeCoordinates(new IntPoint(100, 100)).equals(new IntPoint(100, 100));
 		assert shape3.toShapeCoordinates(new IntVector(2,5)).getX() == 2;
 		assert shape3.toShapeCoordinates(new IntVector(2,5)).getY() == 5;
-		
-		
+			
 	}
 
 }

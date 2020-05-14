@@ -178,28 +178,28 @@ abstract public class ShapeGroup {
 	/**
 	 * Returns the horizontal scale factor to go from inner to outer coordinates.
 	 */
-	protected double getHorizontalScale() {
+	double getHorizontalScale() {
 		return getExtent().getWidth()/(double) getOriginalExtent().getWidth();
 	}
 	
 	/**
 	 * Returns the vertical scale factor to go from inner to outer coordinates.
 	 */
-	protected double getVerticalScale() {
+	double getVerticalScale() {
 		return getExtent().getHeight()/(double) getOriginalExtent().getHeight();
 	}
 	
 	/**
 	 * Returns the horizontal translate to go from inner to outer coordinates.
 	 */
-	protected int getHorizontalTranslate() {
+	int getHorizontalTranslate() {
 		return (int) (getExtent().getLeft() - getOriginalExtent().getLeft() * getHorizontalScale()); 
 	}
 	
 	/**
 	 * Returns the vertical translate to go from inner to outer coordinates.
 	 */
-	protected int getVerticalTranslate() {
+	int getVerticalTranslate() {
 		return (int) (getExtent().getTop() - getOriginalExtent().getTop() * getVerticalScale());
 	}
 

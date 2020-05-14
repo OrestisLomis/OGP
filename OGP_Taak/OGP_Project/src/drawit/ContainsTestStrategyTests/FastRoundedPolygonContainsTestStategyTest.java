@@ -19,10 +19,12 @@ class FastRoundedPolygonContainsTestStategyTest {
 		
 		mypolygon.setVertices(points);
 		
-		assert FastRoundedPolygonContainsTestStrategy.contains(mypolygon, point1);
-		assert FastRoundedPolygonContainsTestStrategy.contains(mypolygon, new IntPoint(0,0));
-		assert FastRoundedPolygonContainsTestStrategy.contains(mypolygon, new IntPoint(150,0));
-		assert !(FastRoundedPolygonContainsTestStrategy.contains(mypolygon, new IntPoint(201, 100)));
+		FastRoundedPolygonContainsTestStrategy myFastRoundedPolygonContainsTestStrategy = new FastRoundedPolygonContainsTestStrategy();
+		
+		assert myFastRoundedPolygonContainsTestStrategy.contains(mypolygon, point1);
+		assert myFastRoundedPolygonContainsTestStrategy.contains(mypolygon, new IntPoint(0,0));
+		assert myFastRoundedPolygonContainsTestStrategy.contains(mypolygon, new IntPoint(150,0));
+		assert !(myFastRoundedPolygonContainsTestStrategy.contains(mypolygon, new IntPoint(201, 100)));
 		
 		
 	}
