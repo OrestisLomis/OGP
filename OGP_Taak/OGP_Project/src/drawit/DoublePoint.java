@@ -72,10 +72,10 @@ public class DoublePoint {
 	 * Returns an IntPoint object whose coordinates are obtained by rounding the
 	 * coordinates of this point to the nearest integer.
 	 * 
-	 * @post The difference of the results X coordinate and the given one is between -0.5 and 0.5
-	 * 		| result.getX() - this.getX() >= -0.5 && result.getX() - this.getX() < 0.5
-	 * @post The difference of the results Y coordinate and the given one is between -0.5 and 0.5
-	 * 		| result.getY() - this.getY() >= -0.5 && result.getY() - this.getY() < 0.5
+	 * @post The absolute value of the difference of the results X coordinate and the given one is smaller than or equal to 0.5
+	 * 		| Math.abs(result.getX() - this.getX()) <= 0.5
+	 * @post The absolute value of the difference of the results Y coordinate and the given one is smaller than or equal to 0.5
+	 * 		| Math.abs(result.getY() - this.getY()) <= 0.5
 	 * 
 	 */
 	public IntPoint round() {
