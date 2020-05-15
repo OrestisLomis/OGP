@@ -8,7 +8,15 @@ import drawit.IntPoint;
 
 public class NonleafShapeGroup extends ShapeGroup {
 	
-	private LinkedList<ShapeGroup> subgroups;
+	/**
+	 * @invar | subgroups != null
+	 * @invar The subgroup-parentgroup relation is always consistent.
+	 * 		| subgroups.stream().allMatch(s -> s.parentgroup == this)
+	 *
+	 * @representationObject
+	 * @peerObjects
+	 */
+	LinkedList<ShapeGroup> subgroups;
 	ShapeGroup firstSubgroup;
 	ShapeGroup lastSubgroup;
 	

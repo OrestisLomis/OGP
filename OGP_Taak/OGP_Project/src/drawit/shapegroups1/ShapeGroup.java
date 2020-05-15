@@ -8,6 +8,14 @@ abstract public class ShapeGroup {
 	
 	Extent originalExtent;
 	Extent extent;
+	
+	/**
+	 * @invar | true
+	 * @invar The subgroup-parentgroup relation is always consistent, if this ShapeGroup object has a parent.
+	 * 		| parentgroup == null || parentgroup.subgroups.contains(this)
+	 * 
+	 * @peerObject
+	 */
 	NonleafShapeGroup parentgroup;
 	
 	
@@ -37,6 +45,8 @@ abstract public class ShapeGroup {
 	/**
 	 * Returns the shape group that directly contains this shape group, 
 	 * or null if no shape group directly contains this shape group.
+	 * 
+	 * @peerObject
 	 */
 	public NonleafShapeGroup getParentGroup() {
 		return parentgroup;
@@ -141,6 +151,7 @@ abstract public class ShapeGroup {
 	 * @post this shape is the first element of its parents subgroups.
 	 * 		| this.getParentGroup().getSubgroup(0) == this
 	 * @mutates | this
+	 * @mutates_properties | this.getParentGroup().getSubgroups()
 	 */
 	public void bringToFront() {
 		NonleafShapeGroup parentgroup = this.getParentGroup();
@@ -158,6 +169,7 @@ abstract public class ShapeGroup {
 	 * @post this shape is the last element of its parent subgroups.
 	 * 		| this.getParentGroup().getSubgroup(this.getParentGroup().getSubgroupCount() - 1) == this
 	 * @mutates | this
+	 * @mutates_properties | this.getParentGroup().getSubgroups()
 	 */
 	public void sendToBack() {
 		NonleafShapeGroup parentgroup = this.getParentGroup();

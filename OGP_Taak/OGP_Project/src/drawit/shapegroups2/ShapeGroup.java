@@ -10,8 +10,24 @@ abstract public class ShapeGroup {
 
 	Extent originalExtent;
 	Extent extent;
+	
+	/**
+	 * @invar | true
+	 * @invar The subgroup-parentgroup relation is always consistent, if this ShapeGroup object has a parent.
+	 * 		| parentgroup == null || parentgroup.subgroups.contains(this)
+	 * 
+	 * @peerObject
+	 */
 	NonleafShapeGroup parentgroup;
+	
+	/**
+	 * @peerObject
+	 */
 	ShapeGroup next;
+	
+	/**
+	 * @peerObject
+	 */
 	ShapeGroup previous;
 	
 	/**
@@ -37,6 +53,8 @@ abstract public class ShapeGroup {
 	
 	/**
 	 * Returns the shape group that directly contains this shape group, or null if no shape group directly contains this shape group.
+	 * 
+	 * @peerObject
 	 */
 	public NonleafShapeGroup getParentGroup() {
 		return parentgroup;
@@ -140,7 +158,7 @@ abstract public class ShapeGroup {
 	 * @post the amount of subgroups remains the same.
 	 * 		| this.getParentGroup().getSubgroupCount() == old(this.getParentGroup().getSubgroupCount())
 	 * @mutates | this
-	 * @mutates | this.getParentGroup()
+	 * @mutates_properties | this.getParentGroup().getSubgroups()
 	 */
 	public void bringToFront() {
 		NonleafShapeGroup parentgroup = this.getParentGroup();
@@ -173,7 +191,7 @@ abstract public class ShapeGroup {
 	 * @post the amount of subgroups remains the same.
 	 * 		| this.getParentGroup().getSubgroupCount() == old(this.getParentGroup().getSubgroupCount())
 	 * @mutates | this
-	 * @mutates | this.getParentGroup()
+	 * @mutates_properties | this.getParentGroup().getSubgroups()
 	 */
 	public void sendToBack() {
 		NonleafShapeGroup parentgroup = this.getParentGroup();
@@ -207,28 +225,28 @@ abstract public class ShapeGroup {
 	/**
 	 * Returns the horizontal scale factor to go from inner to outer coordinates.
 	 */
-	public double getHorizontalScale() {
+	double getHorizontalScale() {
 		return getExtent().getWidth()/(double) getOriginalExtent().getWidth();
 	}
 	
 	/**
 	 * Returns the vertical scale factor to go from inner to outer coordinates.
 	 */
-	public double getVerticalScale() {
+	double getVerticalScale() {
 		return getExtent().getHeight()/(double) getOriginalExtent().getHeight();
 	}
 	
 	/**
 	 * Returns the horizontal translate to go from inner to outer coordinates.
 	 */
-	public double getHorizontalTranslate() {
+	double getHorizontalTranslate() {
 		return getExtent().getLeft() - getOriginalExtent().getLeft() * getHorizontalScale(); 
 	}
 	
 	/**
 	 * Returns the vertical translate to go from inner to outer coordinates.
 	 */
-	public double getVerticalTranslate() {
+	double getVerticalTranslate() {
 		return getExtent().getTop() - getOriginalExtent().getTop() * getVerticalScale();
 	}
 }

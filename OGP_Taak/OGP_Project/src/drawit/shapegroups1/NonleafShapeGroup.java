@@ -66,9 +66,11 @@ public class NonleafShapeGroup extends ShapeGroup{
 
 	/**
 	 * Returns the list of subgroups of this shape group
+	 * 
+	 * @peerObjects
 	 */	
 	public List<ShapeGroup> getSubgroups() {
-		return subgroups;
+		return List.copyOf(subgroups);
 	}
 	
 	/**

@@ -3,8 +3,9 @@ package drawit.shapegroups1;
 import drawit.RoundedPolygon;
 import drawit.IntPoint;
 
-public class LeafShapeGroup extends ShapeGroup{
-	protected RoundedPolygon shape;
+public class LeafShapeGroup extends ShapeGroup {
+	
+	RoundedPolygon shape;
 	
 	/**
 	 * Initializes this object to represent a leaf shape group that directly contains the given shape.
