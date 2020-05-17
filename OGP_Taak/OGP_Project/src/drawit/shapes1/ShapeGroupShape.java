@@ -40,7 +40,7 @@ public class ShapeGroupShape implements Shape {
 	public IntPoint toGlobalCoordinates(IntPoint p) {
 		ShapeGroup parent = getParent();
 		if (parent != null)
-			return getShapeGroup().toGlobalCoordinates(p);
+			return parent.toGlobalCoordinates(p);
 		else
 			return p;
 	}
