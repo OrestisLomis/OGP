@@ -4,18 +4,17 @@ import drawit.IntPoint;
 import drawit.IntVector;
 
 public class ControlPointPolygon implements ControlPoint {
-	
+
 	private final IntPoint point;
 	private final RoundedPolygonShape polygon;
 	private final int vertex;
 
-	
-	public ControlPointPolygon (IntPoint point, RoundedPolygonShape polygon, int vertex) {
+	public ControlPointPolygon(IntPoint point, RoundedPolygonShape polygon, int vertex) {
 		this.point = point;
 		this.polygon = polygon;
 		this.vertex = vertex;
 	}
-	
+
 	public RoundedPolygonShape getPolygon() {
 		return this.polygon;
 	}

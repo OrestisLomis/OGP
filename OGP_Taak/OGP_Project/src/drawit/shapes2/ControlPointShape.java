@@ -7,12 +7,12 @@ import drawit.shapes2.ControlPoint;
 import drawit.shapes2.ShapeGroupShape;
 
 public class ControlPointShape implements ControlPoint {
-	
+
 	private final ShapeGroupShape group;
 	private final boolean topleft;
 	private final IntPoint point;
 	private Extent extent;
-	
+
 	public ControlPointShape(ShapeGroupShape group, boolean topleft) {
 		this.group = group;
 		this.topleft = topleft;
@@ -22,7 +22,6 @@ public class ControlPointShape implements ControlPoint {
 		else
 			this.point = getGroup().getShapeGroup().getExtent().getBottomRight();
 	}
-	
 
 	public ShapeGroupShape getGroup() {
 		return this.group;
@@ -40,8 +39,7 @@ public class ControlPointShape implements ControlPoint {
 		if (topleft) {
 			Extent between = this.extent.withTop(newLocation.getY());
 			getGroup().getShapeGroup().setExtent(between.withLeft(newLocation.getX()));
-		}
-		else {
+		} else {
 			Extent between = this.extent.withBottom(newLocation.getY());
 			getGroup().getShapeGroup().setExtent(between.withRight(newLocation.getX()));
 		}

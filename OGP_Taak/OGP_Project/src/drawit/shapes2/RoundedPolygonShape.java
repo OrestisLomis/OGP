@@ -6,15 +6,15 @@ import drawit.RoundedPolygon;
 import drawit.shapegroups2.ShapeGroup;
 
 public class RoundedPolygonShape implements Shape {
-	
+
 	private ShapeGroup parent;
 	private RoundedPolygon polygon;
-	
+
 	public RoundedPolygonShape(drawit.shapegroups2.ShapeGroup parent, drawit.RoundedPolygon polygon) {
 		this.parent = parent;
 		this.polygon = polygon;
 	}
-	
+
 	public RoundedPolygon getPolygon() {
 		return polygon;
 	}
@@ -50,7 +50,7 @@ public class RoundedPolygonShape implements Shape {
 	public IntPoint toGlobalCoordinates(IntPoint p) {
 		if (getParent() == null)
 			return p;
-		else 
+		else
 			return getParent().toGlobalCoordinates(p);
 	}
 

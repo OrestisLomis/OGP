@@ -5,13 +5,13 @@ import drawit.IntVector;
 import drawit.shapegroups2.ShapeGroup;
 
 public class ShapeGroupShape implements Shape {
-	
+
 	private ShapeGroup group;
-	
+
 	public ShapeGroupShape(drawit.shapegroups2.ShapeGroup group) {
 		this.group = group;
 	}
-	
+
 	public ShapeGroup getShapeGroup() {
 		return group;
 	}
@@ -23,7 +23,7 @@ public class ShapeGroupShape implements Shape {
 
 	@Override
 	public ControlPoint[] createControlPoints() {
-		return new ControlPoint[] {new ControlPointShape(this, true), new ControlPointShape(this, false)};
+		return new ControlPoint[] { new ControlPointShape(this, true), new ControlPointShape(this, false) };
 	}
 
 	@Override

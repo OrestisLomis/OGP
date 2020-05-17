@@ -38,7 +38,11 @@ public class ShapeGroupShape implements Shape {
 
 	@Override
 	public IntPoint toGlobalCoordinates(IntPoint p) {
-		return getShapeGroup().toGlobalCoordinates(p);
+		ShapeGroup parent = getParent();
+		if (parent != null)
+			return getShapeGroup().toGlobalCoordinates(p);
+		else
+			return p;
 	}
 
 	@Override
