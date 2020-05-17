@@ -11,7 +11,11 @@ public class FastRoundedPolygonContainsTestStrategy implements RoundedPolygonCon
 	 * @pre Given point is not null.
 	 * 		| point != null
 	 * 
-	 * For further documentation, see Extent.contains()
+	 * @post
+	 *    | result == (
+	 *    |     polygon.getExtent().getLeft() <= point.getX() && point.getX() <= polygon.getExtent().getRight() &&
+	 *    |     polygon.getExtent().getTop() <= point.getY() && point.getY() <= polygon.getExtent().getBottom()
+	 *    | ) 
 	 */	
 	public boolean contains(RoundedPolygon polygon, IntPoint point) {
 		return polygon.getExtent().contains(point);
