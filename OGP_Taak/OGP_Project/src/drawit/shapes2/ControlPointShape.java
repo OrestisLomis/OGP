@@ -18,9 +18,9 @@ public class ControlPointShape implements ControlPoint {
 		this.topleft = topleft;
 		this.extent = group.getShapeGroup().getExtent();
 		if (topleft)
-			this.point = getGroup().getShapeGroup().getOriginalExtent().getTopLeft();
+			this.point = getGroup().getShapeGroup().getExtent().getTopLeft();
 		else
-			this.point = getGroup().getShapeGroup().getOriginalExtent().getBottomRight();
+			this.point = getGroup().getShapeGroup().getExtent().getBottomRight();
 	}
 	
 
