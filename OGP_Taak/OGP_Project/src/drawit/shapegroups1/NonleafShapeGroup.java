@@ -102,6 +102,11 @@ public class NonleafShapeGroup extends ShapeGroup{
 	}
 	
 	@Override
+	/**
+	 * Returns a textual representation of a sequence of drawing commands for drawing the shapes contained directly or indirectly by this shape 
+	 * group, expressed in this shape group's outer coordinate system. For the syntax of the drawing commands, see 
+	 * RoundedPolygon.getDrawingCommands().
+	 */
 	public String getDrawingCommands() {
 		String commands = "";
 		commands += "pushTranslate " + getHorizontalTranslate() + " " + getVerticalTranslate() + System.lineSeparator();

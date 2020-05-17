@@ -68,21 +68,35 @@ public class RoundedPolygon {
 		if (PointArrays.checkDefinesProperPolygon(newVertices) == null) {
 			this.vertices = newVertices;
 			
-			int left = newVertices[0].getX();
-			int right = newVertices[0].getX();
-			int top = newVertices[0].getY();
-			int bottom = newVertices[0].getY();
+			int length = newVertices.length;
 			
-			for (int i=0; i< newVertices.length; i++) {
-				IntPoint vertex = newVertices [i];
-				if (vertex.getX() < left)
-					left = vertex.getX();
-				if (vertex.getX() > right) 
-					right = vertex.getX();
-				if (vertex.getY() < top)
-					top = vertex.getY();
-				if (vertex.getY() > bottom) 
-					bottom = vertex.getY();
+			int left = 0;
+			int top = 0;
+			int right = 1;
+			int bottom = 1;
+			
+			if (length > 0) {
+				left = newVertices[0].getX();
+				right = newVertices[0].getX();
+				top = newVertices[0].getY();
+				bottom = newVertices[0].getY();			
+			
+				for (int i = 1; i < length; i++) {
+					IntPoint vertex = newVertices [i];
+					if (vertex.getX() < left)
+						left = vertex.getX();
+					if (vertex.getX() > right) 
+						right = vertex.getX();
+					if (vertex.getY() < top)
+						top = vertex.getY();
+					if (vertex.getY() > bottom) 
+						bottom = vertex.getY();
+				}
+				
+				if (right == left)
+					right++;
+				if (bottom == top)
+					bottom++;
 			}
 			
 			this.extent = Extent.ofLeftTopRightBottom(left, top, right, bottom);
