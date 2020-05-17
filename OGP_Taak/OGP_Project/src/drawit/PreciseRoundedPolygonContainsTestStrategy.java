@@ -9,7 +9,8 @@ public class PreciseRoundedPolygonContainsTestStrategy implements RoundedPolygon
 	 * @throws IllegalArgumentException when one of the arguments is null
 	 * 		| polygon == null || point == null
 	 * 
-	 * For further documentation, see RoundedPolygon.contains ()
+	 * @inspects | polygon
+	 * @mutates nothing |
 	 */
 	public boolean contains(RoundedPolygon polygon, IntPoint point) {
 		if (polygon != null && point != null) {
