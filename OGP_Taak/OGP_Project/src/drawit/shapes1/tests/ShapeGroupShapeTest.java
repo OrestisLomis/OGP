@@ -27,7 +27,7 @@ class ShapeGroupShapeTest {
 		LeafShapeGroup SubGroup2 = new LeafShapeGroup(myPolygon2);
 
 		ShapeGroup[] subgroups = new ShapeGroup[] { SubGroup1, SubGroup2 };
-		ShapeGroup mygroup = new NonleafShapeGroup(subgroups);
+		NonleafShapeGroup mygroup = new NonleafShapeGroup(subgroups);
 
 		ShapeGroupShape myshape = new ShapeGroupShape(mygroup);
 
@@ -49,7 +49,7 @@ class ShapeGroupShapeTest {
 
 		LeafShapeGroup SubGroup3 = new LeafShapeGroup(new RoundedPolygon());
 		ShapeGroup[] subgroups2 = new ShapeGroup[] { SubGroup3, mygroup };
-		ShapeGroup mygroup2 = new NonleafShapeGroup(subgroups2);
+		NonleafShapeGroup mygroup2 = new NonleafShapeGroup(subgroups2);
 		Extent newExtent = Extent.ofLeftTopRightBottom(0, 100, 100, 200);
 		mygroup2.setExtent(newExtent);
 
@@ -58,7 +58,8 @@ class ShapeGroupShapeTest {
 		assert myshape2.getShapeGroup() == mygroup2;
 		assert myshape2.getParent() == null;
 		assert myshape2.getDrawingCommands().equals(mygroup2.getDrawingCommands());
-
+		
+		/*
 		assert myshape2.toGlobalCoordinates(new IntPoint(-100, -100)).equals(new IntPoint(-100, -100));
 		assert myshape2.toGlobalCoordinates(new IntPoint(200, 200)).equals(new IntPoint(200, 200));
 		assert myshape2.toGlobalCoordinates(new IntPoint(50, 50)).equals(new IntPoint(50, 50));
@@ -66,12 +67,25 @@ class ShapeGroupShapeTest {
 		assert myshape.toShapeCoordinates(new IntPoint(100, 100)).equals(new IntPoint(200, -100));
 		assert myshape.toShapeCoordinates(new IntVector(1, 3)).getX() == 3;
 		assert myshape.toShapeCoordinates(new IntVector(1, 3)).getY() == 9;
+		*/
 
 		ControlPoint[] controlpoints = myshape.createControlPoints();
 
 		assert controlpoints.length == 2;
 		assert controlpoints[0].getLocation().equals(myshape.getShapeGroup().getExtent().getTopLeft());
 		assert controlpoints[1].getLocation().equals(myshape.getShapeGroup().getExtent().getBottomRight());
+		
+		SubGroup1.getShape().insert(1, new IntPoint(-50,0)); 
+		
+		assert SubGroup1.getShape().getVertices().length == 5;
+		assert myshape.getShapeGroup().equals(mygroup);
+		assert myshape2.getShapeGroup().equals(mygroup2);
+		assert mygroup2.getSubgroup(1).equals(mygroup);
+		assert mygroup.getSubgroup(0).equals(SubGroup1);
+		assert SubGroup1.getShape().getVertices()[1].equals(new IntPoint(-50,0));
+		
+		
+		
 	}
 
 }
