@@ -59,7 +59,6 @@ class ShapeGroupShapeTest {
 		assert myshape2.getParent() == null;
 		assert myshape2.getDrawingCommands().equals(mygroup2.getDrawingCommands());
 		
-		/*
 		assert myshape2.toGlobalCoordinates(new IntPoint(-100, -100)).equals(new IntPoint(-100, -100));
 		assert myshape2.toGlobalCoordinates(new IntPoint(200, 200)).equals(new IntPoint(200, 200));
 		assert myshape2.toGlobalCoordinates(new IntPoint(50, 50)).equals(new IntPoint(50, 50));
@@ -67,7 +66,6 @@ class ShapeGroupShapeTest {
 		assert myshape.toShapeCoordinates(new IntPoint(100, 100)).equals(new IntPoint(200, -100));
 		assert myshape.toShapeCoordinates(new IntVector(1, 3)).getX() == 3;
 		assert myshape.toShapeCoordinates(new IntVector(1, 3)).getY() == 9;
-		*/
 
 		ControlPoint[] controlpoints = myshape.createControlPoints();
 
